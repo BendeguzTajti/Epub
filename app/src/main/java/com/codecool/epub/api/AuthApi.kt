@@ -7,7 +7,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Url
 
-interface TwitchAuthApi {
+interface AuthApi {
 
     @POST
     fun getAuthToken(
