@@ -11,8 +11,8 @@ data class OAuth(
     @SerializedName("token_type")
     val tokenType: String,
     var tokenSavedTime: Long = 0
-    ) {
+) {
     fun getExpirationTimeInMillis(): Long = tokenSavedTime + expiresIn * 1000L
 
-    fun getType(): String = tokenType.capitalize(Locale.ROOT)
+    fun getAuthorization(): String = "${tokenType.capitalize(Locale.ROOT)} $accessToken"
 }

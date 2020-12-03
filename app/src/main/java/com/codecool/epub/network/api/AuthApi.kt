@@ -1,4 +1,4 @@
-package com.codecool.epub.api
+package com.codecool.epub.network.api
 
 import com.codecool.epub.model.OAuth
 import com.codecool.epub.util.Constants.Companion.GRANT_TYPE
