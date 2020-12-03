@@ -1,16 +1,17 @@
 package com.codecool.epub.util
 
+import com.codecool.epub.BuildConfig
+
 class Constants {
 
     companion object {
 
-        // API RELATED
+        // NETWORK RELATED
         const val BASE_URL = "https://api.twitch.tv/"
         const val AUTH_ENDPOINT = "//id.twitch.tv/oauth2/token"
 
-        const val CLIENT_ID = "YOUR_CLIENT_ID"
-        const val CLIENT_SECRET = "YOUR_CLIENT_SECRET"
-
+        const val CLIENT_ID = BuildConfig.TwitchClientId
+        const val CLIENT_SECRET = BuildConfig.TwitchClientSecret
         const val GRANT_TYPE = "client_credentials"
 
         // SHARED PREFERENCES RELATED
