@@ -31,5 +31,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             adapter = testAdapter
         }
+        testAdapter.onItemClick = {
+
+        }
     }
 }

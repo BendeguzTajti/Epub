@@ -13,9 +13,17 @@ import com.codecool.epub.model.GameResponse
 class CategoryAdapter(private val requestManager: RequestManager,
                       private val games : List<GameResponse.Game>) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var onItemClick: ((GameResponse.Game) -> Unit)? = null
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val boxArt: ImageView = itemView.findViewById(R.id.boxArt)
         val name: TextView = itemView.findViewById(R.id.name)
+
+        init {
+            itemView.setOnClickListener {
+                onItemClick?.invoke(games[adapterPosition])
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,8 +34,7 @@ class CategoryAdapter(private val requestManager: RequestManager,
     @ExperimentalStdlibApi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentGame = games[position]
-        requestManager.load(currentGame.getImageUrl())
-            .into(holder.boxArt)
+        requestManager.load(currentGame.getImageUrl()).into(holder.boxArt)
         holder.name.text = currentGame.name
     }
 
