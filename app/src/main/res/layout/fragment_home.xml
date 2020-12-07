@@ -25,7 +25,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:src="@drawable/ic_twitch_logo" />
+                android:src="@drawable/ic_twitch_logo"
+                tools:ignore="ContentDescription" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -45,8 +46,11 @@
                 android:id="@+id/categoryTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
+                android:layout_marginTop="@dimen/category_title_margin"
+                android:paddingStart="@dimen/category_title_padding"
+                android:paddingEnd="@dimen/category_title_padding"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textSize="@dimen/category_title_size"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Categories we think you'll like" />
@@ -55,7 +59,10 @@
                 android:id="@+id/categoryRecyclerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clipToPadding="false"
                 android:overScrollMode="never"
+                android:paddingStart="@dimen/category_recycler_view_padding"
+                android:paddingEnd="@dimen/category_recycler_view_padding"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/categoryTitle"
                 tools:visibility="invisible" />
@@ -65,6 +72,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
+        android:id="@+id/homePageLoading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
