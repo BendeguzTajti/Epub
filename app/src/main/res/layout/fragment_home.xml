@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:src="@drawable/ic_twitch_logo"/>
+                android:src="@drawable/ic_twitch_logo" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -46,10 +46,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                android:text="Categories we think you'll like"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Categories we think you'll like" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/categoryRecyclerView"
