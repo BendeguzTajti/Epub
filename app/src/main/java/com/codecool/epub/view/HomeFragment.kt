@@ -3,11 +3,14 @@ package com.codecool.epub.view
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.adapter.CategoryAdapter
 import com.codecool.epub.model.GameResponse
+import com.google.android.material.transition.Hold
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.inject
 
@@ -33,6 +36,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         testAdapter.onItemClick = {
 
+            val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(it)
+
+            //val extras = FragmentNavigatorExtras(image to "image_transition_two")
+            findNavController().navigate(action)
         }
     }
 }

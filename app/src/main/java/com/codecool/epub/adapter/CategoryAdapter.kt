@@ -34,7 +34,7 @@ class CategoryAdapter(private val requestManager: RequestManager,
     @ExperimentalStdlibApi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentGame = games[position]
-        requestManager.load(currentGame.getImageUrl()).into(holder.boxArt)
+        requestManager.load(currentGame.getImageUrl(150,200)).into(holder.boxArt)
         holder.name.text = currentGame.name
     }
 
