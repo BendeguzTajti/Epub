@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Epub</string>
+    <!--HomeFragment-->
     <string name="categories_title">Categories we think you\'ll like</string>
     <string name="categories_highlight_text">Categories</string>
+    <string name="search_button_transition_name">search_button_transition</string>
+    <string name="search_button_content_description">Search</string>
 </resources>
