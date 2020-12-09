@@ -35,6 +35,7 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        collapsing_toolbar.setContentScrimColor(Color.WHITE)
         requestManager.load(args.game.getImageUrl(600, 300)).into(toolbar_image)
     }
 }
