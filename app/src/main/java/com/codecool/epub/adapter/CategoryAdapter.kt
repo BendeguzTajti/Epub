@@ -36,6 +36,7 @@ class CategoryAdapter(private val requestManager: RequestManager,
         val currentGame = games[position]
         requestManager.load(currentGame.getImageUrl(150,200)).into(holder.boxArt)
         holder.name.text = currentGame.name
+        holder.boxArt.transitionName = currentGame.id
     }
 
     override fun getItemCount(): Int {
