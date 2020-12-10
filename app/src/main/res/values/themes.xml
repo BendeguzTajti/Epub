@@ -16,5 +16,13 @@
         <item name="colorOnBackground">@color/white</item>
         <item name="actionBarSize">50dp</item>
         <item name="fontFamily">@font/montserrat</item>
+        <item name="searchViewStyle">@style/SearchViewStyle</item>
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView.ActionBar">
+        <!--search view customization-->
+        <item name="layout">@layout/abc_search_view</item>
+        <item name="closeIcon">@drawable/abc_ic_clear_material</item>
     </style>
 </resources>
