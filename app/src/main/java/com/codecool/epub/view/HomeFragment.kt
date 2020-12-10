@@ -4,12 +4,15 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.cardview.widget.CardView
+import androidx.core.view.doOnPreDraw
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.adapter.CategoryAdapter
 import com.codecool.epub.model.GameResponse
+import com.google.android.material.transition.Hold
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.inject
 
@@ -19,8 +22,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), CategoryAdapter.CategoryA
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
 
 
         // TEST DATA
@@ -36,7 +39,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), CategoryAdapter.CategoryA
     }
 
     override fun onCategoryClicked(card: CardView, game: GameResponse.Game) {
+        exitTransition = Hold()
+        reenterTransition = Hold()
+        val extras = FragmentNavigatorExtras(card to "image_transition")
         val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(game)
-        findNavController().navigate(action)
+        findNavController().navigate(action, extras)
     }
 }
