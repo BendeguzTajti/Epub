@@ -17,7 +17,8 @@ import com.google.android.material.transition.MaterialContainerTransform
 
 class SearchFragment : Fragment() {
 
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +33,7 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
-        searchViewInit()
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -41,8 +41,14 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
+        searchViewInit()
         binding.topAppBar.setupWithNavController(navController, appBarConfiguration)
         binding.searchView.requestFocus()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun searchViewInit() {
