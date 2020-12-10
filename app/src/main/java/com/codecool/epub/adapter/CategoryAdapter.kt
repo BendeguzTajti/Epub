@@ -18,7 +18,7 @@ class CategoryAdapter(private val requestManager: RequestManager,
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val boxArt: ImageView = itemView.findViewById(R.id.boxArt)
-        val name: TextView = itemView.findViewById(R.id.name)
+        val name: TextView = itemView.findViewById(R.id.categoryName)
         val cardView: CardView = itemView.findViewById(R.id.categoryCard)
 
         override fun onClick(v: View?) {

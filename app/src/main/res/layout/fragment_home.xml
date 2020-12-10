@@ -18,24 +18,41 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:elevation="@dimen/toolbar_elevation"
+            app:contentInsetStart="@dimen/toolbar_content_inset_start"
             app:layout_scrollFlags="scroll|enterAlways|snap">
 
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text="@string/app_name"
-                android:textAllCaps="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textStyle="bold" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/toolbar_icon_margin"
+                    android:src="@drawable/ic_twitch_logo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/searchIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/search_button_content_description"
+                    android:src="@drawable/ic_search"
+                    android:transitionName="@string/search_button_transition_name"
+                    app:fabSize="mini"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
-
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -50,17 +67,23 @@
                 android:id="@+id/categoryTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:text="Categories we think you'll like"
+                android:layout_marginTop="@dimen/category_title_margin"
+                android:paddingStart="@dimen/category_title_padding"
+                android:paddingEnd="@dimen/category_title_padding"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textSize="@dimen/category_title_size"
                 android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Categories we think you'll like" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/categoryRecyclerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clipToPadding="false"
                 android:overScrollMode="never"
+                android:paddingStart="@dimen/category_recycler_view_padding"
+                android:paddingEnd="@dimen/category_recycler_view_padding"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/categoryTitle"
                 tools:visibility="invisible" />
@@ -70,6 +93,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
+        android:id="@+id/homePageLoading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
