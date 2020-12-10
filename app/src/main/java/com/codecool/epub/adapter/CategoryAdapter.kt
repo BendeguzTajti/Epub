@@ -5,24 +5,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.model.GameResponse
 
 class CategoryAdapter(private val requestManager: RequestManager,
-                      private val games : List<GameResponse.Game>) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+                      private val games : List<GameResponse.Game>,
+                      private var listener: CategoryAdapterListener) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
-    var onItemClick: ((GameResponse.Game) -> Unit)? = null
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val boxArt: ImageView = itemView.findViewById(R.id.boxArt)
         val name: TextView = itemView.findViewById(R.id.name)
+        val cardView: CardView = itemView.findViewById(R.id.categoryCard)
+
+        override fun onClick(v: View?) {
+            val game = games[adapterPosition]
+            listener.onCategoryClicked(cardView, game)
+        }
 
         init {
-            itemView.setOnClickListener {
-                onItemClick?.invoke(games[adapterPosition])
-            }
+            itemView.setOnClickListener(this)
         }
     }
 
@@ -36,10 +41,14 @@ class CategoryAdapter(private val requestManager: RequestManager,
         val currentGame = games[position]
         requestManager.load(currentGame.getImageUrl(150,200)).into(holder.boxArt)
         holder.name.text = currentGame.name
-        holder.boxArt.transitionName = currentGame.id
+        holder.cardView.transitionName = currentGame.id
     }
 
     override fun getItemCount(): Int {
         return games.size
+    }
+
+    interface CategoryAdapterListener {
+        fun onCategoryClicked(card: CardView, game: GameResponse.Game)
     }
 }

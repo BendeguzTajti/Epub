@@ -7,7 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.RequestManager
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.transition.MaterialContainerTransform
@@ -37,5 +41,8 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         collapsing_toolbar.setContentScrimColor(Color.WHITE)
         requestManager.load(args.game.getImageUrl(600, 300)).into(toolbar_image)
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 }
