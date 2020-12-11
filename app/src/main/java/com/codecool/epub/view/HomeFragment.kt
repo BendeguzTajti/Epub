@@ -86,7 +86,7 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         reenterTransition = MaterialElevationScale(true)
         val categoryCardTransitionName = getString(R.string.category_card_transition_name)
         val extras = FragmentNavigatorExtras(card to categoryCardTransitionName)
-        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(game)
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(game.name, game)
         findNavController().navigate(action, extras)
     }
 }
