@@ -1,4 +1,4 @@
-package com.codecool.epub
+package com.codecool.epub.view
 
 import android.graphics.Color
 import android.os.Bundle
@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.RequestManager
+import com.codecool.epub.R
 import com.codecool.epub.databinding.FragmentDetailsBinding
 import com.google.android.material.transition.MaterialContainerTransform
 import org.koin.android.ext.android.inject
@@ -25,9 +26,9 @@ class DetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform().apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_medium).toLong()
             scrimColor = Color.TRANSPARENT
             drawingViewId = R.id.nav_host_fragment
-
         }
     }
 
@@ -42,7 +43,6 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.collapsingToolbar.setContentScrimColor(Color.WHITE)
         requestManager.load(args.game.getImageUrl(600, 300)).into(binding.toolbarImage)
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)

@@ -21,6 +21,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val appModules = module {
 
+    // SHARED PREF
+    single { provideSharedPreferences(androidContext()) }
+
     // NETWORK
     single { TokenManager(get()) }
     single { provideOkHttpClient(get()) }
@@ -30,8 +33,6 @@ val appModules = module {
 
     // GLIDE
     single { provideGlideInstance(androidContext()) }
-
-    single { provideSharedPreferences(androidContext()) }
 
     // REPOSITORY
     single { Repository(get()) }

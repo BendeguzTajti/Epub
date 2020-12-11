@@ -1,4 +1,4 @@
-package com.codecool.epub
+package com.codecool.epub.view
 
 import android.content.Context
 import android.graphics.Color
@@ -12,6 +12,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.codecool.epub.R
 import com.codecool.epub.databinding.FragmentSearchBinding
 import com.google.android.material.transition.MaterialContainerTransform
 

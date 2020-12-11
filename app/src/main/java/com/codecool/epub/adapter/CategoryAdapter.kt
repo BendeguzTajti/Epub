@@ -12,9 +12,9 @@ import com.codecool.epub.R
 import com.codecool.epub.model.GameResponse
 
 class CategoryAdapter(private val requestManager: RequestManager,
-                      private val games : List<GameResponse.Game>,
                       private var listener: CategoryAdapterListener) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
+    private var games : List<GameResponse.Game> = emptyList()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val boxArt: ImageView = itemView.findViewById(R.id.boxArt)
@@ -44,8 +44,11 @@ class CategoryAdapter(private val requestManager: RequestManager,
         holder.cardView.transitionName = currentGame.id
     }
 
-    override fun getItemCount(): Int {
-        return games.size
+    override fun getItemCount(): Int = games.size
+
+    fun submitList(attachments: List<GameResponse.Game>) {
+        games = attachments
+        notifyDataSetChanged()
     }
 
     interface CategoryAdapterListener {
