@@ -13,7 +13,7 @@
         app:liftOnScroll="true">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
+            android:id="@+id/home_tool_bar"
             style="@style/Widget.MaterialComponents.Toolbar.Surface"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -37,7 +37,7 @@
                     tools:ignore="ContentDescription" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/searchIcon"
+                    android:id="@+id/search_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/search_button_content_description"
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/categoryTitle"
+                android:id="@+id/category_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/category_title_margin"
@@ -77,7 +77,7 @@
                 tools:text="Categories we think you'll like" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/categoryRecyclerView"
+                android:id="@+id/category_recycler_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
@@ -85,7 +85,7 @@
                 android:paddingStart="@dimen/category_recycler_view_padding"
                 android:paddingEnd="@dimen/category_recycler_view_padding"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/categoryTitle"
+                app:layout_constraintTop_toBottomOf="@+id/category_title"
                 tools:visibility="invisible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -93,7 +93,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
-        android:id="@+id/homePageLoading"
+        android:id="@+id/home_page_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

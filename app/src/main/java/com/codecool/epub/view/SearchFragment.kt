@@ -40,10 +40,10 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        searchViewInit()
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
-        searchViewInit()
-        binding.topAppBar.setupWithNavController(navController, appBarConfiguration)
+        binding.searchToolBar.setupWithNavController(navController, appBarConfiguration)
         binding.searchView.requestFocus()
     }
 

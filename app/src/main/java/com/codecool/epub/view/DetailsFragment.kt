@@ -46,7 +46,7 @@ class DetailsFragment : Fragment() {
         requestManager.load(args.game.getImageUrl(600, 300)).into(binding.toolbarImage)
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
-        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        binding.detailsToolBar.setupWithNavController(navController, appBarConfiguration)
     }
 
     override fun onDestroyView() {
