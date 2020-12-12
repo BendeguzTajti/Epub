@@ -10,12 +10,12 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
-import com.codecool.epub.model.GameResponse
+import com.codecool.epub.model.GamesResponse
 
 class CategoryAdapter(private val requestManager: RequestManager,
                       private var listener: CategoryAdapterListener) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
-    private var games : List<GameResponse.Game> = emptyList()
+    private var games : List<GamesResponse.Game> = emptyList()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val resources: Resources = itemView.context.resources
@@ -50,12 +50,12 @@ class CategoryAdapter(private val requestManager: RequestManager,
 
     override fun getItemCount(): Int = games.size
 
-    fun submitList(attachments: List<GameResponse.Game>) {
+    fun submitList(attachments: List<GamesResponse.Game>) {
         games = attachments
         notifyDataSetChanged()
     }
 
     interface CategoryAdapterListener {
-        fun onCategoryClicked(card: CardView, game: GameResponse.Game)
+        fun onCategoryClicked(card: CardView, game: GamesResponse.Game)
     }
 }

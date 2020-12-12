@@ -30,6 +30,6 @@
             app:argType="string" />
         <argument
             android:name="game"
-            app:argType="com.codecool.epub.model.GameResponse$Game" />
+            app:argType="com.codecool.epub.model.GamesResponse$Game" />
     </fragment>
 </navigation>

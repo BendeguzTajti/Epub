@@ -18,7 +18,7 @@ import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.adapter.CategoryAdapter
 import com.codecool.epub.databinding.FragmentHomeBinding
-import com.codecool.epub.model.GameResponse
+import com.codecool.epub.model.GamesResponse
 import com.codecool.epub.viewmodel.HomeViewModel
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFadeThrough
@@ -81,7 +81,7 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         findNavController().navigate(action, extras)
     }
 
-    override fun onCategoryClicked(card: CardView, game: GameResponse.Game) {
+    override fun onCategoryClicked(card: CardView, game: GamesResponse.Game) {
         exitTransition = MaterialElevationScale(false).apply { duration = resources.getInteger(R.integer.reply_motion_duration_small).toLong() }
         reenterTransition = MaterialElevationScale(true)
         val categoryCardTransitionName = getString(R.string.category_card_transition_name)
