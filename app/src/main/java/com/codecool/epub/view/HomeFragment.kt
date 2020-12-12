@@ -45,8 +45,8 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
-        val categoryAdapter = CategoryAdapter(requestManager,this)
         binding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
+        val categoryAdapter = CategoryAdapter(requestManager,this)
         binding.categoryRecyclerView.apply {
             adapter = categoryAdapter
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)

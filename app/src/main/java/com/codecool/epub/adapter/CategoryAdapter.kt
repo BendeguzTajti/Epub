@@ -1,5 +1,6 @@
 package com.codecool.epub.adapter
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ class CategoryAdapter(private val requestManager: RequestManager,
     private var games : List<GameResponse.Game> = emptyList()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        val resources: Resources = itemView.context.resources
         val boxArt: ImageView = itemView.findViewById(R.id.boxArt)
         val name: TextView = itemView.findViewById(R.id.categoryName)
         val cardView: CardView = itemView.findViewById(R.id.categoryCard)
@@ -39,7 +41,9 @@ class CategoryAdapter(private val requestManager: RequestManager,
     @ExperimentalStdlibApi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentGame = games[position]
-        requestManager.load(currentGame.getImageUrl(150,200)).into(holder.boxArt)
+        val boxArtWidthPx = holder.resources.getDimensionPixelSize(R.dimen.box_art_width)
+        val boxArtHeightPx = holder.resources.getDimensionPixelSize(R.dimen.box_art_height)
+        requestManager.load(currentGame.getImageUrl(boxArtWidthPx, boxArtHeightPx)).into(holder.boxArt)
         holder.name.text = currentGame.name
         holder.cardView.transitionName = currentGame.id
     }
