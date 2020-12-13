@@ -3,8 +3,10 @@ package com.codecool.epub.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.codecool.epub.model.GamesResponse
 import com.codecool.epub.repository.Repository
+import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: Repository) : ViewModel() {
 
@@ -14,10 +16,13 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
 
     fun fetchTopGames() {
         if (gameData.value == null) {
-            val fakeResponse = GamesResponse(listOf(GamesResponse.Game("493057", "PLAYERUNKNOWN'S BATTLEGROUNDS", "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg"),
-                GamesResponse.Game("493058", "PLAYERUNKNOWN'S BATTLEGROUNDS", "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg"),
-                GamesResponse.Game("493059", "PLAYERUNKNOWN'S BATTLEGROUNDS", "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg")))
-            gameData.value = fakeResponse
+            viewModelScope.launch {
+                val response = repository.getTopGames()
+                if (response.isSuccessful) {
+                    val topGames = response.body()
+                    gameData.value = topGames
+                }
+            }
         }
     }
 }
