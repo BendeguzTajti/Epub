@@ -5,46 +5,9 @@
     android:layout_height="match_parent"
     android:clipChildren="false">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <include
         android:id="@+id/details_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:transitionName="@string/category_card_transition_name">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/collapsing_toolbar_height"
-            android:background="@color/white"
-            android:fitsSystemWindows="true"
-            app:contentScrim="@color/white"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:scrimAnimationDuration="@integer/reply_motion_duration_medium"
-            app:titleEnabled="false">
-
-            <ImageView
-                android:id="@+id/toolbar_image"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/toolbar_image_height"
-                android:adjustViewBounds="true"
-                android:contentDescription="@null"
-                android:fitsSystemWindows="true"
-                android:scaleType="centerCrop" />
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/details_tool_bar"
-                style="@style/Widget.MaterialComponents.Toolbar.Surface"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="bottom"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat"
-                app:titleTextAppearance="@style/TextAppearance.AppCompat.Small" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
+        layout="@layout/main_app_bar" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

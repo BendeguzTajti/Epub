@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
@@ -20,12 +18,10 @@ class CategoryAdapter(private val requestManager: RequestManager,
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val resources: Resources = itemView.context.resources
         val boxArt: ImageView = itemView.findViewById(R.id.boxArt)
-        val name: TextView = itemView.findViewById(R.id.categoryName)
-        val cardView: CardView = itemView.findViewById(R.id.categoryCard)
 
         override fun onClick(v: View?) {
             val game = games[adapterPosition]
-            listener.onCategoryClicked(cardView, game)
+            listener.onCategoryClicked(game)
         }
 
         init {
@@ -44,8 +40,6 @@ class CategoryAdapter(private val requestManager: RequestManager,
         val boxArtWidthPx = holder.resources.getDimensionPixelSize(R.dimen.box_art_width)
         val boxArtHeightPx = holder.resources.getDimensionPixelSize(R.dimen.box_art_height)
         requestManager.load(currentGame.getImageUrl(boxArtWidthPx, boxArtHeightPx)).into(holder.boxArt)
-        holder.name.text = currentGame.name
-        holder.cardView.transitionName = currentGame.id
     }
 
     override fun getItemCount(): Int = games.size
@@ -56,6 +50,6 @@ class CategoryAdapter(private val requestManager: RequestManager,
     }
 
     interface CategoryAdapterListener {
-        fun onCategoryClicked(card: CardView, game: GamesResponse.Game)
+        fun onCategoryClicked(game: GamesResponse.Game)
     }
 }

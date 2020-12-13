@@ -23,13 +23,12 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.codecool.epub.view.DetailsFragment"
-        android:label="{gameName}"
         tools:layout="@layout/fragment_details">
-        <argument
-            android:name="gameName"
-            app:argType="string" />
         <argument
             android:name="game"
             app:argType="com.codecool.epub.model.GamesResponse$Game" />
+        <action
+            android:id="@+id/action_detailsFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
 </navigation>

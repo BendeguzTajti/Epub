@@ -26,21 +26,6 @@
             tools:src="@tools:sample/avatars"
             tools:scaleType="centerCrop"/>
 
-        <TextView
-            android:id="@+id/categoryName"
-            android:layout_width="@dimen/category_name_width"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:padding="@dimen/category_name_padding"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="@dimen/category_name_size"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/boxArt"
-            tools:text="League of Legends" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
