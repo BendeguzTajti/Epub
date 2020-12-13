@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.databinding.FragmentDetailsBinding
@@ -24,8 +26,9 @@ class DetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
-        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+        val duration = resources.getInteger(R.integer.reply_motion_duration_medium).toLong()
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true).apply { this.duration = duration }
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply { this.duration = duration }
     }
 
     override fun onCreateView(
@@ -39,7 +42,12 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.detailsAppBar.toolbarIcon.visibility = View.GONE
         binding.detailsAppBar.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        binding.detailsAppBar.toolBar.setupWithNavController(navController, appBarConfiguration)
+        val game = args.game
     }
 
     override fun onDestroyView() {

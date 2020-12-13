@@ -90,8 +90,9 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
     }
 
     override fun onCategoryClicked(game: GamesResponse.Game) {
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
-        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+        val duration = resources.getInteger(R.integer.reply_motion_duration_medium).toLong()
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true).apply { this.duration = duration }
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply { this.duration = duration }
         val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(game)
         findNavController().navigate(action)
     }

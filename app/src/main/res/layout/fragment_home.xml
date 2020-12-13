@@ -18,17 +18,18 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/nested_scroll_view_margin"
+            android:layout_marginBottom="@dimen/nested_scroll_view_margin">
 
             <TextView
                 android:id="@+id/category_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/category_title_margin"
-                android:paddingStart="@dimen/category_title_padding"
-                android:paddingEnd="@dimen/category_title_padding"
+                android:paddingStart="@dimen/home_page_title_padding"
+                android:paddingEnd="@dimen/home_page_title_padding"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/category_title_size"
+                android:textSize="@dimen/home_page_title_size"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Categories we think you'll like" />
@@ -40,8 +41,8 @@
                 android:clipToPadding="false"
                 android:orientation="horizontal"
                 android:overScrollMode="never"
-                android:paddingStart="@dimen/category_recycler_view_padding"
-                android:paddingEnd="@dimen/category_recycler_view_padding"
+                android:paddingStart="@dimen/home_page_recycler_view_padding"
+                android:paddingEnd="@dimen/home_page_recycler_view_padding"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/category_title"
@@ -54,8 +55,8 @@
                 android:clipToPadding="false"
                 android:orientation="horizontal"
                 android:overScrollMode="never"
-                android:paddingStart="@dimen/category_recycler_view_padding"
-                android:paddingEnd="@dimen/category_recycler_view_padding"
+                android:paddingStart="@dimen/home_page_recycler_view_padding"
+                android:paddingEnd="@dimen/home_page_recycler_view_padding"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/category_recycler_view"
