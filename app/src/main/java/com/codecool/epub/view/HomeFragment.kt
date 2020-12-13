@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.adapter.CategoryAdapter
+import com.codecool.epub.adapter.StreamsAdapter
 import com.codecool.epub.databinding.FragmentHomeBinding
 import com.codecool.epub.model.GamesResponse
+import com.codecool.epub.model.StreamsResponse
 import com.codecool.epub.viewmodel.HomeViewModel
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFadeThrough
@@ -47,15 +49,23 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         view.doOnPreDraw { startPostponedEnterTransition() }
         binding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
         val categoryAdapter = CategoryAdapter(requestManager,this)
-        binding.categoryRecyclerView.apply {
-            adapter = categoryAdapter
-            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-        }
+        val streamsAdapter = StreamsAdapter(requestManager)
+        binding.categoryRecyclerView.adapter = categoryAdapter
+        binding.streamsRecyclerView.adapter = streamsAdapter
         viewModel.getGameData().observe(viewLifecycleOwner, {
             binding.categoryTitle.text = highlightText(getString(R.string.categories_title), getString(R.string.categories_highlight_text))
             categoryAdapter.submitList(it.data)
         })
         viewModel.fetchTopGames()
+
+
+        // TEST DATA
+        val fakeStreams = StreamsResponse(listOf(StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 32575, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"),
+            StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 32575, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"),
+            StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 32575, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg")))
+
+        streamsAdapter.submitList(fakeStreams.data)
+
     }
 
     override fun onDestroyView() {

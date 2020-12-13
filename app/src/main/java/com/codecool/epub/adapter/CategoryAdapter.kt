@@ -15,7 +15,7 @@ import com.codecool.epub.model.GamesResponse
 class CategoryAdapter(private val requestManager: RequestManager,
                       private var listener: CategoryAdapterListener) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
-    private var games : List<GamesResponse.Game> = emptyList()
+    private var games: List<GamesResponse.Game> = emptyList()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val resources: Resources = itemView.context.resources
