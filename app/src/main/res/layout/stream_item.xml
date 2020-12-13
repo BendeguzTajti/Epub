@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:layout_margin="@dimen/card_margin"
     android:elevation="@dimen/card_elevation"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    android:layout_gravity="center">
+    app:cardCornerRadius="@dimen/card_corner_radius">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp">
 
         <ImageView
             android:id="@+id/stream_thumbnail"
@@ -23,6 +24,51 @@
             tools:ignore="ContentDescription"
             tools:scaleType="centerCrop"
             tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/stream_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="6dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stream_thumbnail"
+            tools:text="Hey Guys, It's Monday - Twitter: @Lirik" />
+
+        <TextView
+            android:id="@+id/streamer_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stream_title"
+            tools:text="LIRIK" />
+
+        <TextView
+            android:id="@+id/stream_category_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/streamer_name"
+            tools:text="Just Chatting" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

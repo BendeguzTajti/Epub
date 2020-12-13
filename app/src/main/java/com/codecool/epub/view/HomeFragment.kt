@@ -13,7 +13,6 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.getColor
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.adapter.CategoryAdapter
