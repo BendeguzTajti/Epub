@@ -9,12 +9,15 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.adapter.StreamsAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
 import com.codecool.epub.model.GamesResponse
 import com.codecool.epub.viewmodel.HomeViewModel
+import com.codecool.epub.databinding.MainAppBarBinding
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
@@ -26,12 +29,14 @@ class DetailsFragment : Fragment() {
     private val args: DetailsFragmentArgs by navArgs()
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var appBarBinding: MainAppBarBinding
     private val viewModel: HomeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
-        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+        val duration = resources.getInteger(R.integer.reply_motion_duration_medium).toLong()
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true).apply { this.duration = duration }
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply { this.duration = duration }
     }
 
     override fun onCreateView(
@@ -40,17 +45,22 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailsBinding.inflate(layoutInflater, container, false)
+        appBarBinding = MainAppBarBinding.bind(binding.root)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.detailsAppBar.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
+        appBarBinding.toolbarIcon.visibility = View.GONE
+        appBarBinding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        appBarBinding.toolBar.setupWithNavController(navController, appBarConfiguration)
         setupCategory()
     }
 
     private fun setupCategory() {
-        val game = requireArguments().get("game") as GamesResponse.Game
+        val game = args.game
         val adapter = StreamsAdapter(requestManager)
         binding.categoriesRecyclerView.layoutManager = GridLayoutManager(activity, 2)
         binding.categoriesRecyclerView.adapter = adapter

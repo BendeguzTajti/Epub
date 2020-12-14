@@ -5,46 +5,47 @@
     android:layout_height="match_parent"
     android:clipChildren="false">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <include layout="@layout/main_app_bar"/>
 
-        <include
-            android:id="@+id/details_app_bar"
-            layout="@layout/main_app_bar" />
-
-        <ImageView
-            android:id="@+id/category_image"
-            android:layout_width="@dimen/category_image_width"
-            android:layout_height="@dimen/category_image_height"
-            android:layout_margin="@dimen/category_image_margin"
-            app:srcCompat="@drawable/ic_twitch_logo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/details_app_bar"/>
-
-        <TextView
-            android:id="@+id/category_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:layout_margin="@dimen/category_text_margin"
-            android:textSize="@dimen/category_text_size"
-            app:layout_constraintStart_toEndOf="@+id/category_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/details_app_bar"
-            app:layout_constraintBottom_toTopOf="@+id/categories_recycler_view"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/categories_recycler_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/category_image"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/nested_scroll_view_margin"
+            android:layout_marginBottom="@dimen/nested_scroll_view_margin">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/category_image"
+                android:layout_width="@dimen/category_image_width"
+                android:layout_height="@dimen/category_image_height"
+                android:layout_margin="@dimen/category_image_margin"
+                app:srcCompat="@drawable/ic_twitch_logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/category_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_margin="@dimen/category_text_margin"
+                android:textSize="@dimen/category_text_size"
+                app:layout_constraintStart_toEndOf="@+id/category_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/categories_recycler_view"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/categories_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/rec_view_margin"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/category_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

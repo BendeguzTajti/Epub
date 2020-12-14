@@ -17,6 +17,7 @@ import com.codecool.epub.R
 import com.codecool.epub.adapter.CategoryAdapter
 import com.codecool.epub.adapter.StreamsAdapter
 import com.codecool.epub.databinding.FragmentHomeBinding
+import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.model.GamesResponse
 import com.codecool.epub.model.StreamsResponse
 import com.codecool.epub.viewmodel.HomeViewModel
@@ -27,10 +28,11 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
     private val requestManager: RequestManager by inject()
     private val viewModel: HomeViewModel by viewModel()
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var appBarBinding: MainAppBarBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +40,7 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        appBarBinding = MainAppBarBinding.bind(binding.root)
         return binding.root
     }
 
@@ -45,21 +48,21 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
-        binding.homeAppBar.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
+        appBarBinding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
         val categoryAdapter = CategoryAdapter(requestManager,this)
         val streamsAdapter = StreamsAdapter(requestManager)
         binding.categoryRecyclerView.adapter = categoryAdapter
         binding.streamsRecyclerView.adapter = streamsAdapter
+        viewModel.fetchTopGames()
         viewModel.getGameData().observe(viewLifecycleOwner, {
             binding.categoryTitle.text = highlightText(getString(R.string.categories_title), getString(R.string.categories_highlight_text))
             categoryAdapter.submitList(it.data)
         })
-        viewModel.fetchTopGames()
 
 
         // TEST DATA
-        val fakeStreams = StreamsResponse(listOf(StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 32575, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"),
-            StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 32575, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"),
+        val fakeStreams = StreamsResponse(listOf(StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 346, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"),
+            StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 2117, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"),
             StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 32575, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg")))
 
         streamsAdapter.submitList(fakeStreams.data)
@@ -90,8 +93,9 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
     }
 
     override fun onCategoryClicked(game: GamesResponse.Game) {
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
-        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+        val duration = resources.getInteger(R.integer.reply_motion_duration_medium).toLong()
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true).apply { this.duration = duration }
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply { this.duration = duration }
         val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(game)
         findNavController().navigate(action)
     }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="toolbar_elevation">4dp</dimen>
-    <dimen name="category_title_padding">12dp</dimen>
-    <dimen name="category_title_margin">18dp</dimen>
-    <dimen name="category_title_size">18sp</dimen>
-    <dimen name="category_recycler_view_padding">6dp</dimen>
+    <dimen name="nested_scroll_view_margin">18dp</dimen>
+    <dimen name="home_page_title_padding">12dp</dimen>
+    <dimen name="home_page_title_size">14sp</dimen>
+    <dimen name="home_page_recycler_view_padding">6dp</dimen>
     <dimen name="card_margin">6dp</dimen>
     <dimen name="card_corner_radius">0dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
@@ -17,4 +17,5 @@
     <dimen name="category_image_margin">20dp</dimen>
     <dimen name="category_text_margin">20dp</dimen>
     <dimen name="category_text_size">24sp</dimen>
+    <dimen name="rec_view_margin">10dp</dimen>
 </resources>
