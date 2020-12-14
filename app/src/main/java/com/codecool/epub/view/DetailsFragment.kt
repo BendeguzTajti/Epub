@@ -15,7 +15,6 @@ import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.adapter.StreamsAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
-import com.codecool.epub.model.GamesResponse
 import com.codecool.epub.viewmodel.HomeViewModel
 import com.codecool.epub.databinding.MainAppBarBinding
 import com.google.android.material.transition.MaterialFadeThrough
@@ -61,14 +60,15 @@ class DetailsFragment : Fragment() {
 
     private fun setupCategory() {
         val game = args.game
+        val boxArtWidthPx = resources.getDimensionPixelSize(R.dimen.box_art_width)
+        val boxArtHeightPx = resources.getDimensionPixelSize(R.dimen.box_art_height)
+        requestManager.load(game.getImageUrl(boxArtWidthPx, boxArtHeightPx)).into(binding.categoryImage)
         val adapter = StreamsAdapter(requestManager)
-        binding.categoriesRecyclerView.layoutManager = GridLayoutManager(activity, 2)
-        binding.categoriesRecyclerView.adapter = adapter
+        binding.categoryStreamsRecyclerView.adapter = adapter
+        viewModel.fetchVideos(game.id)
         viewModel.getVideos().observe(viewLifecycleOwner, {
             adapter.submitList(it.data)
         })
-        viewModel.fetchVideos(game.id)
-        requestManager.load(game.getImageUrl(150, 200)).into(binding.categoryImage)
         binding.categoryName.text = game.name
     }
 

@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false">
 
-    <include layout="@layout/main_app_bar"/>
+    <include layout="@layout/main_app_bar" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -13,39 +20,56 @@
             android:layout_marginTop="@dimen/nested_scroll_view_margin"
             android:layout_marginBottom="@dimen/nested_scroll_view_margin">
 
-            <ImageView
-                android:id="@+id/category_image"
-                android:layout_width="@dimen/category_image_width"
-                android:layout_height="@dimen/category_image_height"
-                android:layout_margin="@dimen/category_image_margin"
-                app:srcCompat="@drawable/ic_twitch_logo"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/category_image_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="@dimen/card_elevation"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/category_image"
+                    android:layout_width="@dimen/box_art_width"
+                    android:layout_height="@dimen/box_art_height"
+                    android:scaleType="centerCrop"
+                    tools:ignore="ContentDescription"
+                    tools:src="@tools:sample/avatars" />
+
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/category_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:layout_margin="@dimen/category_text_margin"
-                android:textSize="@dimen/category_text_size"
-                app:layout_constraintStart_toEndOf="@+id/category_image"
+                android:padding="12dp"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textSize="@dimen/category_title_size"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/category_streams_recycler_view"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/category_image_card"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/categories_recycler_view"/>
+                tools:text="Cyberpunk 2077" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/categories_recycler_view"
+                android:id="@+id/category_streams_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/rec_view_margin"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:layout_constraintTop_toBottomOf="@+id/category_image"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/category_image_card"
+                app:spanCount="2"
+                tools:listitem="@layout/stream_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
