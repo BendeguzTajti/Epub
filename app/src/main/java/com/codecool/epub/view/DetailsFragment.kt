@@ -8,15 +8,20 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
+import com.codecool.epub.adapter.StreamsAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
+import com.codecool.epub.model.GamesResponse
+import com.codecool.epub.viewmodel.HomeViewModel
 import com.codecool.epub.databinding.MainAppBarBinding
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class DetailsFragment : Fragment() {
 
@@ -25,6 +30,7 @@ class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var appBarBinding: MainAppBarBinding
+    private val viewModel: HomeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,10 +56,20 @@ class DetailsFragment : Fragment() {
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         appBarBinding.toolBar.setupWithNavController(navController, appBarConfiguration)
+        setupCategory()
+    }
+
+    private fun setupCategory() {
         val game = args.game
-
-        // IMPLEMENT DESIGN ELEMENTS HERE
-
+        val adapter = StreamsAdapter(requestManager)
+        binding.categoriesRecyclerView.layoutManager = GridLayoutManager(activity, 2)
+        binding.categoriesRecyclerView.adapter = adapter
+        viewModel.getVideos().observe(viewLifecycleOwner, {
+            adapter.submitList(it.data)
+        })
+        viewModel.fetchVideos(game.id)
+        requestManager.load(game.getImageUrl(150, 200)).into(binding.categoryImage)
+        binding.categoryName.text = game.name
     }
 
     override fun onDestroyView() {
