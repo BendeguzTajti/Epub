@@ -30,7 +30,6 @@ class StreamsAdapter(private val requestManager: RequestManager) : RecyclerView.
 
     override fun onBindViewHolder(holder: StreamsAdapter.ViewHolder, position: Int) {
         val currentStream = streams[position]
-        println("Hello + ${currentStream.thumbnailUrl}")
         requestManager.load(currentStream.getThumbnailUrl(220, 120)).into(holder.thumbnail)
         holder.streamTitle.text = currentStream.title
         holder.streamerName.text = currentStream.userName
