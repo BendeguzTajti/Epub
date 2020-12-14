@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.databinding.FragmentDetailsBinding
+import com.codecool.epub.databinding.MainAppBarBinding
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
@@ -23,6 +24,7 @@ class DetailsFragment : Fragment() {
     private val args: DetailsFragmentArgs by navArgs()
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var appBarBinding: MainAppBarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,17 +39,21 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailsBinding.inflate(layoutInflater, container, false)
+        appBarBinding = MainAppBarBinding.bind(binding.root)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.detailsAppBar.toolbarIcon.visibility = View.GONE
-        binding.detailsAppBar.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
+        appBarBinding.toolbarIcon.visibility = View.GONE
+        appBarBinding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
-        binding.detailsAppBar.toolBar.setupWithNavController(navController, appBarConfiguration)
+        appBarBinding.toolBar.setupWithNavController(navController, appBarConfiguration)
         val game = args.game
+
+        // IMPLEMENT DESIGN ELEMENTS HERE
+
     }
 
     override fun onDestroyView() {
