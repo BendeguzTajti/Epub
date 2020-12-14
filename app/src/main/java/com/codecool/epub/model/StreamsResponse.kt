@@ -19,8 +19,8 @@ data class StreamsResponse(val data: List<Stream>) {
         @SerializedName("viewer_count")
         val viewerCount: Int,
         @SerializedName("thumbnail_url")
-        private val thumbnailUrl: String
+        val thumbnailUrl: String
     ) {
-        fun getThumbnailUrl(width: Int, height: Int): String = thumbnailUrl.replace("{width}", "$width").replace("{height}", "$height")
+        fun getThumbnailUrl(width: Int, height: Int): String = thumbnailUrl.replace("{width}", width.toString()).replace("{height}", height.toString())
     }
 }

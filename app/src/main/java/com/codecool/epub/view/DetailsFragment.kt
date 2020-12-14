@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.adapter.StreamsAdapter
@@ -51,6 +52,7 @@ class DetailsFragment : Fragment() {
     private fun setupCategory() {
         val game = requireArguments().get("game") as GamesResponse.Game
         val adapter = StreamsAdapter(requestManager)
+        binding.categoriesRecyclerView.layoutManager = GridLayoutManager(activity, 2)
         binding.categoriesRecyclerView.adapter = adapter
         viewModel.getVideos().observe(viewLifecycleOwner, {
             adapter.submitList(it.data)

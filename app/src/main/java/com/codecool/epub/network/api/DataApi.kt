@@ -13,6 +13,6 @@ interface DataApi {
     suspend fun getTopGames(): Response<GamesResponse>
 
 
-    @GET("helix/videos?")
+    @GET("helix/streams?")
     suspend fun getStreamsByGameId(@Query("game_id") game_id: String): Response<StreamsResponse>
 }
