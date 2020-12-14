@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.databinding.FragmentDetailsBinding
+import com.codecool.epub.model.GamesResponse
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
@@ -40,6 +41,9 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.detailsAppBar.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
+        val game = requireArguments().get("game") as GamesResponse.Game
+        requestManager.load(game.getImageUrl(150,200)).into(binding.categoryImage)
+        binding.categoryName.text = game.name
     }
 
     override fun onDestroyView() {
