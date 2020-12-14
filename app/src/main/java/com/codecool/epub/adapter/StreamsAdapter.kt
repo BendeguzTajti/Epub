@@ -18,6 +18,8 @@ class StreamsAdapter(private val requestManager: RequestManager) : RecyclerView.
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val resources: Resources = itemView.context.resources
         val thumbnail: ImageView = itemView.findViewById(R.id.stream_thumbnail)
+        val liveTag: TextView = itemView.findViewById(R.id.live_tag)
+        val viewerCount: TextView = itemView.findViewById(R.id.viewer_count)
         val streamTitle: TextView = itemView.findViewById(R.id.stream_title)
         val streamerName: TextView = itemView.findViewById(R.id.streamer_name)
         val categoryName: TextView = itemView.findViewById(R.id.stream_category_name)
@@ -34,6 +36,16 @@ class StreamsAdapter(private val requestManager: RequestManager) : RecyclerView.
         holder.streamTitle.text = currentStream.title
         holder.streamerName.text = currentStream.userName
         holder.categoryName.text = currentStream.gameName
+        if (currentStream.isLive()) {
+            val viewerCount = if(currentStream.isViewerCountHigh()) {
+                "${currentStream.getViewerCountRounded()}${holder.resources.getString(R.string.thousand_short)} ${holder.resources.getString(R.string.viewers)}"
+            } else {
+                "${currentStream.getViewerCountRounded()} ${holder.resources.getString(R.string.viewers)}"
+            }
+            holder.viewerCount.text = viewerCount
+            holder.liveTag.visibility = View.VISIBLE
+            holder.viewerCount.visibility = View.VISIBLE
+        }
     }
 
     override fun getItemCount(): Int = streams.size

@@ -54,12 +54,12 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
             binding.categoryTitle.text = highlightText(getString(R.string.categories_title), getString(R.string.categories_highlight_text))
             categoryAdapter.submitList(it.data)
         })
-        viewModel.fetchTopGames()
+//        viewModel.fetchTopGames()
 
 
         // TEST DATA
-        val fakeStreams = StreamsResponse(listOf(StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 32575, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"),
-            StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 32575, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"),
+        val fakeStreams = StreamsResponse(listOf(StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 346, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"),
+            StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 2117, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"),
             StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 32575, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg")))
 
         streamsAdapter.submitList(fakeStreams.data)
