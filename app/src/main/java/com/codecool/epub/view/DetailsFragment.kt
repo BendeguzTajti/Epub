@@ -41,8 +41,12 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.detailsAppBar.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
+        setupCategory()
+    }
+
+    private fun setupCategory() {
         val game = requireArguments().get("game") as GamesResponse.Game
-        requestManager.load(game.getImageUrl(150,200)).into(binding.categoryImage)
+        requestManager.load(game.getImageUrl(150, 200)).into(binding.categoryImage)
         binding.categoryName.text = game.name
     }
 
