@@ -58,7 +58,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/category_recycler_view"
-                tools:listitem="@layout/stream_item" />
+                tools:listitem="@layout/recommended_stream_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -4,20 +4,27 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
+import com.codecool.epub.databinding.CategoryItemBinding
 import com.codecool.epub.model.GamesResponse
 
 class CategoryAdapter(private val requestManager: RequestManager,
-                      private var listener: CategoryAdapterListener) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+                      private var listener: CategoryAdapterListener) : RecyclerView.Adapter<CategoryAdapter.CategoryHolder>() {
 
     private var games: List<GamesResponse.Game> = emptyList()
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        val resources: Resources = itemView.context.resources
-        val boxArt: ImageView = itemView.findViewById(R.id.boxArt)
+    inner class CategoryHolder(private val itemBinding: CategoryItemBinding,
+                               private val resources: Resources) : RecyclerView.ViewHolder(itemBinding.root), View.OnClickListener {
+
+        fun bind(currentGame: GamesResponse.Game) {
+            val boxArtWidthPx = resources.getDimensionPixelSize(R.dimen.box_art_width)
+            val boxArtHeightPx = resources.getDimensionPixelSize(R.dimen.box_art_height)
+            requestManager.load(currentGame.getImageUrl(boxArtWidthPx, boxArtHeightPx))
+                .thumbnail(0.05f)
+                .into(itemBinding.boxArt)
+        }
 
         override fun onClick(v: View?) {
             val game = games[adapterPosition]
@@ -25,21 +32,18 @@ class CategoryAdapter(private val requestManager: RequestManager,
         }
 
         init {
-            itemView.setOnClickListener(this)
+            itemBinding.root.setOnClickListener(this)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.category_item, parent, false)
-        return ViewHolder(itemView)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryHolder {
+        val itemBinding = CategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CategoryHolder(itemBinding, parent.resources)
     }
 
-    @ExperimentalStdlibApi
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
         val currentGame = games[position]
-        val boxArtWidthPx = holder.resources.getDimensionPixelSize(R.dimen.box_art_width)
-        val boxArtHeightPx = holder.resources.getDimensionPixelSize(R.dimen.box_art_height)
-        requestManager.load(currentGame.getImageUrl(boxArtWidthPx, boxArtHeightPx)).into(holder.boxArt)
+        holder.bind(currentGame)
     }
 
     override fun getItemCount(): Int = games.size

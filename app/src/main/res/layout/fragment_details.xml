@@ -11,6 +11,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
@@ -65,8 +66,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/category_image_card"
-                app:spanCount="2"
-                tools:listitem="@layout/stream_item" />
+                app:spanCount="1"
+                tools:itemCount="3"
+                tools:listitem="@layout/recommended_stream_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -13,4 +13,16 @@
     <dimen name="toolbar_icon_margin">12dp</dimen>
     <dimen name="toolbar_content_inset_start">0dp</dimen>
     <dimen name="category_title_size">18sp</dimen>
+    <dimen name="recommended_stream_thumbnail_width">220dp</dimen>
+    <dimen name="recommended_stream_thumbnail_height">120dp</dimen>
+    <dimen name="stream_card_content_margin_bottom">6dp</dimen>
+    <dimen name="live_tag_margin">8dp</dimen>
+    <dimen name="live_tag_padding">4dp</dimen>
+    <dimen name="live_tag_text_size">14sp</dimen>
+    <dimen name="stream_viewer_count_margin">8dp</dimen>
+    <dimen name="stream_viewer_count_padding">4dp</dimen>
+    <dimen name="stream_viewer_count_text_size">12sp</dimen>
+    <dimen name="stream_card_text_width">0dp</dimen>
+    <dimen name="stream_card_text_padding">6dp</dimen>
+    <dimen name="stream_card_text_size">12sp</dimen>
 </resources>

@@ -8,12 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
-import com.codecool.epub.adapter.StreamsAdapter
+import com.codecool.epub.adapter.RecommendedStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
 import com.codecool.epub.viewmodel.HomeViewModel
 import com.codecool.epub.databinding.MainAppBarBinding
@@ -63,7 +62,7 @@ class DetailsFragment : Fragment() {
         val boxArtWidthPx = resources.getDimensionPixelSize(R.dimen.box_art_width)
         val boxArtHeightPx = resources.getDimensionPixelSize(R.dimen.box_art_height)
         requestManager.load(game.getImageUrl(boxArtWidthPx, boxArtHeightPx)).into(binding.categoryImage)
-        val adapter = StreamsAdapter(requestManager)
+        val adapter = RecommendedStreamAdapter(requestManager)
         binding.categoryStreamsRecyclerView.adapter = adapter
         viewModel.fetchVideos(game.id)
         viewModel.getVideos().observe(viewLifecycleOwner, {

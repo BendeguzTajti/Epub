@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat.getColor
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.adapter.CategoryAdapter
-import com.codecool.epub.adapter.StreamsAdapter
+import com.codecool.epub.adapter.RecommendedStreamAdapter
 import com.codecool.epub.databinding.FragmentHomeBinding
 import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.model.GamesResponse
@@ -50,7 +50,7 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         view.doOnPreDraw { startPostponedEnterTransition() }
         appBarBinding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
         val categoryAdapter = CategoryAdapter(requestManager,this)
-        val streamsAdapter = StreamsAdapter(requestManager)
+        val streamsAdapter = RecommendedStreamAdapter(requestManager)
         binding.categoryRecyclerView.adapter = categoryAdapter
         binding.streamsRecyclerView.adapter = streamsAdapter
         viewModel.fetchTopGames()
