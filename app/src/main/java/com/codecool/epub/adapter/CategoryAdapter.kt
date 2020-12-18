@@ -1,6 +1,5 @@
 package com.codecool.epub.adapter
 
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +14,10 @@ class CategoryAdapter(private val requestManager: RequestManager,
 
     private var games: List<GamesResponse.Game> = emptyList()
 
-    inner class CategoryHolder(private val itemBinding: CategoryItemBinding,
-                               private val resources: Resources) : RecyclerView.ViewHolder(itemBinding.root), View.OnClickListener {
+    inner class CategoryHolder(private val itemBinding: CategoryItemBinding) : RecyclerView.ViewHolder(itemBinding.root), View.OnClickListener {
 
         fun bind(currentGame: GamesResponse.Game) {
+            val resources = itemView.resources
             val boxArtWidthPx = resources.getDimensionPixelSize(R.dimen.box_art_width)
             val boxArtHeightPx = resources.getDimensionPixelSize(R.dimen.box_art_height)
             requestManager.load(currentGame.getImageUrl(boxArtWidthPx, boxArtHeightPx))
@@ -38,7 +37,7 @@ class CategoryAdapter(private val requestManager: RequestManager,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryHolder {
         val itemBinding = CategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CategoryHolder(itemBinding, parent.resources)
+        return CategoryHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: CategoryHolder, position: Int) {

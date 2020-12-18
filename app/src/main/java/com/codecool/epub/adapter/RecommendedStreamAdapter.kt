@@ -14,10 +14,10 @@ class RecommendedStreamAdapter(private val requestManager: RequestManager) : Rec
 
     private var streams: List<StreamsResponse.Stream> = emptyList()
 
-    inner class RecommendedStreamHolder(private val itemBinding: RecommendedStreamItemBinding,
-                                        private val resources: Resources) : RecyclerView.ViewHolder(itemBinding.root) {
+    inner class RecommendedStreamHolder(private val itemBinding: RecommendedStreamItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(currentStream: StreamsResponse.Stream) {
+            val resources = itemView.resources
             val thumbnailWidthPx = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_width)
             val thumbnailHeightPx = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_height)
             requestManager.load(currentStream.getThumbnailUrl(thumbnailWidthPx, thumbnailHeightPx))
@@ -27,21 +27,24 @@ class RecommendedStreamAdapter(private val requestManager: RequestManager) : Rec
             itemBinding.recommendedStreamerName.text = currentStream.userName
             itemBinding.recommendedStreamCategoryName.text = currentStream.gameName
             if (currentStream.isLive()) {
-                val viewerCount = if(currentStream.isViewerCountHigh()) {
-                    "${currentStream.getViewerCountRounded()}${resources.getString(R.string.thousand_short)} ${resources.getString(R.string.viewers)}"
-                } else {
-                    "${currentStream.getViewerCountRounded()} ${resources.getString(R.string.viewers)}"
-                }
-                itemBinding.recommendedStreamViewerCount.text = viewerCount
+                itemBinding.recommendedStreamViewerCount.text = getViewerCountText(currentStream, resources)
                 itemBinding.recommendedStreamLiveTag.visibility = View.VISIBLE
                 itemBinding.recommendedStreamViewerCount.visibility = View.VISIBLE
+            }
+        }
+
+        private fun getViewerCountText(currentStream: StreamsResponse.Stream, resources: Resources): String {
+            return if(currentStream.isViewerCountHigh()) {
+                "${currentStream.getViewerCountRounded()}${resources.getString(R.string.thousand_short)} ${resources.getString(R.string.viewers)}"
+            } else {
+                "${currentStream.getViewerCountRounded()} ${resources.getString(R.string.viewers)}"
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecommendedStreamHolder {
         val itemBinding = RecommendedStreamItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return RecommendedStreamHolder(itemBinding, parent.resources)
+        return RecommendedStreamHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: RecommendedStreamHolder, position: Int) {
