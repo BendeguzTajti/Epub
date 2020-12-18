@@ -1,6 +1,7 @@
 package com.codecool.epub.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
+import com.codecool.epub.adapter.CategoryStreamAdapter
 import com.codecool.epub.adapter.RecommendedStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
 import com.codecool.epub.viewmodel.HomeViewModel
@@ -59,16 +61,12 @@ class DetailsFragment : Fragment() {
 
     private fun setupCategory() {
         val game = args.game
-        val boxArtWidthPx = resources.getDimensionPixelSize(R.dimen.box_art_width)
-        val boxArtHeightPx = resources.getDimensionPixelSize(R.dimen.box_art_height)
-        requestManager.load(game.getImageUrl(boxArtWidthPx, boxArtHeightPx)).into(binding.categoryImage)
-        val adapter = RecommendedStreamAdapter(requestManager)
+        val adapter = CategoryStreamAdapter(requestManager, game)
         binding.categoryStreamsRecyclerView.adapter = adapter
         viewModel.fetchVideos(game.id)
         viewModel.getVideos().observe(viewLifecycleOwner, {
             adapter.submitList(it.data)
         })
-        binding.categoryName.text = game.name
     }
 
     override fun onDestroyView() {
