@@ -1,5 +1,6 @@
 package com.codecool.epub.adapter
 
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
@@ -56,9 +57,16 @@ class CategoryStreamAdapter(private val requestManager: RequestManager,
         private fun getThumbnailWidthPx(resources: Resources): Int {
             val displayMetrics = resources.displayMetrics
             val screenWidthPx = displayMetrics.widthPixels
-            val recyclerViewPaddingPx = resources.getDimensionPixelSize(R.dimen.recycler_view_padding_side) * 2
-            val cardMarginPx = resources.getDimensionPixelSize(R.dimen.card_margin) * 2
-            return screenWidthPx - recyclerViewPaddingPx - cardMarginPx
+            return if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                val recyclerViewPaddingPx = resources.getDimensionPixelSize(R.dimen.recycler_view_padding_side)
+                val cardMarginPx = resources.getDimensionPixelSize(R.dimen.card_margin)
+                val columnCount = 2
+                screenWidthPx / columnCount - recyclerViewPaddingPx * 2 - cardMarginPx
+            } else {
+                val recyclerViewPaddingPx = resources.getDimensionPixelSize(R.dimen.recycler_view_padding_side)
+                val cardMarginPx = resources.getDimensionPixelSize(R.dimen.card_margin)
+                screenWidthPx - recyclerViewPaddingPx * 2 - cardMarginPx * 2
+            }
         }
 
         private fun getThumbnailHeightPx(resources: Resources): Int = resources.getDimensionPixelSize(R.dimen.category_stream_thumbnail_height)

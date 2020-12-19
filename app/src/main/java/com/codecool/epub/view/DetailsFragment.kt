@@ -1,7 +1,7 @@
 package com.codecool.epub.view
 
+import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +11,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.adapter.CategoryStreamAdapter
-import com.codecool.epub.adapter.RecommendedStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
 import com.codecool.epub.viewmodel.HomeViewModel
 import com.codecool.epub.databinding.MainAppBarBinding
@@ -25,12 +25,17 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class DetailsFragment : Fragment() {
 
+    companion object {
+        private const val SPAN_COUNT_PORTRAIT = 1
+        private const val SPAN_COUNT_LANDSCAPE = 2
+    }
+
     private val requestManager: RequestManager by inject()
     private val args: DetailsFragmentArgs by navArgs()
+    private val viewModel: HomeViewModel by viewModel()
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var appBarBinding: MainAppBarBinding
-    private val viewModel: HomeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,19 +64,36 @@ class DetailsFragment : Fragment() {
         setupCategory()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun setupCategory() {
         val game = args.game
         val adapter = CategoryStreamAdapter(requestManager, game)
-        binding.categoryStreamsRecyclerView.adapter = adapter
+        binding.categoryStreamsRecyclerView.apply {
+            layoutManager = getCategoryLayoutManager()
+            this.adapter = adapter
+        }
         viewModel.fetchVideos(game.id)
         viewModel.getVideos().observe(viewLifecycleOwner, {
             adapter.submitList(it.data)
         })
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun getCategoryLayoutManager(): GridLayoutManager {
+        return if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            GridLayoutManager(context, SPAN_COUNT_LANDSCAPE).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (position == 0) 2 else 1
+                    }
+                }
+            }
+        } else {
+            GridLayoutManager(context, SPAN_COUNT_PORTRAIT)
+        }
     }
 
     private fun navigateToSearchFragment(view: View) {
