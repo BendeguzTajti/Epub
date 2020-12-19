@@ -27,5 +27,6 @@
     <dimen name="stream_card_text_size">12sp</dimen>
     <dimen name="details_box_art_width">90dp</dimen>
     <dimen name="details_box_art_height">120dp</dimen>
-    <dimen name="category_stream_thumbnail_height">200dp</dimen>
+    <dimen name="category_stream_thumbnail_height_portrait">190dp</dimen>
+    <dimen name="category_stream_thumbnail_height_landscape">150dp</dimen>
 </resources>

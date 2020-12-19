@@ -43,14 +43,14 @@ class CategoryStreamAdapter(private val requestManager: RequestManager,
             val thumbnailHeightPx = getThumbnailHeightPx(resources)
             requestManager.load(currentStream.getThumbnailUrl(thumbnailWidthPx, thumbnailHeightPx))
                 .thumbnail(0.05f)
-                .into(itemBinding.recommendedStreamThumbnail)
-            itemBinding.recommendedStreamTitle.text = currentStream.title
-            itemBinding.recommendedStreamerName.text = currentStream.userName
-            itemBinding.recommendedStreamCategoryName.text = currentStream.gameName
+                .into(itemBinding.categoryStreamThumbnail)
+            itemBinding.categoryStreamTitle.text = currentStream.title
+            itemBinding.categoryStreamerName.text = currentStream.userName
+            itemBinding.categoryStreamCategoryName.text = currentStream.gameName
             if (currentStream.isLive()) {
-                itemBinding.recommendedStreamViewerCount.text = getViewerCountText(currentStream, resources)
-                itemBinding.recommendedStreamLiveTag.visibility = View.VISIBLE
-                itemBinding.recommendedStreamViewerCount.visibility = View.VISIBLE
+                itemBinding.categoryStreamViewerCount.text = getViewerCountText(currentStream, resources)
+                itemBinding.categoryStreamLiveTag.visibility = View.VISIBLE
+                itemBinding.categoryStreamViewerCount.visibility = View.VISIBLE
             }
         }
 
@@ -69,7 +69,13 @@ class CategoryStreamAdapter(private val requestManager: RequestManager,
             }
         }
 
-        private fun getThumbnailHeightPx(resources: Resources): Int = resources.getDimensionPixelSize(R.dimen.category_stream_thumbnail_height)
+        private fun getThumbnailHeightPx(resources: Resources): Int {
+            return if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                resources.getDimensionPixelSize(R.dimen.category_stream_thumbnail_height_landscape)
+            } else {
+                resources.getDimensionPixelSize(R.dimen.category_stream_thumbnail_height_portrait)
+            }
+        }
 
         private fun getViewerCountText(currentStream: StreamsResponse.Stream, resources: Resources): String {
             return if(currentStream.isViewerCountHigh()) {

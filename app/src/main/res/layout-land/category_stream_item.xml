@@ -7,7 +7,8 @@
     android:layout_gravity="center"
     android:layout_margin="@dimen/card_margin"
     android:elevation="@dimen/card_elevation"
-    app:cardCornerRadius="@dimen/card_corner_radius">
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    tools:layout_width="300dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,7 +18,7 @@
         <ImageView
             android:id="@+id/category_stream_thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/category_stream_thumbnail_height_portrait"
+            android:layout_height="@dimen/category_stream_thumbnail_height_landscape"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
