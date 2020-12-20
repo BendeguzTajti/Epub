@@ -10,11 +10,11 @@ import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.databinding.CategoryDetailsHeaderBinding
 import com.codecool.epub.databinding.CategoryStreamItemBinding
-import com.codecool.epub.model.GamesResponse
+import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.model.StreamsResponse
 
 class CategoryStreamAdapter(private val requestManager: RequestManager,
-                            private val game: GamesResponse.Game) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                            private val category: CategoryResponse.Category) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val TYPE_HEADER = 1
@@ -28,10 +28,10 @@ class CategoryStreamAdapter(private val requestManager: RequestManager,
         fun bind() {
             val boxArtWidthPx = itemView.resources.getDimensionPixelSize(R.dimen.details_box_art_width)
             val boxArtHeightPx = itemView.resources.getDimensionPixelSize(R.dimen.details_box_art_height)
-            requestManager.load(game.getImageUrl(boxArtWidthPx, boxArtHeightPx))
+            requestManager.load(category.getImageUrl(boxArtWidthPx, boxArtHeightPx))
                 .thumbnail(0.05f)
                 .into(headerBinding.categoryImage)
-            headerBinding.categoryName.text = game.name
+            headerBinding.categoryName.text = category.name
         }
     }
 
@@ -46,7 +46,7 @@ class CategoryStreamAdapter(private val requestManager: RequestManager,
                 .into(itemBinding.categoryStreamThumbnail)
             itemBinding.categoryStreamTitle.text = currentStream.title
             itemBinding.categoryStreamerName.text = currentStream.userName
-            itemBinding.categoryStreamCategoryName.text = currentStream.gameName
+            itemBinding.categoryStreamCategoryName.text = currentStream.categoryName
             if (currentStream.isLive()) {
                 itemBinding.categoryStreamViewerCount.text = getViewerCountText(currentStream, resources)
                 itemBinding.categoryStreamLiveTag.visibility = View.VISIBLE

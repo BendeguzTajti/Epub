@@ -1,6 +1,6 @@
 package com.codecool.epub.network.api
 
-import com.codecool.epub.model.GamesResponse
+import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.model.StreamsResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -17,8 +17,8 @@ interface DataApi {
                                         @Query("first") limit: Int): StreamsResponse
 
     @GET("helix/games/top")
-    suspend fun getTopCategories(@Query("first") limit: Int = 8): GamesResponse
+    suspend fun getTopCategories(@Query("first") limit: Int = 8): CategoryResponse
 
-    @GET("helix/streams?")
-    suspend fun getStreamsByGameId(@Query("game_id") game_id: String): Response<StreamsResponse>
+    @GET("helix/streams")
+    suspend fun getStreamsResponseByCategory(@Query("game_id") categoryId: String): Response<StreamsResponse>
 }

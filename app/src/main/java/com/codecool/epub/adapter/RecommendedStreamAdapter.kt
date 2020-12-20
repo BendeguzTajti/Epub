@@ -25,7 +25,7 @@ class RecommendedStreamAdapter(private val requestManager: RequestManager) : Rec
                 .into(itemBinding.recommendedStreamThumbnail)
             itemBinding.recommendedStreamTitle.text = currentStream.title
             itemBinding.recommendedStreamerName.text = currentStream.userName
-            itemBinding.recommendedStreamCategoryName.text = currentStream.gameName
+            itemBinding.recommendedStreamCategoryName.text = currentStream.categoryName
             if (currentStream.isLive()) {
                 itemBinding.recommendedStreamViewerCount.text = getViewerCountText(currentStream, resources)
                 itemBinding.recommendedStreamLiveTag.visibility = View.VISIBLE

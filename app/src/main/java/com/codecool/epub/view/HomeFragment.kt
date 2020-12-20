@@ -19,7 +19,7 @@ import com.codecool.epub.adapter.CategoryAdapter
 import com.codecool.epub.adapter.RecommendedStreamAdapter
 import com.codecool.epub.databinding.FragmentHomeBinding
 import com.codecool.epub.databinding.MainAppBarBinding
-import com.codecool.epub.model.GamesResponse
+import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.model.Recommendation
 import com.codecool.epub.viewmodel.HomeViewModel
 import com.google.android.material.transition.MaterialFadeThrough
@@ -126,11 +126,11 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         findNavController().navigate(action, extras)
     }
 
-    override fun onCategoryClicked(game: GamesResponse.Game) {
+    override fun onCategoryClicked(category: CategoryResponse.Category) {
         val duration = resources.getInteger(R.integer.reply_motion_duration_medium).toLong()
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true).apply { this.duration = duration }
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply { this.duration = duration }
-        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(game)
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(category)
         findNavController().navigate(action)
     }
 }

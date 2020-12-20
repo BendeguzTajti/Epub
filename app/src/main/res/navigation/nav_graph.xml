@@ -25,8 +25,8 @@
         android:name="com.codecool.epub.view.DetailsFragment"
         tools:layout="@layout/fragment_details">
         <argument
-            android:name="game"
-            app:argType="com.codecool.epub.model.GamesResponse$Game" />
+            android:name="category"
+            app:argType="com.codecool.epub.model.CategoryResponse$Category" />
         <action
             android:id="@+id/action_detailsFragment_to_searchFragment"
             app:destination="@id/searchFragment" />

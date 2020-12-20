@@ -70,8 +70,8 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setupCategory() {
-        val game = args.game
-        val adapter = CategoryStreamAdapter(requestManager, game)
+        val category = args.category
+        val adapter = CategoryStreamAdapter(requestManager, category)
         binding.categoryStreamsRecyclerView.apply {
             layoutManager = getCategoryLayoutManager()
             this.adapter = adapter

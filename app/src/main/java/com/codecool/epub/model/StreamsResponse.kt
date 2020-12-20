@@ -12,9 +12,9 @@ data class StreamsResponse(val data: List<Stream>) {
         @SerializedName("user_name")
         val userName: String,
         @SerializedName("game_id")
-        val gameId: String,
+        val categoryId: String,
         @SerializedName("game_name")
-        val gameName: String,
+        val categoryName: String,
         private val type: String,
         val title: String,
         @SerializedName("viewer_count")
@@ -31,7 +31,8 @@ data class StreamsResponse(val data: List<Stream>) {
                 viewerCount.toString()
             } else {
                 val roundedToThousands = viewerCount.toDouble().div(1000)
-                ((roundedToThousands * 10.0).roundToInt() / 10.0).toString()
+                val viewerCount = ((roundedToThousands * 10.0).roundToInt() / 10.0)
+                viewerCount.toString().replace(".0", "")
             }
         }
 

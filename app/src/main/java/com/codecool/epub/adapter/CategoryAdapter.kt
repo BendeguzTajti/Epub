@@ -7,16 +7,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.databinding.CategoryItemBinding
-import com.codecool.epub.model.GamesResponse
+import com.codecool.epub.model.CategoryResponse
 
 class CategoryAdapter(private val requestManager: RequestManager,
                       private var listener: CategoryAdapterListener) : RecyclerView.Adapter<CategoryAdapter.CategoryHolder>() {
 
-    private var games: List<GamesResponse.Game> = emptyList()
+    private var categories: List<CategoryResponse.Category> = emptyList()
 
     inner class CategoryHolder(private val itemBinding: CategoryItemBinding) : RecyclerView.ViewHolder(itemBinding.root), View.OnClickListener {
 
-        fun bind(currentGame: GamesResponse.Game) {
+        fun bind(currentGame: CategoryResponse.Category) {
             val resources = itemView.resources
             val boxArtWidthPx = resources.getDimensionPixelSize(R.dimen.box_art_width)
             val boxArtHeightPx = resources.getDimensionPixelSize(R.dimen.box_art_height)
@@ -26,8 +26,8 @@ class CategoryAdapter(private val requestManager: RequestManager,
         }
 
         override fun onClick(v: View?) {
-            val game = games[adapterPosition]
-            listener.onCategoryClicked(game)
+            val category = categories[adapterPosition]
+            listener.onCategoryClicked(category)
         }
 
         init {
@@ -41,18 +41,18 @@ class CategoryAdapter(private val requestManager: RequestManager,
     }
 
     override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
-        val currentGame = games[position]
+        val currentGame = categories[position]
         holder.bind(currentGame)
     }
 
-    override fun getItemCount(): Int = games.size
+    override fun getItemCount(): Int = categories.size
 
-    fun submitList(attachments: List<GamesResponse.Game>) {
-        games = attachments
+    fun submitList(attachments: List<CategoryResponse.Category>) {
+        categories = attachments
         notifyDataSetChanged()
     }
 
     interface CategoryAdapterListener {
-        fun onCategoryClicked(game: GamesResponse.Game)
+        fun onCategoryClicked(category: CategoryResponse.Category)
     }
 }
