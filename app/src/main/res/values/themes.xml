@@ -25,4 +25,10 @@
         <item name="layout">@layout/abc_search_view</item>
         <item name="closeIcon">@drawable/abc_ic_clear_material</item>
     </style>
+
+    <style name="PageLoadingStyle" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateTint">@color/purple_500</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
 </resources>
