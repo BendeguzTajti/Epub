@@ -9,8 +9,15 @@ import retrofit2.http.Query
 
 interface DataApi {
 
+    @GET("helix/streams")
+    suspend fun getTopStreams(@Query("first") limit: Int): StreamsResponse
+
+    @GET("helix/streams")
+    suspend fun getTopStreamsByCategory(@Query("game_id") categoryId: String,
+                                        @Query("first") limit: Int): StreamsResponse
+
     @GET("helix/games/top")
-    suspend fun getTopGames(@Query("first") limit: Int = 8): Response<GamesResponse>
+    suspend fun getTopCategories(@Query("first") limit: Int = 8): GamesResponse
 
     @GET("helix/streams?")
     suspend fun getStreamsByGameId(@Query("game_id") game_id: String): Response<StreamsResponse>
