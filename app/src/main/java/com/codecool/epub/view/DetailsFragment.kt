@@ -18,6 +18,7 @@ import com.codecool.epub.adapter.CategoryStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
 import com.codecool.epub.viewmodel.HomeViewModel
 import com.codecool.epub.databinding.MainAppBarBinding
+import com.codecool.epub.viewmodel.DetailsViewModel
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
@@ -32,7 +33,7 @@ class DetailsFragment : Fragment() {
 
     private val requestManager: RequestManager by inject()
     private val args: DetailsFragmentArgs by navArgs()
-    private val viewModel: HomeViewModel by viewModel()
+    private val viewModel: DetailsViewModel by viewModel()
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var appBarBinding: MainAppBarBinding
