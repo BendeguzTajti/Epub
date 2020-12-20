@@ -16,7 +16,6 @@ import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.adapter.CategoryStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
-import com.codecool.epub.viewmodel.HomeViewModel
 import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.viewmodel.DetailsViewModel
 import com.google.android.material.transition.MaterialFadeThrough
@@ -77,10 +76,14 @@ class DetailsFragment : Fragment() {
             layoutManager = getCategoryLayoutManager()
             this.adapter = adapter
         }
-//        viewModel.fetchVideos(game.id)
-//        viewModel.getVideos().observe(viewLifecycleOwner, {
-//            adapter.submitList(it.data)
-//        })
+
+        viewModel.getStreams(category.id)
+        viewModel.categoryStreamsData.observe(viewLifecycleOwner, {
+            binding.detailsPageLoading.visibility = View.GONE
+            if (it.isSuccessful) {
+                adapter.submitList(it.body()!!.data)
+            }
+        })
     }
 
     private fun getCategoryLayoutManager(): GridLayoutManager {

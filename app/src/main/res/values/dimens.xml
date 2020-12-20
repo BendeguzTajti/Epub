@@ -30,4 +30,6 @@
     <dimen name="category_stream_thumbnail_height_portrait">190dp</dimen>
     <dimen name="category_stream_thumbnail_height_landscape">150dp</dimen>
     <dimen name="home_page_title_margin">18dp</dimen>
+    <dimen name="category_streams_recycler_view_padding_top">18dp</dimen>
+    <dimen name="category_streams_recycler_view_padding_bottom">18dp</dimen>
 </resources>

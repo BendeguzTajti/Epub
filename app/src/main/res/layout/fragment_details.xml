@@ -11,9 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_marginTop="18dp"
-        android:layout_marginBottom="18dp">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/category_streams_recycler_view"
@@ -22,7 +20,9 @@
             android:clipToPadding="false"
             android:overScrollMode="never"
             android:paddingStart="@dimen/recycler_view_padding_side"
+            android:paddingTop="@dimen/category_streams_recycler_view_padding_top"
             android:paddingEnd="@dimen/recycler_view_padding_side"
+            android:paddingBottom="@dimen/category_streams_recycler_view_padding_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
