@@ -7,7 +7,11 @@ import retrofit2.Response
 
 class Repository(private val dataApi: DataApi) {
 
-    suspend fun getTopGames(): Response<GamesResponse> = dataApi.getTopGames()
+    suspend fun getTopStreams(limit: Int): StreamsResponse = dataApi.getTopStreams(limit)
+
+    suspend fun getTopStreamsByCategory(categoryId: String, limit: Int): StreamsResponse = dataApi.getTopStreamsByCategory(categoryId, limit)
+
+    suspend fun getTopCategories(): GamesResponse = dataApi.getTopCategories()
 
     suspend fun getStreamsByGameId(gameId: String): Response<StreamsResponse> = dataApi.getStreamsByGameId(gameId)
 }
