@@ -29,4 +29,5 @@
     <dimen name="details_box_art_height">120dp</dimen>
     <dimen name="category_stream_thumbnail_height_portrait">190dp</dimen>
     <dimen name="category_stream_thumbnail_height_landscape">150dp</dimen>
+    <dimen name="home_page_title_margin">18dp</dimen>
 </resources>
