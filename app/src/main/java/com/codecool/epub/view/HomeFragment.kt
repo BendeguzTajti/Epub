@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -19,7 +20,7 @@ import com.codecool.epub.adapter.RecommendedStreamAdapter
 import com.codecool.epub.databinding.FragmentHomeBinding
 import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.model.GamesResponse
-import com.codecool.epub.model.StreamsResponse
+import com.codecool.epub.model.Recommendation
 import com.codecool.epub.viewmodel.HomeViewModel
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
@@ -28,11 +29,21 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
 
+    companion object {
+        private const val TAG = "HomeFragment"
+    }
+
     private val requestManager: RequestManager by inject()
     private val viewModel: HomeViewModel by viewModel()
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var appBarBinding: MainAppBarBinding
+
+    // Adapters
+    private val topStreamsAdapter = RecommendedStreamAdapter(requestManager)
+    private val categoryAdapter = CategoryAdapter(requestManager,this)
+    private val recommendedStreamsAdapter1 = RecommendedStreamAdapter(requestManager)
+    private val recommendedStreamsAdapter2 = RecommendedStreamAdapter(requestManager)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,24 +60,15 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
         appBarBinding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
-        val categoryAdapter = CategoryAdapter(requestManager,this)
-        val streamsAdapter = RecommendedStreamAdapter(requestManager)
-        binding.categoryRecyclerView.adapter = categoryAdapter
-        binding.streamsRecyclerView.adapter = streamsAdapter
-        viewModel.fetchTopGames()
-        viewModel.getGameData().observe(viewLifecycleOwner, {
-            binding.categoryTitle.text = highlightText(getString(R.string.categories_title), getString(R.string.categories_highlight_text))
-            categoryAdapter.submitList(it.data)
+        recyclerViewsInit()
+        viewModel.getRecommendations()
+        viewModel.recommendationData.observe(viewLifecycleOwner, {
+            binding.homePageLoading.visibility = View.GONE
+            when (it) {
+                is Recommendation.OnSuccess -> displayRecommendations(it)
+                is Recommendation.OnError -> displayError(it)
+            }
         })
-
-
-        // TEST DATA
-        val fakeStreams = StreamsResponse(listOf(StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 346, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"),
-            StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 2117, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"),
-            StreamsResponse.Stream("26007494656", "23161357", "LIRIK", "417752", "Just Chatting","live", "Hey Guys, It's Monday - Twitter: @Lirik", 32575, "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg")))
-
-        streamsAdapter.submitList(fakeStreams.data)
-
     }
 
     override fun onDestroyView() {
@@ -74,11 +76,43 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         _binding = null
     }
 
+    private fun recyclerViewsInit() {
+        binding.topStreamsRecyclerView.adapter = topStreamsAdapter
+        binding.categoryRecyclerView.adapter = categoryAdapter
+        binding.recommendedStreamsRecyclerView1.adapter = recommendedStreamsAdapter1
+        binding.recommendedStreamsRecyclerView2.adapter = recommendedStreamsAdapter2
+    }
+
+    private fun displayRecommendations(recommendation: Recommendation.OnSuccess) {
+        topStreamsAdapter.submitList(recommendation.topStreamsResponse.data)
+
+        binding.categoryTitle.text = highlightText(getString(R.string.categories_title), getString(R.string.categories_highlight_text))
+        categoryAdapter.submitList(recommendation.topCategories.data)
+
+        val recommendedStreamsTitleStart = getString(R.string.recommended_streams_title_1)
+        val recommendedStreamsTitleEnd = getString(R.string.recommended_streams_title_2)
+
+        val recommendedCategoryName1 = recommendation.recommendedStreams1.data.first().categoryName
+        val recommendedStreamsTitle1 = "$recommendedStreamsTitleStart $recommendedCategoryName1 $recommendedStreamsTitleEnd"
+        binding.recommendedStreamsTitle1.text = highlightText(recommendedStreamsTitle1, recommendedCategoryName1)
+        recommendedStreamsAdapter1.submitList(recommendation.recommendedStreams1.data)
+
+        val recommendedCategoryName2 = recommendation.recommendedStreams2.data.first().categoryName
+        val recommendedStreamsTitle2 = "$recommendedStreamsTitleStart $recommendedCategoryName2 $recommendedStreamsTitleEnd"
+        binding.recommendedStreamsTitle2.text = highlightText(recommendedStreamsTitle2, recommendedCategoryName2)
+        recommendedStreamsAdapter2.submitList(recommendation.recommendedStreams2.data)
+        binding.homePageContent.visibility = View.VISIBLE
+    }
+
+    private fun displayError(error: Recommendation.OnError) {
+        Log.d(TAG, "displayError: ${error.exception}")
+    }
+
     private fun highlightText(string: String, subString: String): SpannableStringBuilder {
         val spannableString = SpannableStringBuilder(string)
         val highlightColor = ForegroundColorSpan(getColor(requireContext(), R.color.purple_500))
         val startIndex = string.indexOf(subString, 0)
-        val endIndex = subString.length
+        val endIndex = startIndex + subString.length
         spannableString.setSpan(highlightColor, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         return spannableString
     }
