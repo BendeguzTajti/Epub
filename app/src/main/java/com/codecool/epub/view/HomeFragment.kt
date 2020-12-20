@@ -45,6 +45,11 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
     private val recommendedStreamsAdapter1 = RecommendedStreamAdapter(requestManager)
     private val recommendedStreamsAdapter2 = RecommendedStreamAdapter(requestManager)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        retainInstance = true
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
