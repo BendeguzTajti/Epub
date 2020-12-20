@@ -76,10 +76,10 @@ class DetailsFragment : Fragment() {
             layoutManager = getCategoryLayoutManager()
             this.adapter = adapter
         }
-        viewModel.fetchVideos(game.id)
-        viewModel.getVideos().observe(viewLifecycleOwner, {
-            adapter.submitList(it.data)
-        })
+//        viewModel.fetchVideos(game.id)
+//        viewModel.getVideos().observe(viewLifecycleOwner, {
+//            adapter.submitList(it.data)
+//        })
     }
 
     private fun getCategoryLayoutManager(): GridLayoutManager {
