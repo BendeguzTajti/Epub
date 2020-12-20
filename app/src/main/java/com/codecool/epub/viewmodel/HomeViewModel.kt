@@ -1,41 +1,47 @@
 package com.codecool.epub.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.codecool.epub.model.GamesResponse
-import com.codecool.epub.model.StreamsResponse
+import androidx.lifecycle.*
+import com.codecool.epub.model.Recommendation
 import com.codecool.epub.repository.Repository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class HomeViewModel(private val repository: Repository) : ViewModel() {
 
-    private val gameData = MutableLiveData<GamesResponse>()
-    private val videoData = MutableLiveData<StreamsResponse>()
+    private val _recommendationData = MutableLiveData<Recommendation>()
+    val recommendationData: LiveData<Recommendation> = _recommendationData
 
-    fun getGameData():LiveData<GamesResponse> = gameData
-    fun getVideos(): LiveData<StreamsResponse> = videoData
-
-    fun fetchTopGames() {
-        if (gameData.value == null) {
+    fun getRecommendations() {
+        if (_recommendationData.value == null) {
             viewModelScope.launch {
-                val response = repository.getTopGames()
-                if (response.isSuccessful) {
-                    val topGames = response.body()
-                    gameData.value = topGames
-                }
-            }
-        }
-    }
+                try {
+                    coroutineScope {
+                        val limit = 8
+                        val topStreamsDeferred = async { repository.getTopStreams(limit) }
+                        val topCategoriesDeferred = async { repository.getTopCategories() }
+                        val topCategoriesResponse = topCategoriesDeferred.await()
+                        val topStreamsResponse = topStreamsDeferred.await()
 
-    fun fetchVideos(gameId: String) {
-        if (videoData.value == null) {
-            viewModelScope.launch {
-                val response = repository.getStreamsByGameId(gameId)
-                if (response.isSuccessful) {
-                    val videos = response.body()
-                    videoData.value = videos
+                        val recommendedCategory1 = topCategoriesResponse.data.random()
+                        val recommendedCategory2 = topCategoriesResponse.data
+                            .filterNot { it.id == recommendedCategory1.id }
+                            .random()
+
+                        val recommendedStreamsDeferred1 = async { repository.getTopStreamsByCategory(recommendedCategory1.id, limit) }
+                        val recommendedStreamsDeferred2 = async { repository.getTopStreamsByCategory(recommendedCategory2.id, limit) }
+                        val recommendedStreamsResponse1 = recommendedStreamsDeferred1.await()
+                        val recommendedStreamsResponse2 = recommendedStreamsDeferred2.await()
+                        _recommendationData.value = Recommendation.OnSuccess(
+                            topStreamsResponse,
+                            topCategoriesResponse,
+                            recommendedStreamsResponse1,
+                            recommendedStreamsResponse2
+                        )
+                    }
+                } catch (exception: Exception) {
+                    _recommendationData.value = Recommendation.OnError(exception)
                 }
             }
         }
