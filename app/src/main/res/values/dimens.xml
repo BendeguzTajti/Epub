@@ -32,4 +32,8 @@
     <dimen name="home_page_title_margin">18dp</dimen>
     <dimen name="category_streams_recycler_view_padding_top">18dp</dimen>
     <dimen name="category_streams_recycler_view_padding_bottom">18dp</dimen>
+    <dimen name="category_header_margin_sides">3dp</dimen>
+    <dimen name="category_header_margin_bottom">22dp</dimen>
+    <dimen name="category_header_title_width">0dp</dimen>
+    <dimen name="category_header_title_padding">12dp</dimen>
 </resources>
