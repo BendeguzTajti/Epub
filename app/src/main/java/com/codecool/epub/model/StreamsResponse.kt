@@ -3,7 +3,7 @@ package com.codecool.epub.model
 import com.google.gson.annotations.SerializedName
 import kotlin.math.roundToInt
 
-data class StreamsResponse(val data: List<Stream>) {
+data class StreamsResponse(val data: List<Stream>, val pagination: Pagination) {
 
     data class Stream(
         val id: String,
@@ -38,4 +38,6 @@ data class StreamsResponse(val data: List<Stream>) {
 
         fun isLive(): Boolean = type == "live"
     }
+
+    data class Pagination(val cursor: String)
 }
