@@ -24,7 +24,7 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
                 coroutineScope {
                     val limit = 8
                     val topStreamsDeferred = async { repository.getTopStreams(limit) }
-                    val topCategoriesDeferred = async { repository.getTopCategories() }
+                    val topCategoriesDeferred = async { repository.getTopCategories(limit) }
                     val topCategoriesResponse = topCategoriesDeferred.await()
                     val topStreamsResponse = topStreamsDeferred.await()
 
