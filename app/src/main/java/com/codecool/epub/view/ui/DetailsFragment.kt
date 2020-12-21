@@ -1,11 +1,13 @@
 package com.codecool.epub.view.ui
 
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -20,7 +22,8 @@ import com.codecool.epub.databinding.FragmentDetailsBinding
 import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.model.CategoryStreamsData
 import com.codecool.epub.viewmodel.DetailsViewModel
-import com.google.android.material.transition.MaterialFadeThrough
+import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialFade
 import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -44,9 +47,12 @@ class DetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        val duration = resources.getInteger(R.integer.reply_motion_duration_medium).toLong()
-        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true).apply { this.duration = duration }
-        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply { this.duration = duration }
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            scrimColor = Color.TRANSPARENT
+            drawingViewId = R.id.nav_host_fragment
+        }
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
     }
 
     override fun onCreateView(
@@ -61,6 +67,8 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
         appBarBinding.toolbarIcon.visibility = View.GONE
         appBarBinding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
         val navController = findNavController()
@@ -114,8 +122,12 @@ class DetailsFragment : Fragment() {
     }
 
     private fun navigateToSearchFragment(view: View) {
-        exitTransition = MaterialFadeThrough()
-        reenterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFade().apply {
+            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
+        }
+        reenterTransition = MaterialFade().apply {
+            duration = resources.getInteger(R.integer.reenter_motion_duration_small).toLong()
+        }
         val action = DetailsFragmentDirections.actionDetailsFragmentToSearchFragment()
         val searchButtonTransitionName = getString(R.string.search_button_transition_name)
         val extras = FragmentNavigatorExtras(view to searchButtonTransitionName)

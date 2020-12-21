@@ -22,7 +22,7 @@ import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.model.RecommendationData
 import com.codecool.epub.viewmodel.HomeViewModel
-import com.google.android.material.transition.MaterialFadeThrough
+import com.google.android.material.transition.MaterialFade
 import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -123,8 +123,12 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
     }
 
     private fun navigateToSearchFragment(view: View) {
-        exitTransition = MaterialFadeThrough()
-        reenterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFade().apply {
+            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
+        }
+        reenterTransition = MaterialFade().apply {
+            duration = resources.getInteger(R.integer.reenter_motion_duration_small).toLong()
+        }
         val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment()
         val searchButtonTransitionName = getString(R.string.search_button_transition_name)
         val extras = FragmentNavigatorExtras(view to searchButtonTransitionName)
@@ -132,10 +136,11 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
     }
 
     override fun onCategoryClicked(category: CategoryResponse.Category) {
-        val duration = resources.getInteger(R.integer.reply_motion_duration_medium).toLong()
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true).apply { this.duration = duration }
-        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply { this.duration = duration }
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
         val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(category)
-        findNavController().navigate(action)
+        val appBarTransitionName = getString(R.string.app_bar_transition_name)
+        val extras = FragmentNavigatorExtras(appBarBinding.appBar to appBarTransitionName)
+        findNavController().navigate(action, extras)
     }
 }

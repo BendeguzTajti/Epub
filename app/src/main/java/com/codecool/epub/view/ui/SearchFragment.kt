@@ -27,7 +27,7 @@ class SearchFragment : Fragment() {
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.nav_host_fragment
             scrimColor = Color.TRANSPARENT
-            duration = resources.getInteger(R.integer.reply_motion_duration_medium).toLong()
+            duration = resources.getInteger(R.integer.motion_duration_medium).toLong()
         }
     }
 

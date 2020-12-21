@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="reply_motion_duration_large">300</integer>
-    <integer name="reply_motion_duration_medium">200</integer>
-    <integer name="reply_motion_duration_small">100</integer>
+    <integer name="motion_duration_large">300</integer>
+    <integer name="motion_duration_medium">200</integer>
+    <integer name="motion_duration_small">150</integer>
+    <integer name="reenter_motion_duration_small">84</integer>
 </resources>
