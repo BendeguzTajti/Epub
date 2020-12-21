@@ -19,8 +19,6 @@ import com.codecool.epub.view.adapter.CategoryStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
 import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.model.CategoryStreamsData
-import com.codecool.epub.view.DetailsFragmentArgs
-import com.codecool.epub.view.DetailsFragmentDirections
 import com.codecool.epub.viewmodel.DetailsViewModel
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis

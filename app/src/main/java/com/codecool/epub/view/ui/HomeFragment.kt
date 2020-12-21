@@ -21,7 +21,6 @@ import com.codecool.epub.databinding.FragmentHomeBinding
 import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.model.RecommendationData
-import com.codecool.epub.view.HomeFragmentDirections
 import com.codecool.epub.viewmodel.HomeViewModel
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
