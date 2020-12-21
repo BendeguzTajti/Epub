@@ -1,4 +1,4 @@
-package com.codecool.epub.adapter
+package com.codecool.epub.view.adapter
 
 import android.content.res.Resources
 import android.view.LayoutInflater

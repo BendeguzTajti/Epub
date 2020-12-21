@@ -1,4 +1,4 @@
-package com.codecool.epub.view
+package com.codecool.epub.view.ui
 
 import android.content.Context
 import android.graphics.Color

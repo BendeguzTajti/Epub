@@ -1,4 +1,4 @@
-package com.codecool.epub.view
+package com.codecool.epub.view.ui
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -15,10 +15,12 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
-import com.codecool.epub.adapter.CategoryStreamAdapter
+import com.codecool.epub.view.adapter.CategoryStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
 import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.model.CategoryStreamsData
+import com.codecool.epub.view.DetailsFragmentArgs
+import com.codecool.epub.view.DetailsFragmentDirections
 import com.codecool.epub.viewmodel.DetailsViewModel
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis

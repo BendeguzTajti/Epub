@@ -1,4 +1,4 @@
-package com.codecool.epub.view
+package com.codecool.epub.view.ui
 
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -15,12 +15,13 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.getColor
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
-import com.codecool.epub.adapter.CategoryAdapter
-import com.codecool.epub.adapter.RecommendedStreamAdapter
+import com.codecool.epub.view.adapter.CategoryAdapter
+import com.codecool.epub.view.adapter.RecommendedStreamAdapter
 import com.codecool.epub.databinding.FragmentHomeBinding
 import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.model.RecommendationData
+import com.codecool.epub.view.HomeFragmentDirections
 import com.codecool.epub.viewmodel.HomeViewModel
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
