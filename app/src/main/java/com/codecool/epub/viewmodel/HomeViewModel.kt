@@ -1,7 +1,7 @@
 package com.codecool.epub.viewmodel
 
 import androidx.lifecycle.*
-import com.codecool.epub.model.Recommendation
+import com.codecool.epub.model.RecommendationData
 import com.codecool.epub.repository.Repository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -10,13 +10,13 @@ import java.lang.Exception
 
 class HomeViewModel(private val repository: Repository) : ViewModel() {
 
-    private val recommendationData: MutableLiveData<Recommendation> by lazy {
-        MutableLiveData<Recommendation>().also {
+    private val recommendationData: MutableLiveData<RecommendationData> by lazy {
+        MutableLiveData<RecommendationData>().also {
             getRecommendations()
         }
     }
 
-    fun getRecommendationData(): LiveData<Recommendation> = recommendationData
+    fun getRecommendationData(): LiveData<RecommendationData> = recommendationData
 
     private fun getRecommendations() {
         viewModelScope.launch {
@@ -39,7 +39,7 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
                         async { repository.getTopStreamsByCategory(recommendedCategory2.id, limit) }
                     val recommendedStreamsResponse1 = recommendedStreamsDeferred1.await()
                     val recommendedStreamsResponse2 = recommendedStreamsDeferred2.await()
-                    recommendationData.value = Recommendation.OnSuccess(
+                    recommendationData.value = RecommendationData.OnSuccess(
                         topStreamsResponse,
                         topCategoriesResponse,
                         recommendedStreamsResponse1,
@@ -47,7 +47,7 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
                     )
                 }
             } catch (exception: Exception) {
-                recommendationData.value = Recommendation.OnError(exception)
+                recommendationData.value = RecommendationData.OnError(exception)
             }
         }
     }

@@ -20,12 +20,13 @@ import com.codecool.epub.adapter.RecommendedStreamAdapter
 import com.codecool.epub.databinding.FragmentHomeBinding
 import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.model.CategoryResponse
-import com.codecool.epub.model.Recommendation
+import com.codecool.epub.model.RecommendationData
 import com.codecool.epub.viewmodel.HomeViewModel
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.lang.Exception
 
 class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
 
@@ -69,8 +70,8 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         viewModel.getRecommendationData().observe(viewLifecycleOwner, {
             binding.homePageLoading.visibility = View.GONE
             when (it) {
-                is Recommendation.OnSuccess -> displayRecommendations(it)
-                is Recommendation.OnError -> displayError(it)
+                is RecommendationData.OnSuccess -> displayRecommendations(it)
+                is RecommendationData.OnError -> displayError(it.exception)
             }
         })
     }
@@ -87,7 +88,7 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         binding.recommendedStreamsRecyclerView2.adapter = recommendedStreamsAdapter2
     }
 
-    private fun displayRecommendations(recommendation: Recommendation.OnSuccess) {
+    private fun displayRecommendations(recommendation: RecommendationData.OnSuccess) {
         topStreamsAdapter.submitList(recommendation.topStreamsResponse.data)
 
         binding.categoryTitle.text = highlightText(getString(R.string.categories_title), getString(R.string.categories_highlight_text))
@@ -108,8 +109,8 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         binding.homePageContent.visibility = View.VISIBLE
     }
 
-    private fun displayError(error: Recommendation.OnError) {
-        Log.d(TAG, "displayError: ${error.exception}")
+    private fun displayError(exception: Exception) {
+        Log.d(TAG, "displayError: $exception")
     }
 
     private fun highlightText(string: String, subString: String): SpannableStringBuilder {

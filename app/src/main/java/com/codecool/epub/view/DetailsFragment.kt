@@ -2,6 +2,7 @@ package com.codecool.epub.view
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,15 +18,18 @@ import com.codecool.epub.R
 import com.codecool.epub.adapter.CategoryStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
 import com.codecool.epub.databinding.MainAppBarBinding
+import com.codecool.epub.model.CategoryStreamsData
 import com.codecool.epub.viewmodel.DetailsViewModel
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.lang.Exception
 
 class DetailsFragment : Fragment() {
 
     companion object {
+        private const val TAG = "DetailsFragment"
         private const val SPAN_COUNT_PORTRAIT = 1
         private const val SPAN_COUNT_LANDSCAPE = 2
     }
@@ -79,12 +83,20 @@ class DetailsFragment : Fragment() {
         }
 
         viewModel.getStreams(category.id)
-        viewModel.categoryStreamsData.observe(viewLifecycleOwner, {
+        viewModel.getCategoryStreamsData().observe(viewLifecycleOwner, {
             binding.detailsPageLoading.visibility = View.GONE
-            if (it.isSuccessful) {
-                adapter.submitList(it.body()!!.data)
+            when(it) {
+                is CategoryStreamsData.OnSuccess -> {
+                    adapter.submitList(it.streamsResponse.data)
+                    binding.categoryStreamsRecyclerView.visibility = View.VISIBLE
+                }
+                is CategoryStreamsData.OnError -> displayError(it.exception)
             }
         })
+    }
+
+    private fun displayError(exception: Exception) {
+        Log.d(TAG, "displayError: $exception")
     }
 
     private fun getCategoryLayoutManager(): GridLayoutManager {
