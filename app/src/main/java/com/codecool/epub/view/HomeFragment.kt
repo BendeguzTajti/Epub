@@ -66,8 +66,7 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         view.doOnPreDraw { startPostponedEnterTransition() }
         appBarBinding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
         recyclerViewsInit()
-        viewModel.getRecommendations()
-        viewModel.recommendationData.observe(viewLifecycleOwner, {
+        viewModel.getRecommendationData().observe(viewLifecycleOwner, {
             binding.homePageLoading.visibility = View.GONE
             when (it) {
                 is Recommendation.OnSuccess -> displayRecommendations(it)
