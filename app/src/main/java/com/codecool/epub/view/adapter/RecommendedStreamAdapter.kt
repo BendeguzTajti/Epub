@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.codecool.epub.R
 import com.codecool.epub.databinding.RecommendedStreamItemBinding
 import com.codecool.epub.model.StreamsResponse
@@ -21,7 +22,9 @@ class RecommendedStreamAdapter(private val requestManager: RequestManager) : Rec
             val thumbnailWidthPx = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_width)
             val thumbnailHeightPx = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_height)
             requestManager.load(currentStream.getThumbnailUrl(thumbnailWidthPx, thumbnailHeightPx))
-                .thumbnail(0.05f)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .thumbnail(0.5f)
                 .into(itemBinding.recommendedStreamThumbnail)
             itemBinding.recommendedStreamTitle.text = currentStream.title
             itemBinding.recommendedStreamerName.text = currentStream.userName

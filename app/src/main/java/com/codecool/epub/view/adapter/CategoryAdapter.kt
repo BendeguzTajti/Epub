@@ -21,7 +21,7 @@ class CategoryAdapter(private val requestManager: RequestManager,
             val boxArtWidthPx = resources.getDimensionPixelSize(R.dimen.box_art_width)
             val boxArtHeightPx = resources.getDimensionPixelSize(R.dimen.box_art_height)
             requestManager.load(currentGame.getImageUrl(boxArtWidthPx, boxArtHeightPx))
-                .thumbnail(0.05f)
+                .thumbnail(0.5f)
                 .into(itemBinding.boxArt)
         }
 
