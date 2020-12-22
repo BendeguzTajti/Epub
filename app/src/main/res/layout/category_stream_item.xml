@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="@dimen/card_margin"
+    android:backgroundTint="?attr/colorSurface"
     android:elevation="@dimen/card_elevation"
     app:cardCornerRadius="@dimen/card_corner_radius">
 
@@ -21,9 +22,9 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:background="@color/black"
             tools:ignore="ContentDescription"
-            tools:scaleType="centerCrop"
-            tools:background="@color/black"/>
+            tools:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/category_stream_live_tag"
