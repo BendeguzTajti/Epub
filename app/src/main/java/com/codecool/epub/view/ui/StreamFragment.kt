@@ -1,11 +1,14 @@
 package com.codecool.epub.view.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebViewClient
 import com.codecool.epub.databinding.FragmentStreamBinding
+import java.net.URL
 
 class StreamFragment : Fragment() {
 
@@ -20,8 +23,16 @@ class StreamFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.liveStream.webViewClient = WebViewClient()
+        binding.liveStream.settings.apply {
+            javaScriptEnabled = true
+            useWideViewPort = true
+            loadWithOverviewMode = true
+        }
+        binding.liveStream.loadUrl("https://player.twitch.tv/?channel=mizkif&parent=localhost")
     }
 
     override fun onDestroyView() {

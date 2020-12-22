@@ -148,7 +148,7 @@ class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener 
     }
 
     override fun onStreamClicked(stream: StreamsResponse.Stream) {
-        Log.d(TAG, "onStreamClicked: ${stream.title}")
+        Log.d(TAG, "onStreamClicked: ${stream.userName.toLowerCase()}")
         val action = HomeFragmentDirections.actionHomeFragmentToStreamFragment()
         findNavController().navigate(action)
     }
