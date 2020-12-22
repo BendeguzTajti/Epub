@@ -11,11 +11,16 @@ import com.codecool.epub.R
 import com.codecool.epub.databinding.RecommendedStreamItemBinding
 import com.codecool.epub.model.StreamsResponse
 
-class RecommendedStreamAdapter(private val requestManager: RequestManager) : RecyclerView.Adapter<RecommendedStreamAdapter.RecommendedStreamHolder>() {
+class RecommendedStreamAdapter(private val requestManager: RequestManager,
+                               private val listener: StreamAdapterListener) : RecyclerView.Adapter<RecommendedStreamAdapter.RecommendedStreamHolder>() {
 
     private var streams: List<StreamsResponse.Stream> = emptyList()
 
-    inner class RecommendedStreamHolder(private val itemBinding: RecommendedStreamItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    inner class RecommendedStreamHolder(private val itemBinding: RecommendedStreamItemBinding) : RecyclerView.ViewHolder(itemBinding.root), View.OnClickListener {
+
+        init {
+            itemBinding.root.setOnClickListener(this)
+        }
 
         fun bind(currentStream: StreamsResponse.Stream) {
             val resources = itemView.resources
@@ -42,6 +47,11 @@ class RecommendedStreamAdapter(private val requestManager: RequestManager) : Rec
             } else {
                 "${currentStream.getViewerCountRounded()} ${resources.getString(R.string.viewers)}"
             }
+        }
+
+        override fun onClick(view: View?) {
+            val stream = streams[adapterPosition]
+            listener.onStreamClicked(stream)
         }
     }
 

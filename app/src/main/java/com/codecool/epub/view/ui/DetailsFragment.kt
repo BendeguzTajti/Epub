@@ -21,6 +21,8 @@ import com.codecool.epub.view.adapter.CategoryStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
 import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.model.CategoryStreamsData
+import com.codecool.epub.model.StreamsResponse
+import com.codecool.epub.view.adapter.StreamAdapterListener
 import com.codecool.epub.viewmodel.DetailsViewModel
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialFade
@@ -29,7 +31,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.lang.Exception
 
-class DetailsFragment : Fragment() {
+class DetailsFragment : Fragment(), StreamAdapterListener {
 
     companion object {
         private const val TAG = "DetailsFragment"
@@ -84,7 +86,7 @@ class DetailsFragment : Fragment() {
 
     private fun setupCategory() {
         val category = args.category
-        val adapter = CategoryStreamAdapter(requestManager, category)
+        val adapter = CategoryStreamAdapter(requestManager, category, this)
         binding.categoryStreamsRecyclerView.apply {
             layoutManager = getCategoryLayoutManager()
             this.adapter = adapter
@@ -132,5 +134,9 @@ class DetailsFragment : Fragment() {
         val searchButtonTransitionName = getString(R.string.search_button_transition_name)
         val extras = FragmentNavigatorExtras(view to searchButtonTransitionName)
         findNavController().navigate(action, extras)
+    }
+
+    override fun onStreamClicked(stream: StreamsResponse.Stream) {
+        Log.d(TAG, "onStreamClicked: ${stream.title}")
     }
 }

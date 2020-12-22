@@ -15,7 +15,8 @@ import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.model.StreamsResponse
 
 class CategoryStreamAdapter(private val requestManager: RequestManager,
-                            private val category: CategoryResponse.Category) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                            private val category: CategoryResponse.Category,
+                            private val listener: StreamAdapterListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val TYPE_HEADER = 1
@@ -36,7 +37,11 @@ class CategoryStreamAdapter(private val requestManager: RequestManager,
         }
     }
 
-    inner class CategoryStreamHolder(private val itemBinding: CategoryStreamItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    inner class CategoryStreamHolder(private val itemBinding: CategoryStreamItemBinding) : RecyclerView.ViewHolder(itemBinding.root), View.OnClickListener {
+
+        init {
+            itemBinding.root.setOnClickListener(this)
+        }
 
         fun bind(currentStream: StreamsResponse.Stream) {
             val resources = itemView.resources
@@ -86,6 +91,11 @@ class CategoryStreamAdapter(private val requestManager: RequestManager,
             } else {
                 "${currentStream.getViewerCountRounded()} ${resources.getString(R.string.viewers)}"
             }
+        }
+
+        override fun onClick(view: View?) {
+            val stream =  streams[adapterPosition - 1]
+            listener.onStreamClicked(stream)
         }
     }
 

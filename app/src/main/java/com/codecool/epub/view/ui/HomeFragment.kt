@@ -21,6 +21,9 @@ import com.codecool.epub.databinding.FragmentHomeBinding
 import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.model.RecommendationData
+import com.codecool.epub.model.StreamsResponse
+import com.codecool.epub.view.adapter.CategoryAdapterListener
+import com.codecool.epub.view.adapter.StreamAdapterListener
 import com.codecool.epub.viewmodel.HomeViewModel
 import com.google.android.material.transition.MaterialFade
 import com.google.android.material.transition.MaterialSharedAxis
@@ -28,7 +31,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.lang.Exception
 
-class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
+class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener {
 
     companion object {
         private const val TAG = "HomeFragment"
@@ -41,10 +44,10 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
     private lateinit var appBarBinding: MainAppBarBinding
 
     // Adapters
-    private val topStreamsAdapter = RecommendedStreamAdapter(requestManager)
+    private val topStreamsAdapter = RecommendedStreamAdapter(requestManager, this)
     private val categoryAdapter = CategoryAdapter(requestManager,this)
-    private val recommendedStreamsAdapter1 = RecommendedStreamAdapter(requestManager)
-    private val recommendedStreamsAdapter2 = RecommendedStreamAdapter(requestManager)
+    private val recommendedStreamsAdapter1 = RecommendedStreamAdapter(requestManager, this)
+    private val recommendedStreamsAdapter2 = RecommendedStreamAdapter(requestManager, this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,5 +145,9 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryAdapterListener {
         val appBarTransitionName = getString(R.string.app_bar_transition_name)
         val extras = FragmentNavigatorExtras(appBarBinding.appBar to appBarTransitionName)
         findNavController().navigate(action, extras)
+    }
+
+    override fun onStreamClicked(stream: StreamsResponse.Stream) {
+        Log.d(TAG, "onStreamClicked: ${stream.title}")
     }
 }
