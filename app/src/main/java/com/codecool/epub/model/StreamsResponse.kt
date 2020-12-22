@@ -37,6 +37,11 @@ data class StreamsResponse(val data: List<Stream>, val pagination: Pagination) {
         }
 
         fun isLive(): Boolean = type == "live"
+
+        fun getChannelName(): String {
+            return thumbnailUrl.replace("https://static-cdn.jtvnw.net/previews-ttv/live_user_", "")
+                .replace("-{width}x{height}.jpg", "")
+        }
     }
 
     data class Pagination(val cursor: String)
