@@ -43,17 +43,15 @@ val appModules = module {
     viewModel { DetailsViewModel(get()) }
 }
 
-fun provideSharedPreferences(context: Context): SharedPreferences {
-    return context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
-}
+private fun provideSharedPreferences(context: Context): SharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
 
-fun provideOkHttpClient(tokenManager: TokenManager): OkHttpClient {
+private fun provideOkHttpClient(tokenManager: TokenManager): OkHttpClient {
     return OkHttpClient.Builder().apply {
         authenticator(TokenAuthenticator(tokenManager))
     }.build()
 }
 
-fun provideRetrofit(client: OkHttpClient): Retrofit {
+private fun provideRetrofit(client: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(client)
@@ -61,10 +59,8 @@ fun provideRetrofit(client: OkHttpClient): Retrofit {
         .build()
 }
 
-fun provideAuthApi(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
+private fun provideAuthApi(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
 
-fun provideDataApi(retrofit: Retrofit): DataApi = retrofit.create(DataApi::class.java)
+private fun provideDataApi(retrofit: Retrofit): DataApi = retrofit.create(DataApi::class.java)
 
-fun provideGlideInstance(context: Context): RequestManager {
-    return Glide.with(context)
-}
+private fun provideGlideInstance(context: Context): RequestManager = Glide.with(context)
