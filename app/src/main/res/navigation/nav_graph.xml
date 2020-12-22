@@ -41,5 +41,9 @@
         android:id="@+id/streamFragment"
         android:name="com.codecool.epub.view.ui.StreamFragment"
         android:label="fragment_stream"
-        tools:layout="@layout/fragment_stream" />
+        tools:layout="@layout/fragment_stream" >
+        <argument
+            android:name="channelName"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -137,6 +137,7 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
     }
 
     override fun onStreamClicked(stream: StreamsResponse.Stream) {
-        Log.d(TAG, "onStreamClicked: ${stream.title}")
+        val action = DetailsFragmentDirections.actionDetailsFragmentToStreamFragment(stream.getChannelName())
+        findNavController().navigate(action)
     }
 }

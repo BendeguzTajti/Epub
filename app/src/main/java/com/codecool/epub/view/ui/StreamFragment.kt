@@ -7,11 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
+import androidx.navigation.fragment.navArgs
 import com.codecool.epub.databinding.FragmentStreamBinding
-import java.net.URL
 
 class StreamFragment : Fragment() {
 
+    private val args: StreamFragmentArgs by navArgs()
     private var _binding: FragmentStreamBinding? = null
     private val binding get() = _binding!!
 
@@ -32,7 +33,7 @@ class StreamFragment : Fragment() {
             useWideViewPort = true
             loadWithOverviewMode = true
         }
-        binding.liveStream.loadUrl("https://player.twitch.tv/?channel=mizkif&parent=localhost")
+        binding.liveStream.loadUrl("https://player.twitch.tv/?channel=${args.channelName}&parent=localhost")
     }
 
     override fun onDestroyView() {
