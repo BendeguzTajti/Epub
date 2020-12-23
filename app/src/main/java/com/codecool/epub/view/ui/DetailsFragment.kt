@@ -1,5 +1,6 @@
 package com.codecool.epub.view.ui
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
@@ -137,7 +138,8 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
     }
 
     override fun onStreamClicked(stream: StreamsResponse.Stream) {
-        val action = DetailsFragmentDirections.actionDetailsFragmentToStreamFragment(stream.getChannelName())
-        findNavController().navigate(action)
+        val intent = Intent(activity, StreamActivity::class.java)
+        intent.putExtra(StreamActivity.CHANNEL_NAME_KEY, stream.getChannelName())
+        startActivity(intent)
     }
 }

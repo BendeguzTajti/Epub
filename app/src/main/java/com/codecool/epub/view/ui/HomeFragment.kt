@@ -1,5 +1,6 @@
 package com.codecool.epub.view.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -148,7 +149,8 @@ class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener 
     }
 
     override fun onStreamClicked(stream: StreamsResponse.Stream) {
-        val action = HomeFragmentDirections.actionHomeFragmentToStreamFragment(stream.getChannelName())
-        findNavController().navigate(action)
+        val intent = Intent(activity, StreamActivity::class.java)
+        intent.putExtra(StreamActivity.CHANNEL_NAME_KEY, stream.getChannelName())
+        startActivity(intent)
     }
 }
