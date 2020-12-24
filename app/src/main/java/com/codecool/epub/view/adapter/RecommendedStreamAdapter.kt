@@ -51,7 +51,7 @@ class RecommendedStreamAdapter(private val requestManager: RequestManager,
 
         override fun onClick(view: View?) {
             val stream = streams[adapterPosition]
-            listener.onStreamClicked(stream)
+            listener.onStreamClicked(stream, itemBinding.recommendedStreamThumbnail)
         }
     }
 

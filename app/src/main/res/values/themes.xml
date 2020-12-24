@@ -30,11 +30,16 @@
         <item name="android:indeterminate">true</item>
         <item name="android:indeterminateTint">@color/purple_500</item>
     </style>
+
+    <style name="VideoLoadingStyle" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateTint">@color/white</item>
+    </style>
     
     <style name="Theme.Fullscreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
+        <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>

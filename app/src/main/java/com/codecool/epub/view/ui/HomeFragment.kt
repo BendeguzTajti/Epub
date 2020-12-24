@@ -13,6 +13,7 @@ import androidx.core.view.doOnPreDraw
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.content.ContextCompat.getColor
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
@@ -148,9 +149,9 @@ class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener 
         findNavController().navigate(action, extras)
     }
 
-    override fun onStreamClicked(stream: StreamsResponse.Stream) {
-        val intent = Intent(activity, StreamActivity::class.java)
-        intent.putExtra(StreamActivity.CHANNEL_NAME_KEY, stream.getChannelName())
+    override fun onStreamClicked(stream: StreamsResponse.Stream, imageView: ImageView) {
+        val intent = Intent(activity, VideoActivity::class.java)
+        intent.putExtra(VideoActivity.CHANNEL_NAME_KEY, stream.getChannelName())
         startActivity(intent)
     }
 }

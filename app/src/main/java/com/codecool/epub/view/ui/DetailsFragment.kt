@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -137,9 +138,9 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
         findNavController().navigate(action, extras)
     }
 
-    override fun onStreamClicked(stream: StreamsResponse.Stream) {
-        val intent = Intent(activity, StreamActivity::class.java)
-        intent.putExtra(StreamActivity.CHANNEL_NAME_KEY, stream.getChannelName())
+    override fun onStreamClicked(stream: StreamsResponse.Stream, imageView: ImageView) {
+        val intent = Intent(activity, VideoActivity::class.java)
+        intent.putExtra(VideoActivity.CHANNEL_NAME_KEY, stream.getChannelName())
         startActivity(intent)
     }
 }

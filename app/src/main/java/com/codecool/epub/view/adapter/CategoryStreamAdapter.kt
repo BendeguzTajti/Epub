@@ -95,7 +95,7 @@ class CategoryStreamAdapter(private val requestManager: RequestManager,
 
         override fun onClick(view: View?) {
             val stream =  streams[adapterPosition - 1]
-            listener.onStreamClicked(stream)
+            listener.onStreamClicked(stream, itemBinding.categoryStreamThumbnail)
         }
     }
 
