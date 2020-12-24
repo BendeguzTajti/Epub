@@ -10,13 +10,21 @@ import java.lang.Exception
 
 class HomeViewModel(private val repository: Repository) : ViewModel() {
 
+    private val isRefreshing = MutableLiveData<Boolean>()
     private val recommendationData: MutableLiveData<RecommendationData> by lazy {
         MutableLiveData<RecommendationData>().also {
             getRecommendations()
         }
     }
 
-    fun getRecommendationData(): LiveData<RecommendationData> = recommendationData
+    fun isRefreshing(): LiveData<Boolean> = isRefreshing
+
+    fun recommendationData(): LiveData<RecommendationData> = recommendationData
+
+    fun refreshData() {
+        isRefreshing.value = true
+        getRecommendations()
+    }
 
     private fun getRecommendations() {
         viewModelScope.launch {
@@ -45,9 +53,11 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
                         recommendedStreamsResponse1,
                         recommendedStreamsResponse2
                     )
+                    isRefreshing.value = false
                 }
             } catch (exception: Exception) {
                 recommendationData.value = RecommendationData.OnError(exception)
+                isRefreshing.value = false
             }
         }
     }

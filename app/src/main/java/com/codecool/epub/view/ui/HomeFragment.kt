@@ -71,13 +71,22 @@ class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener 
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
         appBarBinding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
+        val toolbarSizePx = resources.getDimensionPixelSize(R.dimen.toolbar_size)
+        binding.homePageSwipeRefresh.setProgressViewOffset(true, 0, toolbarSizePx)
+        binding.homePageSwipeRefresh.setProgressViewEndTarget(true, toolbarSizePx)
+        binding.homePageSwipeRefresh.isEnabled = false
+        binding.homePageSwipeRefresh.setOnRefreshListener { viewModel.refreshData() }
         recyclerViewsInit()
-        viewModel.getRecommendationData().observe(viewLifecycleOwner, {
+        viewModel.recommendationData().observe(viewLifecycleOwner, {
             binding.homePageLoading.visibility = View.GONE
+            binding.homePageSwipeRefresh.isEnabled = true
             when (it) {
                 is RecommendationData.OnSuccess -> displayRecommendations(it)
                 is RecommendationData.OnError -> displayError(it.exception)
             }
+        })
+        viewModel.isRefreshing().observe(viewLifecycleOwner, {
+            binding.homePageSwipeRefresh.isRefreshing = it
         })
     }
 

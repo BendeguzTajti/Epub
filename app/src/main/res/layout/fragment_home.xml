@@ -9,143 +9,151 @@
 
     <include layout="@layout/main_app_bar" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/home_page_content"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/home_page_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:visibility="visible">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/home_page_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/nested_scroll_view_margin"
-            android:layout_marginBottom="@dimen/nested_scroll_view_margin">
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:visibility="visible">
 
-            <TextView
-                android:id="@+id/top_streams_title"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:paddingStart="@dimen/home_page_title_padding"
-                android:paddingEnd="@dimen/home_page_title_padding"
-                android:text="@string/top_streams_title"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/home_page_title_size"
-                android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="@dimen/nested_scroll_view_margin"
+                android:layout_marginBottom="@dimen/nested_scroll_view_margin">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/top_streams_recycler_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:paddingStart="@dimen/recycler_view_padding_side"
-                android:paddingEnd="@dimen/recycler_view_padding_side"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/top_streams_title"
-                tools:listitem="@layout/recommended_stream_item" />
+                <TextView
+                    android:id="@+id/top_streams_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/home_page_title_padding"
+                    android:paddingEnd="@dimen/home_page_title_padding"
+                    android:text="@string/top_streams_title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="@dimen/home_page_title_size"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/category_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/home_page_title_margin"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:paddingStart="@dimen/home_page_title_padding"
-                android:paddingEnd="@dimen/home_page_title_padding"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/home_page_title_size"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/top_streams_recycler_view"
-                tools:text="Categories we think you'll like" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/top_streams_recycler_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:paddingStart="@dimen/recycler_view_padding_side"
+                    android:paddingEnd="@dimen/recycler_view_padding_side"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/top_streams_title"
+                    tools:listitem="@layout/recommended_stream_item" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/category_recycler_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:paddingStart="@dimen/recycler_view_padding_side"
-                android:paddingEnd="@dimen/recycler_view_padding_side"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/category_title"
-                tools:listitem="@layout/category_item" />
+                <TextView
+                    android:id="@+id/category_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/home_page_title_margin"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/home_page_title_padding"
+                    android:paddingEnd="@dimen/home_page_title_padding"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="@dimen/home_page_title_size"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/top_streams_recycler_view"
+                    tools:text="Categories we think you'll like" />
 
-            <TextView
-                android:id="@+id/recommended_streams_title_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/home_page_title_margin"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:paddingStart="@dimen/home_page_title_padding"
-                android:paddingEnd="@dimen/home_page_title_padding"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/home_page_title_size"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/category_recycler_view"
-                tools:text="Recommended World of Warcraft channels" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/category_recycler_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:paddingStart="@dimen/recycler_view_padding_side"
+                    android:paddingEnd="@dimen/recycler_view_padding_side"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/category_title"
+                    tools:listitem="@layout/category_item" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recommended_streams_recycler_view1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:paddingStart="@dimen/recycler_view_padding_side"
-                android:paddingEnd="@dimen/recycler_view_padding_side"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recommended_streams_title_1"
-                tools:listitem="@layout/recommended_stream_item" />
+                <TextView
+                    android:id="@+id/recommended_streams_title_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/home_page_title_margin"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/home_page_title_padding"
+                    android:paddingEnd="@dimen/home_page_title_padding"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="@dimen/home_page_title_size"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/category_recycler_view"
+                    tools:text="Recommended World of Warcraft channels" />
 
-            <TextView
-                android:id="@+id/recommended_streams_title_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/home_page_title_margin"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:paddingStart="@dimen/home_page_title_padding"
-                android:paddingEnd="@dimen/home_page_title_padding"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/home_page_title_size"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/recommended_streams_recycler_view1"
-                tools:text="Recommended Just Chatting channels" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recommended_streams_recycler_view1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:paddingStart="@dimen/recycler_view_padding_side"
+                    android:paddingEnd="@dimen/recycler_view_padding_side"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recommended_streams_title_1"
+                    tools:listitem="@layout/recommended_stream_item" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recommended_streams_recycler_view2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:paddingStart="@dimen/recycler_view_padding_side"
-                android:paddingEnd="@dimen/recycler_view_padding_side"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recommended_streams_title_2"
-                tools:listitem="@layout/recommended_stream_item" />
+                <TextView
+                    android:id="@+id/recommended_streams_title_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/home_page_title_margin"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/home_page_title_padding"
+                    android:paddingEnd="@dimen/home_page_title_padding"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="@dimen/home_page_title_size"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/recommended_streams_recycler_view1"
+                    tools:text="Recommended Just Chatting channels" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recommended_streams_recycler_view2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:paddingStart="@dimen/recycler_view_padding_side"
+                    android:paddingEnd="@dimen/recycler_view_padding_side"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recommended_streams_title_2"
+                    tools:listitem="@layout/recommended_stream_item" />
 
-    </androidx.core.widget.NestedScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/home_page_loading"
