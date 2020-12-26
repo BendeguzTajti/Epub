@@ -12,4 +12,5 @@
     <string name="thousand_short">K</string>
     <string name="viewers">viewers</string>
     <string name="app_bar_transition_name">app_bar_transition</string>
+    <string name="retry">Retry</string>
 </resources>

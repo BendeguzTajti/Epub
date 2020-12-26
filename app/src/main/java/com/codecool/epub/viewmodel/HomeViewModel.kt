@@ -2,7 +2,7 @@ package com.codecool.epub.viewmodel
 
 import androidx.lifecycle.*
 import com.codecool.epub.model.RecommendationData
-import com.codecool.epub.repository.Repository
+import com.codecool.epub.data.Repository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -31,7 +31,7 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
             try {
                 coroutineScope {
                     val limit = 8
-                    val topStreamsDeferred = async { repository.getTopStreams(limit) }
+                    val topStreamsDeferred = async { repository.getStreams(null, null, limit) }
                     val topCategoriesDeferred = async { repository.getTopCategories(limit) }
                     val topCategoriesResponse = topCategoriesDeferred.await()
                     val topStreamsResponse = topStreamsDeferred.await()
@@ -41,10 +41,8 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
                         .filterNot { it.id == recommendedCategory1.id }
                         .random()
 
-                    val recommendedStreamsDeferred1 =
-                        async { repository.getTopStreamsByCategory(recommendedCategory1.id, limit) }
-                    val recommendedStreamsDeferred2 =
-                        async { repository.getTopStreamsByCategory(recommendedCategory2.id, limit) }
+                    val recommendedStreamsDeferred1 = async { repository.getStreams(null, recommendedCategory1.id, limit) }
+                    val recommendedStreamsDeferred2 = async { repository.getStreams(null, recommendedCategory2.id, limit) }
                     val recommendedStreamsResponse1 = recommendedStreamsDeferred1.await()
                     val recommendedStreamsResponse2 = recommendedStreamsDeferred2.await()
                     recommendationData.value = RecommendationData.OnSuccess(

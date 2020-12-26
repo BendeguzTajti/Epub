@@ -8,7 +8,7 @@ import com.codecool.epub.network.api.AuthApi
 import com.codecool.epub.network.TokenAuthenticator
 import com.codecool.epub.network.TokenManager
 import com.codecool.epub.network.api.DataApi
-import com.codecool.epub.repository.Repository
+import com.codecool.epub.data.Repository
 import com.codecool.epub.util.Constants.Companion.BASE_URL
 import com.codecool.epub.util.Constants.Companion.SHARED_PREF_NAME
 import com.codecool.epub.viewmodel.DetailsViewModel

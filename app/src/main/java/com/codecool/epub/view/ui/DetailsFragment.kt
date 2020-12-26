@@ -10,28 +10,32 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.doOnPreDraw
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.view.adapter.CategoryStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
 import com.codecool.epub.databinding.MainAppBarBinding
-import com.codecool.epub.model.CategoryStreamsData
 import com.codecool.epub.model.StreamsResponse
+import com.codecool.epub.view.adapter.CategoryStreamLoadStateAdapter
 import com.codecool.epub.view.adapter.StreamAdapterListener
 import com.codecool.epub.viewmodel.DetailsViewModel
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialFade
 import com.google.android.material.transition.MaterialSharedAxis
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.lang.Exception
 
 class DetailsFragment : Fragment(), StreamAdapterListener {
 
@@ -47,6 +51,8 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var appBarBinding: MainAppBarBinding
+
+    private lateinit var adapter: CategoryStreamAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,10 +81,16 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
         view.doOnPreDraw { startPostponedEnterTransition() }
         appBarBinding.toolbarIcon.visibility = View.GONE
         appBarBinding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
+        val category = args.category
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         appBarBinding.toolBar.setupWithNavController(navController, appBarConfiguration)
-        setupCategory()
+        adapterInit()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getCategoryStreams(category.id).collectLatest {
+                adapter.submitData(it)
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -86,37 +98,34 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
         _binding = null
     }
 
-    private fun setupCategory() {
-        val category = args.category
-        val adapter = CategoryStreamAdapter(requestManager, category, this)
-        binding.categoryStreamsRecyclerView.apply {
-            layoutManager = getCategoryLayoutManager()
-            this.adapter = adapter
+    private fun adapterInit() {
+        this.adapter = CategoryStreamAdapter(requestManager, args.category)
+        binding.categoryStreamsRecyclerView.layoutManager = getCategoryLayoutManager()
+        binding.categoryStreamsRecyclerView.adapter = adapter.withLoadStateFooter(CategoryStreamLoadStateAdapter { adapter.retry() })
+        adapter.addLoadStateListener { loadState ->
+            binding.categoryStreamsRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
+            binding.detailsPageLoading.isVisible = loadState.source.refresh is LoadState.Loading
+            // TODO : Display Error
+//            binding.errorContainer.isVisible = loadState.source.refresh is LoadState.Error
+//            val errorState = loadState.source.append as? LoadState.Error
+//                ?: loadState.source.prepend as? LoadState.Error
+//                ?: loadState.append as? LoadState.Error
+//                ?: loadState.prepend as? LoadState.Error
+//            val error = errorState.error
         }
-
-        viewModel.getStreams(category.id)
-        viewModel.getCategoryStreamsData().observe(viewLifecycleOwner, {
-            binding.detailsPageLoading.visibility = View.GONE
-            when(it) {
-                is CategoryStreamsData.OnSuccess -> {
-                    adapter.submitList(it.streamsResponse.data)
-                    binding.categoryStreamsRecyclerView.visibility = View.VISIBLE
-                }
-                is CategoryStreamsData.OnError -> displayError(it.exception)
-            }
-        })
-    }
-
-    private fun displayError(exception: Exception) {
-        Log.d(TAG, "displayError: $exception")
     }
 
     private fun getCategoryLayoutManager(): GridLayoutManager {
         return if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            GridLayoutManager(context, SPAN_COUNT_LANDSCAPE).apply {
+            GridLayoutManager(context, SPAN_COUNT_LANDSCAPE)
+                .apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return if (position == 0) 2 else 1
+                        return when(adapter.getItemViewType(position)) {
+                            R.layout.category_stream_item -> 1
+                            R.layout.category_details_header -> 2
+                            else -> 1
+                        }
                     }
                 }
             }

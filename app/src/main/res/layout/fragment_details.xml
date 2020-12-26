@@ -12,19 +12,15 @@
         android:id="@+id/category_streams_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipChildren="false"
         android:clipToPadding="false"
-        android:overScrollMode="never"
         android:paddingStart="@dimen/recycler_view_padding_side"
-        android:paddingTop="@dimen/category_streams_recycler_view_padding_top"
         android:paddingEnd="@dimen/recycler_view_padding_side"
-        android:paddingBottom="@dimen/category_streams_recycler_view_padding_bottom"
-        android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:itemCount="4"
         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:listitem="@layout/category_stream_item"
-        tools:spanCount="1"
-        tools:visibility="visible" />
+        tools:spanCount="1" />
 
     <ProgressBar
         android:id="@+id/details_page_loading"
@@ -32,6 +28,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        tools:visibility="gone" />
+        android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
