@@ -5,7 +5,7 @@
     <dimen name="nested_scroll_view_margin">18dp</dimen>
     <dimen name="home_page_title_padding">6dp</dimen>
     <dimen name="home_page_title_size">14sp</dimen>
-    <dimen name="recycler_view_padding_side">3dp</dimen>
+    <dimen name="recycler_view_padding_side">2dp</dimen>
     <dimen name="card_margin">4dp</dimen>
     <dimen name="card_corner_radius">0dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
@@ -13,7 +13,6 @@
     <dimen name="box_art_height">180dp</dimen>
     <dimen name="toolbar_icon_margin">12dp</dimen>
     <dimen name="toolbar_content_inset_start">0dp</dimen>
-    <dimen name="category_title_size">18sp</dimen>
     <dimen name="recommended_stream_thumbnail_width">240dp</dimen>
     <dimen name="recommended_stream_thumbnail_height">130dp</dimen>
     <dimen name="stream_card_content_margin_bottom">6dp</dimen>
@@ -26,15 +25,10 @@
     <dimen name="stream_card_text_width">0dp</dimen>
     <dimen name="stream_card_text_padding">6dp</dimen>
     <dimen name="stream_card_text_size">12sp</dimen>
-    <dimen name="details_box_art_width">90dp</dimen>
-    <dimen name="details_box_art_height">120dp</dimen>
     <dimen name="category_stream_thumbnail_height_portrait">190dp</dimen>
     <dimen name="category_stream_thumbnail_height_landscape">150dp</dimen>
     <dimen name="home_page_title_margin">18dp</dimen>
-    <dimen name="category_header_margin_sides">3dp</dimen>
-    <dimen name="category_header_margin_bottom">22dp</dimen>
-    <dimen name="category_header_title_width">0dp</dimen>
-    <dimen name="category_header_title_padding">12dp</dimen>
-    <dimen name="error_footer_margin">8dp</dimen>
-    <dimen name="category_header_margin_top">18dp</dimen>
+    <dimen name="footer_loading_margin_bottom">8dp</dimen>
+    <dimen name="footer_loading_margin_top">4dp</dimen>
+    <dimen name="details_recycler_view_padding_top">4dp</dimen>
 </resources>

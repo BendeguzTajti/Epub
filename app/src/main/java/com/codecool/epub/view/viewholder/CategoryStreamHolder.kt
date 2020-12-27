@@ -13,20 +13,19 @@ import com.codecool.epub.databinding.CategoryStreamItemBinding
 import com.codecool.epub.model.StreamsResponse
 
 class CategoryStreamHolder(
-    private val binding: CategoryStreamItemBinding,
-    private val requestManager: RequestManager
+    private val binding: CategoryStreamItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
     companion object {
-        fun create(parent: ViewGroup, requestManager: RequestManager): CategoryStreamHolder {
+        fun create(parent: ViewGroup): CategoryStreamHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.category_stream_item, parent, false)
             val binding = CategoryStreamItemBinding.bind(view)
-            return CategoryStreamHolder(binding, requestManager)
+            return CategoryStreamHolder(binding)
         }
     }
 
-    fun bind(stream: StreamsResponse.Stream) {
+    fun bind(stream: StreamsResponse.Stream, requestManager: RequestManager) {
         val resources = itemView.resources
         val thumbnailWidthPx = getThumbnailWidthPx(resources)
         val thumbnailHeightPx = getThumbnailHeightPx(resources)
@@ -60,16 +59,12 @@ class CategoryStreamHolder(
     private fun getThumbnailWidthPx(resources: Resources): Int {
         val displayMetrics = resources.displayMetrics
         val screenWidthPx = displayMetrics.widthPixels
+        val recyclerViewPaddingPx = resources.getDimensionPixelSize(R.dimen.recycler_view_padding_side)
+        val cardMarginPx = resources.getDimensionPixelSize(R.dimen.card_margin)
         return if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            val recyclerViewPaddingPx =
-                resources.getDimensionPixelSize(R.dimen.recycler_view_padding_side)
-            val cardMarginPx = resources.getDimensionPixelSize(R.dimen.card_margin)
             val columnCount = 2
             screenWidthPx / columnCount - recyclerViewPaddingPx * 2 - cardMarginPx
         } else {
-            val recyclerViewPaddingPx =
-                resources.getDimensionPixelSize(R.dimen.recycler_view_padding_side)
-            val cardMarginPx = resources.getDimensionPixelSize(R.dimen.card_margin)
             screenWidthPx - recyclerViewPaddingPx * 2 - cardMarginPx * 2
         }
     }

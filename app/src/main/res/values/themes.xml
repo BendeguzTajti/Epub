@@ -18,7 +18,6 @@
         <item name="actionBarSize">@dimen/toolbar_size</item>
         <item name="fontFamily">@font/montserrat</item>
         <item name="searchViewStyle">@style/SearchViewStyle</item>
-        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
     </style>
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView.ActionBar">
@@ -35,11 +34,6 @@
     <style name="VideoLoadingStyle" parent="Widget.AppCompat.ProgressBar">
         <item name="android:indeterminate">true</item>
         <item name="android:indeterminateTint">@color/white</item>
-    </style>
-
-    <style name="Widget.App.Snackbar" parent="Widget.MaterialComponents.Snackbar">
-        <item name="android:layout_margin">0dp</item>
-        <item name="elevation">4dp</item>
     </style>
     
     <style name="Theme.Fullscreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">

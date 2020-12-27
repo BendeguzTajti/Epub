@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 class Repository(private val dataApi: DataApi) {
 
     companion object {
-        const val NETWORK_PAGE_SIZE = 4
+        const val NETWORK_PAGE_SIZE = 1
     }
 
     suspend fun getStreams(cursor: String?, categoryId: String?, limit: Int): StreamsResponse = dataApi.getStreams(cursor, categoryId, limit)

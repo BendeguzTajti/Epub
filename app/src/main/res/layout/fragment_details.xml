@@ -12,12 +12,12 @@
         android:id="@+id/category_streams_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipChildren="false"
         android:clipToPadding="false"
         android:paddingStart="@dimen/recycler_view_padding_side"
+        android:paddingTop="@dimen/details_recycler_view_padding_top"
         android:paddingEnd="@dimen/recycler_view_padding_side"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:itemCount="4"
+        tools:itemCount="2"
         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:listitem="@layout/category_stream_item"
         tools:spanCount="1" />
@@ -28,6 +28,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone" />
+        tools:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

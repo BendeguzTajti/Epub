@@ -1,7 +1,6 @@
 package com.codecool.epub.data
 
 import androidx.paging.PagingSource
-import com.codecool.epub.data.Repository.Companion.NETWORK_PAGE_SIZE
 import com.codecool.epub.model.StreamsResponse
 import com.codecool.epub.network.api.DataApi
 import java.lang.Exception
@@ -13,7 +12,7 @@ class StreamPagingSource(
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, StreamsResponse.Stream> {
         val cursor = params.key
-        val limit = NETWORK_PAGE_SIZE
+        val limit = 4
         return try {
             val response = service.getStreams(cursor, categoryId, limit)
             val streams = response.data

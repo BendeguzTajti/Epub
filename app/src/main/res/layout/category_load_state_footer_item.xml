@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:layout_marginStart="@dimen/card_margin"
-    android:layout_marginTop="@dimen/card_margin"
-    android:layout_marginEnd="@dimen/card_margin"
-    android:layout_marginBottom="@dimen/error_footer_margin">
+    android:orientation="vertical">
 
     <ProgressBar
         android:id="@+id/category_streams_loading"
         style="@style/PageLoadingStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/footer_loading_margin_top"
+        android:layout_marginBottom="@dimen/footer_loading_margin_bottom" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

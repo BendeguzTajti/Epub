@@ -6,13 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
-import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.model.StreamsResponse
-import com.codecool.epub.view.viewholder.CategoryStreamHeaderViewHolder
 import com.codecool.epub.view.viewholder.CategoryStreamHolder
 
-class CategoryStreamAdapter(private val requestManager: RequestManager,
-                            private val category: CategoryResponse.Category) :
+class CategoryStreamAdapter(private val requestManager: RequestManager) :
     PagingDataAdapter<StreamsResponse.Stream, RecyclerView.ViewHolder>(STREAM_COMPARATOR) {
 
     companion object {
@@ -32,30 +29,17 @@ class CategoryStreamAdapter(private val requestManager: RequestManager,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == R.layout.category_stream_item) {
-            CategoryStreamHolder.create(parent, requestManager)
-        } else {
-            CategoryStreamHeaderViewHolder.create(parent, requestManager)
-        }
+        return CategoryStreamHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (getItemViewType(position) == R.layout.category_stream_item) {
-            val offset = 1
-            val currentStream = getItem(position - offset)
-            currentStream?.let {
-                (holder as CategoryStreamHolder).bind(it)
-            }
-        } else {
-            (holder as CategoryStreamHeaderViewHolder).bind(category)
+        val currentStream = getItem(position)
+        currentStream?.let {
+            (holder as CategoryStreamHolder).bind(it, requestManager)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when(position) {
-            0 -> R.layout.category_details_header
-            else -> R.layout.category_stream_item
-        }
+        return if (position == itemCount) R.layout.category_stream_item else R.layout.category_load_state_footer_item
     }
-
 }

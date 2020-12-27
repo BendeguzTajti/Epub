@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +51,7 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
     private val binding get() = _binding!!
     private lateinit var appBarBinding: MainAppBarBinding
 
-    private lateinit var adapter: CategoryStreamAdapter
+    private val adapter = CategoryStreamAdapter(requestManager)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,13 +98,13 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
     }
 
     private fun adapterInit() {
-        this.adapter = CategoryStreamAdapter(requestManager, args.category)
+        binding.categoryStreamsRecyclerView.adapter = adapter.withLoadStateFooter(CategoryStreamLoadStateAdapter())
         binding.categoryStreamsRecyclerView.layoutManager = getCategoryLayoutManager()
-        binding.categoryStreamsRecyclerView.adapter = adapter.withLoadStateFooter(CategoryStreamLoadStateAdapter { adapter.retry() })
+        binding.categoryStreamsRecyclerView.setHasFixedSize(true)
         adapter.addLoadStateListener { loadState ->
             binding.categoryStreamsRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
             binding.detailsPageLoading.isVisible = loadState.source.refresh is LoadState.Loading
-            // TODO : Display Error
+            // TODO : Display error when the list is empty
 //            binding.errorContainer.isVisible = loadState.source.refresh is LoadState.Error
 //            val errorState = loadState.source.append as? LoadState.Error
 //                ?: loadState.source.prepend as? LoadState.Error
@@ -117,15 +116,10 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
 
     private fun getCategoryLayoutManager(): GridLayoutManager {
         return if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            GridLayoutManager(context, SPAN_COUNT_LANDSCAPE)
-                .apply {
+            GridLayoutManager(context, SPAN_COUNT_LANDSCAPE).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return when(adapter.getItemViewType(position)) {
-                            R.layout.category_stream_item -> 1
-                            R.layout.category_details_header -> 2
-                            else -> 1
-                        }
+                        return if (adapter.getItemViewType(position) == R.layout.category_stream_item) 2 else 1
                     }
                 }
             }
