@@ -20,7 +20,6 @@ import com.codecool.epub.R
 import com.codecool.epub.view.adapter.CategoryAdapter
 import com.codecool.epub.view.adapter.RecommendedStreamAdapter
 import com.codecool.epub.databinding.FragmentHomeBinding
-import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.model.RecommendationData
 import com.codecool.epub.model.StreamsResponse
@@ -43,7 +42,6 @@ class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener 
     private val viewModel: HomeViewModel by viewModel()
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var appBarBinding: MainAppBarBinding
 
     // Adapters
     private val topStreamsAdapter = RecommendedStreamAdapter(requestManager, this)
@@ -62,7 +60,6 @@ class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener 
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        appBarBinding = MainAppBarBinding.bind(binding.root)
         return binding.root
     }
 
@@ -70,10 +67,7 @@ class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener 
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
-        appBarBinding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
-        val toolbarSizePx = resources.getDimensionPixelSize(R.dimen.toolbar_size)
-        binding.homePageSwipeRefresh.setProgressViewOffset(true, 0, toolbarSizePx)
-        binding.homePageSwipeRefresh.setProgressViewEndTarget(true, toolbarSizePx)
+        binding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
         binding.homePageSwipeRefresh.isEnabled = false
         binding.homePageSwipeRefresh.setOnRefreshListener { viewModel.refreshData() }
         recyclerViewsInit()
@@ -150,12 +144,14 @@ class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener 
     }
 
     override fun onCategoryClicked(category: CategoryResponse.Category) {
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
-        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true).apply {
+            excludeTarget(R.id.home_app_bar, true)
+        }
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply {
+            excludeTarget(R.id.home_app_bar, true)
+        }
         val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(category)
-        val appBarTransitionName = getString(R.string.app_bar_transition_name)
-        val extras = FragmentNavigatorExtras(appBarBinding.appBar to appBarTransitionName)
-        findNavController().navigate(action, extras)
+        findNavController().navigate(action)
     }
 
     override fun onStreamClicked(stream: StreamsResponse.Stream, imageView: ImageView) {

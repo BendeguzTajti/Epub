@@ -6,7 +6,21 @@
     android:layout_height="match_parent"
     android:clipChildren="false">
 
-    <include layout="@layout/main_app_bar" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/details_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/details_tool_bar"
+            style="@style/Widget.MaterialComponents.Toolbar.Surface"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="@dimen/toolbar_elevation"
+            app:contentInsetStart="@dimen/toolbar_content_inset_start"
+            app:layout_scrollFlags="scroll|enterAlways|snap" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/category_streams_recycler_view"
@@ -16,6 +30,7 @@
         android:paddingStart="@dimen/recycler_view_padding_side"
         android:paddingTop="@dimen/details_recycler_view_padding_top"
         android:paddingEnd="@dimen/recycler_view_padding_side"
+        android:transitionGroup="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:itemCount="2"
         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

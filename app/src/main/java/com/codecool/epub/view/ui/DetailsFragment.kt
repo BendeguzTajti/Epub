@@ -2,17 +2,14 @@ package com.codecool.epub.view.ui
 
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,13 +20,10 @@ import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.view.adapter.CategoryStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
-import com.codecool.epub.databinding.MainAppBarBinding
 import com.codecool.epub.model.StreamsResponse
 import com.codecool.epub.view.adapter.CategoryStreamLoadStateAdapter
 import com.codecool.epub.view.adapter.StreamAdapterListener
 import com.codecool.epub.viewmodel.DetailsViewModel
-import com.google.android.material.transition.MaterialContainerTransform
-import com.google.android.material.transition.MaterialFade
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -49,19 +43,18 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
     private val viewModel: DetailsViewModel by viewModel()
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var appBarBinding: MainAppBarBinding
 
     private val adapter = CategoryStreamAdapter(requestManager)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            scrimColor = Color.TRANSPARENT
-            drawingViewId = R.id.nav_host_fragment
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true).apply {
+            excludeTarget(R.id.details_app_bar, true)
         }
-        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
-        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply {
+            excludeTarget(R.id.details_app_bar, true)
+        }
     }
 
     override fun onCreateView(
@@ -70,20 +63,15 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailsBinding.inflate(layoutInflater, container, false)
-        appBarBinding = MainAppBarBinding.bind(binding.root)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        postponeEnterTransition()
-        view.doOnPreDraw { startPostponedEnterTransition() }
-        appBarBinding.toolbarIcon.visibility = View.GONE
-        appBarBinding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
         val category = args.category
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
-        appBarBinding.toolBar.setupWithNavController(navController, appBarConfiguration)
+        binding.detailsToolBar.setupWithNavController(navController, appBarConfiguration)
         adapterInit()
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.getCategoryStreams(category.id).collectLatest {
@@ -126,19 +114,6 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
         } else {
             GridLayoutManager(context, SPAN_COUNT_PORTRAIT)
         }
-    }
-
-    private fun navigateToSearchFragment(view: View) {
-        exitTransition = MaterialFade().apply {
-            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
-        }
-        reenterTransition = MaterialFade().apply {
-            duration = resources.getInteger(R.integer.reenter_motion_duration_small).toLong()
-        }
-        val action = DetailsFragmentDirections.actionDetailsFragmentToSearchFragment()
-        val searchButtonTransitionName = getString(R.string.search_button_transition_name)
-        val extras = FragmentNavigatorExtras(view to searchButtonTransitionName)
-        findNavController().navigate(action, extras)
     }
 
     override fun onStreamClicked(stream: StreamsResponse.Stream, imageView: ImageView) {
