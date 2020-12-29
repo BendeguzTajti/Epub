@@ -17,12 +17,12 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat.getColor
 import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
-import com.codecool.epub.view.adapter.CategoryAdapter
 import com.codecool.epub.view.adapter.RecommendedStreamAdapter
 import com.codecool.epub.databinding.FragmentHomeBinding
 import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.model.RecommendationData
 import com.codecool.epub.model.StreamsResponse
+import com.codecool.epub.view.adapter.CategoryAdapter
 import com.codecool.epub.view.adapter.CategoryAdapterListener
 import com.codecool.epub.view.adapter.StreamAdapterListener
 import com.codecool.epub.viewmodel.HomeViewModel
@@ -44,10 +44,10 @@ class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener 
     private val binding get() = _binding!!
 
     // Adapters
-    private val topStreamsAdapter = RecommendedStreamAdapter(requestManager, this)
-    private val categoryAdapter = CategoryAdapter(requestManager,this)
-    private val recommendedStreamsAdapter1 = RecommendedStreamAdapter(requestManager, this)
-    private val recommendedStreamsAdapter2 = RecommendedStreamAdapter(requestManager, this)
+    private val topStreamsAdapter = RecommendedStreamAdapter(requestManager)
+    private val categoryAdapter = CategoryAdapter(requestManager)
+    private val recommendedStreamsAdapter1 = RecommendedStreamAdapter(requestManager)
+    private val recommendedStreamsAdapter2 = RecommendedStreamAdapter(requestManager)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,23 +97,23 @@ class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener 
     }
 
     private fun displayRecommendations(recommendation: RecommendationData.OnSuccess) {
-        topStreamsAdapter.submitList(recommendation.topStreamsResponse.data)
+        topStreamsAdapter.submitList(recommendation.topStreams)
 
         binding.categoryTitle.text = highlightText(getString(R.string.categories_title), getString(R.string.categories_highlight_text))
-        categoryAdapter.submitList(recommendation.topCategories.data)
+        categoryAdapter.submitList(recommendation.topCategories)
 
         val recommendedStreamsTitleStart = getString(R.string.recommended_streams_title_1)
         val recommendedStreamsTitleEnd = getString(R.string.recommended_streams_title_2)
 
-        val recommendedCategoryName1 = recommendation.recommendedStreams1.data.first().categoryName
+        val recommendedCategoryName1 = recommendation.recommendedStreams1.first().categoryName
         val recommendedStreamsTitle1 = "$recommendedStreamsTitleStart $recommendedCategoryName1 $recommendedStreamsTitleEnd"
         binding.recommendedStreamsTitle1.text = highlightText(recommendedStreamsTitle1, recommendedCategoryName1)
-        recommendedStreamsAdapter1.submitList(recommendation.recommendedStreams1.data)
+        recommendedStreamsAdapter1.submitList(recommendation.recommendedStreams1)
 
-        val recommendedCategoryName2 = recommendation.recommendedStreams2.data.first().categoryName
+        val recommendedCategoryName2 = recommendation.recommendedStreams2.first().categoryName
         val recommendedStreamsTitle2 = "$recommendedStreamsTitleStart $recommendedCategoryName2 $recommendedStreamsTitleEnd"
         binding.recommendedStreamsTitle2.text = highlightText(recommendedStreamsTitle2, recommendedCategoryName2)
-        recommendedStreamsAdapter2.submitList(recommendation.recommendedStreams2.data)
+        recommendedStreamsAdapter2.submitList(recommendation.recommendedStreams2)
         binding.homePageContent.visibility = View.VISIBLE
     }
 

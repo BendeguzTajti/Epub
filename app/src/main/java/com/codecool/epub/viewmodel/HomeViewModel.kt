@@ -46,10 +46,10 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
                     val recommendedStreamsResponse1 = recommendedStreamsDeferred1.await()
                     val recommendedStreamsResponse2 = recommendedStreamsDeferred2.await()
                     recommendationData.value = RecommendationData.OnSuccess(
-                        topStreamsResponse,
-                        topCategoriesResponse,
-                        recommendedStreamsResponse1,
-                        recommendedStreamsResponse2
+                        topStreamsResponse.data,
+                        topCategoriesResponse.data,
+                        recommendedStreamsResponse1.data,
+                        recommendedStreamsResponse2.data
                     )
                     isRefreshing.value = false
                 }

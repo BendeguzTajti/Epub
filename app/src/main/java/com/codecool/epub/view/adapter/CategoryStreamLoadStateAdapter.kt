@@ -3,15 +3,15 @@ package com.codecool.epub.view.adapter
 import android.view.ViewGroup
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
-import com.codecool.epub.view.viewholder.CategoryStreamsLoadStateHolder
+import com.codecool.epub.view.viewholder.CategoryStreamLoadStateHolder
 
-class CategoryStreamLoadStateAdapter : LoadStateAdapter<CategoryStreamsLoadStateHolder>() {
+class CategoryStreamLoadStateAdapter : LoadStateAdapter<CategoryStreamLoadStateHolder>() {
 
-    override fun onBindViewHolder(holder: CategoryStreamsLoadStateHolder, loadState: LoadState) {
+    override fun onBindViewHolder(holder: CategoryStreamLoadStateHolder, loadState: LoadState) {
         holder.bind(loadState)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): CategoryStreamsLoadStateHolder {
-        return CategoryStreamsLoadStateHolder.create(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): CategoryStreamLoadStateHolder {
+        return CategoryStreamLoadStateHolder.create(parent)
     }
 }

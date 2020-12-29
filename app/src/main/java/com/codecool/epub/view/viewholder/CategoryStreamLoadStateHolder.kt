@@ -8,16 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codecool.epub.R
 import com.codecool.epub.databinding.CategoryLoadStateFooterItemBinding
 
-class CategoryStreamsLoadStateHolder(
+class CategoryStreamLoadStateHolder(
     private val binding: CategoryLoadStateFooterItemBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     companion object {
-        fun create(parent: ViewGroup): CategoryStreamsLoadStateHolder {
+        fun create(parent: ViewGroup): CategoryStreamLoadStateHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.category_load_state_footer_item, parent, false)
             val binding = CategoryLoadStateFooterItemBinding.bind(view)
-            return CategoryStreamsLoadStateHolder(binding)
+            return CategoryStreamLoadStateHolder(binding)
         }
     }
 

@@ -1,54 +1,38 @@
 package com.codecool.epub.view.adapter
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
-import com.codecool.epub.R
-import com.codecool.epub.databinding.CategoryItemBinding
 import com.codecool.epub.model.CategoryResponse
+import com.codecool.epub.view.viewholder.CategoryHolder
 
-class CategoryAdapter(private val requestManager: RequestManager,
-                      private val listener: CategoryAdapterListener) : RecyclerView.Adapter<CategoryAdapter.CategoryHolder>() {
+class CategoryAdapter(private val requestManager: RequestManager) :
+    ListAdapter<CategoryResponse.Category, RecyclerView.ViewHolder>(CATEGORY_COMPARATOR) {
 
-    private var categories: List<CategoryResponse.Category> = emptyList()
+    companion object {
+        private val CATEGORY_COMPARATOR = object : DiffUtil.ItemCallback<CategoryResponse.Category>() {
+            override fun areItemsTheSame(
+                oldItem: CategoryResponse.Category,
+                newItem: CategoryResponse.Category
+            ): Boolean =
+                oldItem.id == newItem.id
 
-    inner class CategoryHolder(private val itemBinding: CategoryItemBinding) : RecyclerView.ViewHolder(itemBinding.root), View.OnClickListener {
-
-        init {
-            itemBinding.root.setOnClickListener(this)
-        }
-
-        fun bind(currentGame: CategoryResponse.Category) {
-            val resources = itemView.resources
-            val boxArtWidthPx = resources.getDimensionPixelSize(R.dimen.box_art_width)
-            val boxArtHeightPx = resources.getDimensionPixelSize(R.dimen.box_art_height)
-            requestManager.load(currentGame.getImageUrl(boxArtWidthPx, boxArtHeightPx))
-                .thumbnail(0.5f)
-                .into(itemBinding.boxArt)
-        }
-
-        override fun onClick(v: View?) {
-            val category = categories[adapterPosition]
-            listener.onCategoryClicked(category)
+            override fun areContentsTheSame(
+                oldItem: CategoryResponse.Category,
+                newItem: CategoryResponse.Category
+            ): Boolean =
+                oldItem == newItem
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryHolder {
-        val itemBinding = CategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CategoryHolder(itemBinding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return CategoryHolder.create(parent)
     }
 
-    override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
-        val currentGame = categories[position]
-        holder.bind(currentGame)
-    }
-
-    override fun getItemCount(): Int = categories.size
-
-    fun submitList(attachments: List<CategoryResponse.Category>) {
-        categories = attachments
-        notifyDataSetChanged()
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val category = getItem(position)
+        (holder as CategoryHolder).bind(category, requestManager)
     }
 }
