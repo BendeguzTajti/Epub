@@ -63,13 +63,12 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val category = args.category
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         binding.detailsToolBar.setupWithNavController(navController, appBarConfiguration)
         adapterInit()
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getCategoryStreams(category.id).collectLatest {
+            viewModel.getCategoryStreams(args.categoryId).collectLatest {
                 categoryStreamAdapter.submitData(it)
             }
         }

@@ -167,7 +167,7 @@ class HomeFragment : Fragment() {
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply {
             excludeTarget(R.id.home_app_bar, true)
         }
-        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(category)
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(category.id, category.name)
         findNavController().navigate(action)
     }
 
