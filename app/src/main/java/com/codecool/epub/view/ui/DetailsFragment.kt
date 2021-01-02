@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -21,14 +20,13 @@ import com.codecool.epub.view.adapter.CategoryStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
 import com.codecool.epub.model.StreamsResponse
 import com.codecool.epub.view.adapter.CategoryStreamLoadStateAdapter
-import com.codecool.epub.view.adapter.StreamAdapterListener
 import com.codecool.epub.viewmodel.DetailsViewModel
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class DetailsFragment : Fragment(), StreamAdapterListener {
+class DetailsFragment : Fragment() {
 
     companion object {
         private const val TAG = "DetailsFragment"
@@ -78,15 +76,18 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
+        binding.categoryStreamsRecyclerView.adapter = null
         _binding = null
+        super.onDestroyView()
     }
 
     private fun adapterInit() {
         categoryStreamAdapter = CategoryStreamAdapter()
-        binding.categoryStreamsRecyclerView.adapter = categoryStreamAdapter.withLoadStateFooter(CategoryStreamLoadStateAdapter())
-        binding.categoryStreamsRecyclerView.layoutManager = getCategoryLayoutManager()
-        binding.categoryStreamsRecyclerView.setHasFixedSize(true)
+        binding.categoryStreamsRecyclerView.apply {
+            layoutManager = getCategoryLayoutManager()
+            adapter = categoryStreamAdapter.withLoadStateFooter(CategoryStreamLoadStateAdapter())
+            setHasFixedSize(true)
+        }
         categoryStreamAdapter.addLoadStateListener { loadState ->
             binding.categoryStreamsRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
             binding.detailsPageLoading.isVisible = loadState.source.refresh is LoadState.Loading
@@ -102,7 +103,7 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
 
     private fun getCategoryLayoutManager(): GridLayoutManager {
         return if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            GridLayoutManager(context, SPAN_COUNT_LANDSCAPE).apply {
+            GridLayoutManager(requireContext(), SPAN_COUNT_LANDSCAPE).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
                         return if (categoryStreamAdapter.getItemViewType(position) == R.layout.category_stream_item) 2 else 1
@@ -110,11 +111,11 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
                 }
             }
         } else {
-            GridLayoutManager(context, SPAN_COUNT_PORTRAIT)
+            GridLayoutManager(requireContext(), SPAN_COUNT_PORTRAIT)
         }
     }
 
-    override fun onStreamClicked(stream: StreamsResponse.Stream, imageView: ImageView) {
+    private fun onStreamClicked(stream: StreamsResponse.Stream) {
         val intent = Intent(activity, VideoActivity::class.java)
         intent.putExtra(VideoActivity.CHANNEL_NAME_KEY, stream.getChannelName())
         startActivity(intent)

@@ -79,8 +79,9 @@ class HomeFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
+        destroyAdapters()
         _binding = null
+        super.onDestroyView()
     }
 
     private fun recyclerViewsInit() {
@@ -88,7 +89,10 @@ class HomeFragment : Fragment() {
         categoryAdapter = CategoryAdapter { onCategoryClicked(it) }
         recommendedStreamsAdapter1 = RecommendedStreamAdapter { onStreamClicked(it) }
         recommendedStreamsAdapter2 = RecommendedStreamAdapter { onStreamClicked(it) }
-        binding.topStreamsRecyclerView.adapter = topStreamsAdapter
+        binding.topStreamsRecyclerView.apply {
+            adapter = topStreamsAdapter
+            setHasFixedSize(true)
+        }
         binding.categoryRecyclerView.apply {
             adapter = categoryAdapter
             setHasFixedSize(true)
@@ -105,22 +109,21 @@ class HomeFragment : Fragment() {
 
     private fun displayRecommendations(recommendation: RecommendationData.OnSuccess) {
         topStreamsAdapter.submitList(recommendation.topStreams)
+        categoryAdapter.submitList(recommendation.topCategories)
+        recommendedStreamsAdapter1.submitList(recommendation.recommendedStreams1)
+        recommendedStreamsAdapter2.submitList(recommendation.recommendedStreams2)
 
         binding.categoryTitle.text = highlightText(getString(R.string.categories_title), getString(R.string.categories_highlight_text))
-        categoryAdapter.submitList(recommendation.topCategories)
-
         val recommendedStreamsTitleStart = getString(R.string.recommended_streams_title_1)
         val recommendedStreamsTitleEnd = getString(R.string.recommended_streams_title_2)
 
         val recommendedCategoryName1 = recommendation.recommendedStreams1.first().categoryName
         val recommendedStreamsTitle1 = "$recommendedStreamsTitleStart $recommendedCategoryName1 $recommendedStreamsTitleEnd"
         binding.recommendedStreamsTitle1.text = highlightText(recommendedStreamsTitle1, recommendedCategoryName1)
-        recommendedStreamsAdapter1.submitList(recommendation.recommendedStreams1)
 
         val recommendedCategoryName2 = recommendation.recommendedStreams2.first().categoryName
         val recommendedStreamsTitle2 = "$recommendedStreamsTitleStart $recommendedCategoryName2 $recommendedStreamsTitleEnd"
         binding.recommendedStreamsTitle2.text = highlightText(recommendedStreamsTitle2, recommendedCategoryName2)
-        recommendedStreamsAdapter2.submitList(recommendation.recommendedStreams2)
         binding.homePageContent.visibility = View.VISIBLE
     }
 
@@ -135,6 +138,13 @@ class HomeFragment : Fragment() {
         val endIndex = startIndex + subString.length
         spannableString.setSpan(highlightColor, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         return spannableString
+    }
+
+    private fun destroyAdapters() {
+        binding.topStreamsRecyclerView.adapter = null
+        binding.categoryRecyclerView.adapter = null
+        binding.recommendedStreamsRecyclerView1.adapter = null
+        binding.recommendedStreamsRecyclerView2.adapter = null
     }
 
     private fun navigateToSearchFragment(view: View) {
