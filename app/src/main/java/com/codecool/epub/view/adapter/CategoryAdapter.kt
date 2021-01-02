@@ -1,15 +1,17 @@
 package com.codecool.epub.view.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
+import com.bumptech.glide.Glide
+import com.codecool.epub.R
+import com.codecool.epub.databinding.CategoryItemBinding
 import com.codecool.epub.model.CategoryResponse
-import com.codecool.epub.view.viewholder.CategoryHolder
 
-class CategoryAdapter(private val requestManager: RequestManager) :
-    ListAdapter<CategoryResponse.Category, RecyclerView.ViewHolder>(CATEGORY_COMPARATOR) {
+class CategoryAdapter(private val onCategoryClicked: (CategoryResponse.Category) -> Unit) :
+    ListAdapter<CategoryResponse.Category, CategoryAdapter.CategoryHolder>(CATEGORY_COMPARATOR) {
 
     companion object {
         private val CATEGORY_COMPARATOR = object : DiffUtil.ItemCallback<CategoryResponse.Category>() {
@@ -27,12 +29,37 @@ class CategoryAdapter(private val requestManager: RequestManager) :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return CategoryHolder.create(parent)
+    class CategoryHolder(
+        private val binding: CategoryItemBinding,
+        private val onCategoryClicked: (Int) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            itemView.setOnClickListener { onCategoryClicked(bindingAdapterPosition) }
+        }
+
+        fun bind(category: CategoryResponse.Category) {
+            val resources = itemView.resources
+            val boxArtWidthPx = resources.getDimensionPixelSize(R.dimen.box_art_width)
+            val boxArtHeightPx = resources.getDimensionPixelSize(R.dimen.box_art_height)
+            Glide.with(itemView.context)
+                .load(category.getImageUrl(boxArtWidthPx, boxArtHeightPx))
+                .override(boxArtWidthPx, boxArtHeightPx)
+                .thumbnail(0.5f)
+                .into(binding.boxArt)
+        }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.category_item, parent, false)
+        val binding = CategoryItemBinding.bind(view)
+        return CategoryHolder(binding) {
+            onCategoryClicked(getItem(it))
+        }
+    }
+
+    override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
         val category = getItem(position)
-        (holder as CategoryHolder).bind(category, requestManager)
+        holder.bind(category)
     }
 }

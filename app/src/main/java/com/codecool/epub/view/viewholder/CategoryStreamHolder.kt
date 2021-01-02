@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.codecool.epub.R
 import com.codecool.epub.databinding.CategoryStreamItemBinding
@@ -25,11 +25,13 @@ class CategoryStreamHolder(
         }
     }
 
-    fun bind(stream: StreamsResponse.Stream, requestManager: RequestManager) {
+    fun bind(stream: StreamsResponse.Stream) {
         val resources = itemView.resources
         val thumbnailWidthPx = getThumbnailWidthPx(resources)
         val thumbnailHeightPx = getThumbnailHeightPx(resources)
-        requestManager.load(stream.getThumbnailUrl(thumbnailWidthPx, thumbnailHeightPx))
+        Glide.with(itemView.context)
+            .load(stream.getThumbnailUrl(thumbnailWidthPx, thumbnailHeightPx))
+            .override(thumbnailWidthPx, thumbnailHeightPx)
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .thumbnail(0.5f)

@@ -3,12 +3,11 @@ package com.codecool.epub.view.adapter
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.model.StreamsResponse
 import com.codecool.epub.view.viewholder.CategoryStreamHolder
 
-class CategoryStreamAdapter(private val requestManager: RequestManager) :
+class CategoryStreamAdapter :
     PagingDataAdapter<StreamsResponse.Stream, RecyclerView.ViewHolder>(SteamComparator) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -18,7 +17,7 @@ class CategoryStreamAdapter(private val requestManager: RequestManager) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentStream = getItem(position)
         currentStream?.let {
-            (holder as CategoryStreamHolder).bind(it, requestManager)
+            (holder as CategoryStreamHolder).bind(it)
         }
     }
 

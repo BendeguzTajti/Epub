@@ -16,7 +16,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.view.adapter.CategoryStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
@@ -27,7 +26,6 @@ import com.codecool.epub.viewmodel.DetailsViewModel
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class DetailsFragment : Fragment(), StreamAdapterListener {
@@ -38,13 +36,12 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
         private const val SPAN_COUNT_LANDSCAPE = 2
     }
 
-    private val requestManager: RequestManager by inject()
     private val args: DetailsFragmentArgs by navArgs()
     private val viewModel: DetailsViewModel by viewModel()
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
 
-    private val adapter = CategoryStreamAdapter(requestManager)
+    private lateinit var categoryStreamAdapter: CategoryStreamAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +72,7 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
         adapterInit()
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.getCategoryStreams(category.id).collectLatest {
-                adapter.submitData(it)
+                categoryStreamAdapter.submitData(it)
             }
         }
     }
@@ -86,10 +83,11 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
     }
 
     private fun adapterInit() {
-        binding.categoryStreamsRecyclerView.adapter = adapter.withLoadStateFooter(CategoryStreamLoadStateAdapter())
+        categoryStreamAdapter = CategoryStreamAdapter()
+        binding.categoryStreamsRecyclerView.adapter = categoryStreamAdapter.withLoadStateFooter(CategoryStreamLoadStateAdapter())
         binding.categoryStreamsRecyclerView.layoutManager = getCategoryLayoutManager()
         binding.categoryStreamsRecyclerView.setHasFixedSize(true)
-        adapter.addLoadStateListener { loadState ->
+        categoryStreamAdapter.addLoadStateListener { loadState ->
             binding.categoryStreamsRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
             binding.detailsPageLoading.isVisible = loadState.source.refresh is LoadState.Loading
             // TODO : Display error when the list is empty
@@ -107,7 +105,7 @@ class DetailsFragment : Fragment(), StreamAdapterListener {
             GridLayoutManager(context, SPAN_COUNT_LANDSCAPE).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return if (adapter.getItemViewType(position) == R.layout.category_stream_item) 2 else 1
+                        return if (categoryStreamAdapter.getItemViewType(position) == R.layout.category_stream_item) 2 else 1
                     }
                 }
             }

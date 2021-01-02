@@ -13,9 +13,7 @@ import androidx.core.view.doOnPreDraw
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.content.ContextCompat.getColor
-import com.bumptech.glide.RequestManager
 import com.codecool.epub.R
 import com.codecool.epub.view.adapter.RecommendedStreamAdapter
 import com.codecool.epub.databinding.FragmentHomeBinding
@@ -23,31 +21,27 @@ import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.model.RecommendationData
 import com.codecool.epub.model.StreamsResponse
 import com.codecool.epub.view.adapter.CategoryAdapter
-import com.codecool.epub.view.adapter.CategoryAdapterListener
-import com.codecool.epub.view.adapter.StreamAdapterListener
 import com.codecool.epub.viewmodel.HomeViewModel
 import com.google.android.material.transition.MaterialFade
 import com.google.android.material.transition.MaterialSharedAxis
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.lang.Exception
 
-class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener {
+class HomeFragment : Fragment() {
 
     companion object {
         private const val TAG = "HomeFragment"
     }
 
-    private val requestManager: RequestManager by inject()
     private val viewModel: HomeViewModel by viewModel()
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     // Adapters
-    private val topStreamsAdapter = RecommendedStreamAdapter(requestManager)
-    private val categoryAdapter = CategoryAdapter(requestManager)
-    private val recommendedStreamsAdapter1 = RecommendedStreamAdapter(requestManager)
-    private val recommendedStreamsAdapter2 = RecommendedStreamAdapter(requestManager)
+    private lateinit var topStreamsAdapter: RecommendedStreamAdapter
+    private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var recommendedStreamsAdapter1: RecommendedStreamAdapter
+    private lateinit var recommendedStreamsAdapter2: RecommendedStreamAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,10 +84,23 @@ class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener 
     }
 
     private fun recyclerViewsInit() {
+        topStreamsAdapter = RecommendedStreamAdapter { onStreamClicked(it) }
+        categoryAdapter = CategoryAdapter { onCategoryClicked(it) }
+        recommendedStreamsAdapter1 = RecommendedStreamAdapter { onStreamClicked(it) }
+        recommendedStreamsAdapter2 = RecommendedStreamAdapter { onStreamClicked(it) }
         binding.topStreamsRecyclerView.adapter = topStreamsAdapter
-        binding.categoryRecyclerView.adapter = categoryAdapter
-        binding.recommendedStreamsRecyclerView1.adapter = recommendedStreamsAdapter1
-        binding.recommendedStreamsRecyclerView2.adapter = recommendedStreamsAdapter2
+        binding.categoryRecyclerView.apply {
+            adapter = categoryAdapter
+            setHasFixedSize(true)
+        }
+        binding.recommendedStreamsRecyclerView1.apply {
+            adapter = recommendedStreamsAdapter1
+            setHasFixedSize(true)
+        }
+        binding.recommendedStreamsRecyclerView2.apply {
+            adapter = recommendedStreamsAdapter2
+            setHasFixedSize(true)
+        }
     }
 
     private fun displayRecommendations(recommendation: RecommendationData.OnSuccess) {
@@ -143,7 +150,7 @@ class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener 
         findNavController().navigate(action, extras)
     }
 
-    override fun onCategoryClicked(category: CategoryResponse.Category) {
+    private fun onCategoryClicked(category: CategoryResponse.Category) {
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true).apply {
             excludeTarget(R.id.home_app_bar, true)
         }
@@ -154,7 +161,7 @@ class HomeFragment : Fragment(), CategoryAdapterListener, StreamAdapterListener 
         findNavController().navigate(action)
     }
 
-    override fun onStreamClicked(stream: StreamsResponse.Stream, imageView: ImageView) {
+    private fun onStreamClicked(stream: StreamsResponse.Stream) {
         val intent = Intent(activity, VideoActivity::class.java)
         intent.putExtra(VideoActivity.CHANNEL_NAME_KEY, stream.getChannelName())
         startActivity(intent)
