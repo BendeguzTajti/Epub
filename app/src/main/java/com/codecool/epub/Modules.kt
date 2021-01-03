@@ -2,8 +2,6 @@ package com.codecool.epub
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import com.codecool.epub.network.api.AuthApi
 import com.codecool.epub.network.TokenAuthenticator
 import com.codecool.epub.network.TokenManager
@@ -32,9 +30,6 @@ val appModules = module {
     factory { provideAuthApi(get()) }
     factory { provideDataApi(get()) }
 
-    // GLIDE
-    single { provideGlideInstance(androidContext()) }
-
     // REPOSITORY
     single { Repository(get()) }
 
@@ -62,5 +57,3 @@ private fun provideRetrofit(client: OkHttpClient): Retrofit {
 private fun provideAuthApi(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
 
 private fun provideDataApi(retrofit: Retrofit): DataApi = retrofit.create(DataApi::class.java)
-
-private fun provideGlideInstance(context: Context): RequestManager = Glide.with(context)

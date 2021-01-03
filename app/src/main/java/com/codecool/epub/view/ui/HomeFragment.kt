@@ -89,22 +89,11 @@ class HomeFragment : Fragment() {
         categoryAdapter = CategoryAdapter { onCategoryClicked(it) }
         recommendedStreamsAdapter1 = RecommendedStreamAdapter { onStreamClicked(it) }
         recommendedStreamsAdapter2 = RecommendedStreamAdapter { onStreamClicked(it) }
-        binding.topStreamsRecyclerView.apply {
-            adapter = topStreamsAdapter
-            setHasFixedSize(true)
-        }
-        binding.categoryRecyclerView.apply {
-            adapter = categoryAdapter
-            setHasFixedSize(true)
-        }
-        binding.recommendedStreamsRecyclerView1.apply {
-            adapter = recommendedStreamsAdapter1
-            setHasFixedSize(true)
-        }
-        binding.recommendedStreamsRecyclerView2.apply {
-            adapter = recommendedStreamsAdapter2
-            setHasFixedSize(true)
-        }
+
+        binding.topStreamsRecyclerView.adapter = topStreamsAdapter
+        binding.categoryRecyclerView.adapter = categoryAdapter
+        binding.recommendedStreamsRecyclerView1.adapter = recommendedStreamsAdapter1
+        binding.recommendedStreamsRecyclerView2.adapter = recommendedStreamsAdapter2
     }
 
     private fun displayRecommendations(recommendation: RecommendationData.OnSuccess) {
