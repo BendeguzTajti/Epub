@@ -81,7 +81,11 @@ class DetailsFragment : Fragment() {
     }
 
     private fun adapterInit() {
-        categoryStreamAdapter = CategoryStreamAdapter()
+        categoryStreamAdapter = CategoryStreamAdapter {
+            it?.let {
+                onStreamClicked(it)
+            }
+        }
         binding.categoryStreamsRecyclerView.apply {
             layoutManager = getCategoryLayoutManager()
             adapter = categoryStreamAdapter.withLoadStateFooter(CategoryStreamLoadStateAdapter())

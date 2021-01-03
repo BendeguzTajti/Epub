@@ -11,7 +11,7 @@ import com.codecool.epub.databinding.CategoryLoadStateFooterItemBinding
 
 class CategoryStreamLoadStateAdapter : LoadStateAdapter<CategoryStreamLoadStateAdapter.CategoryStreamLoadStateHolder>() {
 
-    class CategoryStreamLoadStateHolder(
+    inner class CategoryStreamLoadStateHolder(
         private val binding: CategoryLoadStateFooterItemBinding
         ) : RecyclerView.ViewHolder(binding.root) {
 

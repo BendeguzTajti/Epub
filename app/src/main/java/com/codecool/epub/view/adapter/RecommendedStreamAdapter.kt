@@ -15,7 +15,7 @@ import com.codecool.epub.model.StreamsResponse
 class RecommendedStreamAdapter(private val onStreamClicked: (StreamsResponse.Stream) -> Unit)
     : ListAdapter<StreamsResponse.Stream, RecommendedStreamAdapter.RecommendedStreamHolder>(SteamComparator) {
 
-    class RecommendedStreamHolder(
+    inner class RecommendedStreamHolder(
         private val binding: RecommendedStreamItemBinding,
         private val onStreamClicked: (Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -33,7 +33,6 @@ class RecommendedStreamAdapter(private val onStreamClicked: (StreamsResponse.Str
                 .override(thumbnailWidthPx, thumbnailHeightPx)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .thumbnail(0.5f)
                 .into(binding.recommendedStreamThumbnail)
             binding.recommendedStreamTitle.text = stream.title
             binding.recommendedStreamerName.text = stream.userName
