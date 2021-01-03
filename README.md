@@ -18,3 +18,14 @@ Technologies currently used and implemented:
 
 ## GIFs
 
+Homepage with recommended streams and top categories
+
+<img src="https://github.com/BendeguzTajti/Epub/blob/develop/README%20files/gif1.gif" width="400" height="700" />
+
+Details page with infinite scroll listing all the streams for a certain category
+
+<img src="https://github.com/BendeguzTajti/Epub/blob/develop/README%20files/gif2.gif" width="400" height="700" />
+
+Opening a stream (streams can be clicked and opened both on the homepage and details page)
+
+<img src="https://github.com/BendeguzTajti/Epub/blob/develop/README%20files/gif3.gif" width="700" height="400" />
