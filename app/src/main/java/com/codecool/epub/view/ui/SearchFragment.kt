@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.codecool.epub.R
 import com.codecool.epub.databinding.FragmentSearchBinding
 import com.codecool.epub.model.CategoryResponse
@@ -76,7 +77,10 @@ class SearchFragment : Fragment() {
                     viewLifecycleOwner.lifecycleScope.launch{
                         val result = viewModel.searchCategory(query)
                         categoryAdapter = CategoryAdapter { onCategoryClicked(it) }
+                        binding.searchCategoriesTitle.text = getString(R.string.categories)
+                        binding.searchStreamsTitle.text = getString(R.string.streams)
                         binding.searchCategoryRecyclerView.adapter = categoryAdapter
+                        binding.searchCategoryRecyclerView.layoutManager = GridLayoutManager(context, 3)
                         categoryAdapter.submitList(result.data)
                     }
                 }

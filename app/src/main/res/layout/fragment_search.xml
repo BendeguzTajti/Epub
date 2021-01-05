@@ -44,35 +44,6 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
-        android:id="@+id/search_streams_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:paddingStart="@dimen/home_page_title_padding"
-        android:paddingEnd="@dimen/home_page_title_padding"
-        android:text="@string/streams"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textSize="@dimen/home_page_title_size"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/search_appbar" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_streams_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:nestedScrollingEnabled="false"
-        android:orientation="vertical"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/recycler_view_padding_side"
-        android:paddingEnd="@dimen/recycler_view_padding_side"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_streams_title"
-        tools:listitem="@layout/recommended_stream_item" />
-
-    <TextView
         android:id="@+id/search_categories_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,11 +51,10 @@
         android:maxLines="1"
         android:paddingStart="@dimen/home_page_title_padding"
         android:paddingEnd="@dimen/home_page_title_padding"
-        android:text="@string/categories_search"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textSize="@dimen/home_page_title_size"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/search_streams_recycler_view" />
+        app:layout_constraintTop_toBottomOf="@+id/search_appbar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_category_recycler_view"
@@ -96,9 +66,39 @@
         android:overScrollMode="never"
         android:paddingStart="@dimen/recycler_view_padding_side"
         android:paddingEnd="@dimen/recycler_view_padding_side"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_categories_title"
         tools:listitem="@layout/category_item" />
+
+    <TextView
+        android:id="@+id/search_streams_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingStart="@dimen/home_page_title_padding"
+        android:paddingEnd="@dimen/home_page_title_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textSize="@dimen/home_page_title_size"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/search_category_recycler_view" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_streams_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        android:paddingStart="@dimen/recycler_view_padding_side"
+        android:paddingEnd="@dimen/recycler_view_padding_side"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_streams_title"
+        tools:listitem="@layout/recommended_stream_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
