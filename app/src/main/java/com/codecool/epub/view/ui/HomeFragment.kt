@@ -1,6 +1,7 @@
 package com.codecool.epub.view.ui
 
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -88,6 +89,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun recyclerViewsInit() {
+        val placeholderColor = getColor(requireContext(), R.color.placeholder_color)
         val thumbnailWidth = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_width)
         val thumbnailHeight = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_height)
         val requestManager = Glide.with(requireContext())
@@ -95,6 +97,7 @@ class HomeFragment : Fragment() {
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .override(thumbnailWidth, thumbnailHeight)
+            .placeholder(ColorDrawable(placeholderColor))
 
         topStreamsAdapter = RecommendedStreamAdapter(thumbnailLoader) { onStreamClicked(it) }
         categoryAdapter = CategoryAdapter { onCategoryClicked(it) }
