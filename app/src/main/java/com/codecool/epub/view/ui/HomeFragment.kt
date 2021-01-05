@@ -13,7 +13,10 @@ import androidx.core.view.doOnPreDraw
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.content.ContextCompat.getColor
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.codecool.epub.R
 import com.codecool.epub.view.adapter.RecommendedStreamAdapter
 import com.codecool.epub.databinding.FragmentHomeBinding
@@ -85,15 +88,38 @@ class HomeFragment : Fragment() {
     }
 
     private fun recyclerViewsInit() {
-        topStreamsAdapter = RecommendedStreamAdapter { onStreamClicked(it) }
-        categoryAdapter = CategoryAdapter { onCategoryClicked(it) }
-        recommendedStreamsAdapter1 = RecommendedStreamAdapter { onStreamClicked(it) }
-        recommendedStreamsAdapter2 = RecommendedStreamAdapter { onStreamClicked(it) }
+        val thumbnailWidth = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_width)
+        val thumbnailHeight = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_height)
+        val requestManager = Glide.with(requireContext())
+        val thumbnailLoader = requestManager.asDrawable()
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .override(thumbnailWidth, thumbnailHeight)
 
-        binding.topStreamsRecyclerView.adapter = topStreamsAdapter
+        topStreamsAdapter = RecommendedStreamAdapter(thumbnailLoader) { onStreamClicked(it) }
+        categoryAdapter = CategoryAdapter { onCategoryClicked(it) }
+        recommendedStreamsAdapter1 = RecommendedStreamAdapter(thumbnailLoader) { onStreamClicked(it) }
+        recommendedStreamsAdapter2 = RecommendedStreamAdapter(thumbnailLoader) { onStreamClicked(it) }
+
+        binding.topStreamsRecyclerView.apply {
+            adapter = topStreamsAdapter
+            setRecyclerListener {
+                requestManager.clear(it.itemView.findViewById<ImageView>(R.id.recommended_stream_thumbnail))
+            }
+        }
         binding.categoryRecyclerView.adapter = categoryAdapter
-        binding.recommendedStreamsRecyclerView1.adapter = recommendedStreamsAdapter1
-        binding.recommendedStreamsRecyclerView2.adapter = recommendedStreamsAdapter2
+        binding.recommendedStreamsRecyclerView1.apply {
+            adapter = recommendedStreamsAdapter1
+            setRecyclerListener {
+                requestManager.clear(it.itemView.findViewById<ImageView>(R.id.recommended_stream_thumbnail))
+            }
+        }
+        binding.recommendedStreamsRecyclerView2.apply {
+            adapter = recommendedStreamsAdapter2
+            setRecyclerListener {
+                requestManager.clear(it.itemView.findViewById<ImageView>(R.id.recommended_stream_thumbnail))
+            }
+        }
     }
 
     private fun displayRecommendations(recommendation: RecommendationData.OnSuccess) {

@@ -1,20 +1,21 @@
 package com.codecool.epub.view.adapter
 
-import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.RequestBuilder
 import com.codecool.epub.R
 import com.codecool.epub.databinding.CategoryStreamItemBinding
 import com.codecool.epub.model.StreamsResponse
 
-class CategoryStreamAdapter(private val onStreamClicked: (StreamsResponse.Stream?) -> Unit) :
-    PagingDataAdapter<StreamsResponse.Stream, RecyclerView.ViewHolder>(SteamComparator) {
+class CategoryStreamAdapter(
+    private val thumbnailLoader: RequestBuilder<Drawable>,
+    private val onStreamClicked: (StreamsResponse.Stream?) -> Unit
+) : PagingDataAdapter<StreamsResponse.Stream, RecyclerView.ViewHolder>(SteamComparator) {
 
     inner class CategoryStreamHolder(
         private val binding: CategoryStreamItemBinding,
@@ -27,13 +28,7 @@ class CategoryStreamAdapter(private val onStreamClicked: (StreamsResponse.Stream
 
         fun bind(stream: StreamsResponse.Stream) {
             val resources = itemView.resources
-            val thumbnailWidthPx = getThumbnailWidthPx(resources)
-            val thumbnailHeightPx = getThumbnailHeightPx(resources)
-            Glide.with(itemView.context)
-                .load(stream.getThumbnailUrl(thumbnailWidthPx, thumbnailHeightPx))
-                .override(thumbnailWidthPx, thumbnailHeightPx)
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+            thumbnailLoader.load(stream.getThumbnailUrl(thumbnailLoader.overrideWidth, thumbnailLoader.overrideHeight))
                 .into(binding.categoryStreamThumbnail)
             binding.categoryStreamTitle.text = stream.title
             binding.categoryStreamerName.text = stream.userName
@@ -54,27 +49,6 @@ class CategoryStreamAdapter(private val onStreamClicked: (StreamsResponse.Stream
                 "${currentStream.getViewerCountRounded()}${resources.getString(R.string.thousand_short)} ${resources.getString(R.string.viewers)}"
             } else {
                 "${currentStream.getViewerCountRounded()} ${resources.getString(R.string.viewers)}"
-            }
-        }
-
-        private fun getThumbnailWidthPx(resources: Resources): Int {
-            val displayMetrics = resources.displayMetrics
-            val screenWidthPx = displayMetrics.widthPixels
-            val recyclerViewPaddingPx = resources.getDimensionPixelSize(R.dimen.recycler_view_padding_side)
-            val cardMarginPx = resources.getDimensionPixelSize(R.dimen.card_margin)
-            return if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                val columnCount = 2
-                screenWidthPx / columnCount - recyclerViewPaddingPx * 2 - cardMarginPx
-            } else {
-                screenWidthPx - recyclerViewPaddingPx * 2 - cardMarginPx * 2
-            }
-        }
-
-        private fun getThumbnailHeightPx(resources: Resources): Int {
-            return if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                resources.getDimensionPixelSize(R.dimen.category_stream_thumbnail_height_landscape)
-            } else {
-                resources.getDimensionPixelSize(R.dimen.category_stream_thumbnail_height_portrait)
             }
         }
     }

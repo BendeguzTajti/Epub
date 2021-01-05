@@ -1,19 +1,21 @@
 package com.codecool.epub.view.adapter
 
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.RequestBuilder
 import com.codecool.epub.R
 import com.codecool.epub.databinding.RecommendedStreamItemBinding
 import com.codecool.epub.model.StreamsResponse
 
-class RecommendedStreamAdapter(private val onStreamClicked: (StreamsResponse.Stream) -> Unit)
-    : ListAdapter<StreamsResponse.Stream, RecommendedStreamAdapter.RecommendedStreamHolder>(SteamComparator) {
+class RecommendedStreamAdapter(
+    private val thumbnailLoader: RequestBuilder<Drawable>,
+    private val onStreamClicked: (StreamsResponse.Stream) -> Unit
+) : ListAdapter<StreamsResponse.Stream, RecommendedStreamAdapter.RecommendedStreamHolder>(SteamComparator) {
 
     inner class RecommendedStreamHolder(
         private val binding: RecommendedStreamItemBinding,
@@ -26,13 +28,7 @@ class RecommendedStreamAdapter(private val onStreamClicked: (StreamsResponse.Str
 
         fun bind(stream: StreamsResponse.Stream) {
             val resources = itemView.resources
-            val thumbnailWidthPx = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_width)
-            val thumbnailHeightPx = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_height)
-            Glide.with(itemView.context)
-                .load(stream.getThumbnailUrl(thumbnailWidthPx, thumbnailHeightPx))
-                .override(thumbnailWidthPx, thumbnailHeightPx)
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+            thumbnailLoader.load(stream.getThumbnailUrl(thumbnailLoader.overrideWidth, thumbnailLoader.overrideHeight))
                 .into(binding.recommendedStreamThumbnail)
             binding.recommendedStreamTitle.text = stream.title
             binding.recommendedStreamerName.text = stream.userName

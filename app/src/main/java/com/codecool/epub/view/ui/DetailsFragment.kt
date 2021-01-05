@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +16,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.codecool.epub.R
 import com.codecool.epub.view.adapter.CategoryStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
@@ -81,7 +84,14 @@ class DetailsFragment : Fragment() {
     }
 
     private fun adapterInit() {
-        categoryStreamAdapter = CategoryStreamAdapter {
+        val requestManager = Glide.with(requireContext())
+        val thumbnailWidth = getThumbnailWidth()
+        val thumbnailHeight = getThumbnailHeight()
+        val thumbnailLoader = requestManager.asDrawable()
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .override(thumbnailWidth, thumbnailHeight)
+        categoryStreamAdapter = CategoryStreamAdapter(thumbnailLoader) {
             it?.let {
                 onStreamClicked(it)
             }
@@ -90,6 +100,10 @@ class DetailsFragment : Fragment() {
             layoutManager = getCategoryLayoutManager()
             adapter = categoryStreamAdapter.withLoadStateFooter(CategoryStreamLoadStateAdapter())
             setHasFixedSize(true)
+            setRecyclerListener { holder ->
+                val thumbnailImageView = holder.itemView.findViewById<ImageView>(R.id.category_stream_thumbnail)
+                thumbnailImageView?.let { requestManager.clear(it) }
+            }
         }
         categoryStreamAdapter.addLoadStateListener { loadState ->
             binding.categoryStreamsRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
@@ -122,5 +136,26 @@ class DetailsFragment : Fragment() {
         val intent = Intent(activity, VideoActivity::class.java)
         intent.putExtra(VideoActivity.CHANNEL_NAME_KEY, stream.getChannelName())
         startActivity(intent)
+    }
+
+    private fun getThumbnailWidth(): Int {
+        val displayMetrics = resources.displayMetrics
+        val screenWidthPx = displayMetrics.widthPixels
+        val recyclerViewPaddingPx = resources.getDimensionPixelSize(R.dimen.recycler_view_padding_side)
+        val cardMarginPx = resources.getDimensionPixelSize(R.dimen.card_margin)
+        return if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val columnCount = 2
+            screenWidthPx / columnCount - recyclerViewPaddingPx * 2 - cardMarginPx
+        } else {
+            screenWidthPx - recyclerViewPaddingPx * 2 - cardMarginPx * 2
+        }
+    }
+
+    private fun getThumbnailHeight(): Int {
+        return if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            resources.getDimensionPixelSize(R.dimen.category_stream_thumbnail_height_landscape)
+        } else {
+            resources.getDimensionPixelSize(R.dimen.category_stream_thumbnail_height_portrait)
+        }
     }
 }
