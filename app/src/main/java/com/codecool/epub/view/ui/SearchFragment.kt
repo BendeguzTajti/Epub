@@ -88,6 +88,18 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        val result = viewModel.searchCategory(newText)
+                        categoryAdapter = CategoryAdapter { onCategoryClicked(it) }
+                        binding.searchCategoriesTitle.text = getString(R.string.categories)
+                        binding.searchStreamsTitle.text = getString(R.string.streams)
+                        binding.searchCategoryRecyclerView.adapter = categoryAdapter
+                        binding.searchCategoryRecyclerView.layoutManager = GridLayoutManager(context, 3)
+                        categoryAdapter.submitList(result.data)
+                        categoryAdapter.notifyDataSetChanged()
+                    }
+                }
                 return false
             }
         })
