@@ -59,11 +59,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_streams_recycler_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:nestedScrollingEnabled="false"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:overScrollMode="never"
         android:paddingStart="@dimen/recycler_view_padding_side"
         android:paddingEnd="@dimen/recycler_view_padding_side"
@@ -92,7 +92,7 @@
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:nestedScrollingEnabled="false"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:overScrollMode="never"
         android:paddingStart="@dimen/recycler_view_padding_side"
         android:paddingEnd="@dimen/recycler_view_padding_side"
