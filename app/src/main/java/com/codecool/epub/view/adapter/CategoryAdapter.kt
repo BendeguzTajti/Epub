@@ -29,6 +29,7 @@ class CategoryAdapter(private val onCategoryClicked: (CategoryResponse.Category)
                 .load(category.getImageUrl(boxArtWidthPx, boxArtHeightPx))
                 .override(boxArtWidthPx, boxArtHeightPx)
                 .into(binding.boxArt)
+            binding.categoryTitle.text = category.name
         }
     }
 

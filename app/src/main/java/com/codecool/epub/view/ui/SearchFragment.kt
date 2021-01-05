@@ -114,7 +114,7 @@ class SearchFragment : Fragment() {
             binding.searchCategoriesTitle.text = getString(R.string.categories)
             binding.searchStreamsTitle.text = getString(R.string.streams)
             binding.searchCategoryRecyclerView.adapter = categoryAdapter
-            binding.searchCategoryRecyclerView.layoutManager = GridLayoutManager(context, 3)
+            binding.searchCategoryRecyclerView.layoutManager = GridLayoutManager(context, 2)
             categoryAdapter.submitList(result.data)
         }
     }

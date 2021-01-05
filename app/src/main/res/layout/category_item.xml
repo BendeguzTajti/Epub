@@ -25,6 +25,15 @@
             tools:scaleType="centerCrop"
             tools:src="@tools:sample/avatars" />
 
+        <TextView
+            android:id="@+id/category_title"
+            android:padding="2dp"
+            android:layout_width="@dimen/box_art_width"
+            android:layout_height="40dp"
+            app:layout_constraintTop_toBottomOf="@+id/boxArt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
