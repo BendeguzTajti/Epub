@@ -11,6 +11,7 @@ import com.codecool.epub.util.Constants.Companion.BASE_URL
 import com.codecool.epub.util.Constants.Companion.SHARED_PREF_NAME
 import com.codecool.epub.viewmodel.DetailsViewModel
 import com.codecool.epub.viewmodel.HomeViewModel
+import com.codecool.epub.viewmodel.SearchViewModel
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
@@ -36,6 +37,7 @@ val appModules = module {
     // VIEW-MODEL
     viewModel { HomeViewModel(get()) }
     viewModel { DetailsViewModel(get()) }
+    viewModel { SearchViewModel(get()) }
 }
 
 private fun provideSharedPreferences(context: Context): SharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)

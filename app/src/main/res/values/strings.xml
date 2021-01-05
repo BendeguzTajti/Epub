@@ -13,4 +13,5 @@
     <string name="viewers">viewers</string>
     <string name="retry">Retry</string>
     <string name="categories_search">Categories:</string>
+    <string name="streams">Streams:</string>
 </resources>

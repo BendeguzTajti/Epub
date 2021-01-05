@@ -9,17 +9,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.codecool.epub.R
 import com.codecool.epub.databinding.FragmentSearchBinding
+import com.codecool.epub.model.CategoryResponse
+import com.codecool.epub.view.adapter.CategoryAdapter
+import com.codecool.epub.view.adapter.CategoryStreamAdapter
+import com.codecool.epub.viewmodel.SearchViewModel
 import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialSharedAxis
+import kotlinx.coroutines.launch
+import org.koin.android.scope.bindScope
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
 
+    private val viewModel: SearchViewModel by viewModel()
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var categoryAdapter: CategoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +72,14 @@ class SearchFragment : Fragment() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 binding.searchView.clearFocus()
+                if (query != null) {
+                    viewLifecycleOwner.lifecycleScope.launch{
+                        val result = viewModel.searchCategory(query)
+                        categoryAdapter = CategoryAdapter { onCategoryClicked(it) }
+                        binding.searchCategoryRecyclerView.adapter = categoryAdapter
+                        categoryAdapter.submitList(result.data)
+                    }
+                }
                 return true
             }
 
@@ -67,6 +87,18 @@ class SearchFragment : Fragment() {
                 return false
             }
         })
+    }
+
+    private fun onCategoryClicked(category: CategoryResponse.Category) {
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true).apply {
+            excludeTarget(R.id.home_app_bar, true)
+        }
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply {
+            excludeTarget(R.id.home_app_bar, true)
+        }
+        // TODO change action home to action search
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(category.id, category.name)
+        findNavController().navigate(action)
     }
 
     private fun showKeyBoard(view: View) {

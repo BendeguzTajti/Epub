@@ -16,4 +16,7 @@ interface DataApi {
 
     @GET("helix/games/top")
     suspend fun getCategories(@Query("first") limit: Int): CategoryResponse
+
+    @GET("helix/search/categories")
+    suspend fun searchCategories(@Query("query")searchQuery: String): CategoryResponse
 }

@@ -27,4 +27,6 @@ class Repository(private val dataApi: DataApi) {
             pagingSourceFactory = { StreamPagingSource(dataApi, categoryId) }
         ).flow
     }
+
+   suspend fun searchCategory(query: String): CategoryResponse = dataApi.searchCategories(query)
 }
