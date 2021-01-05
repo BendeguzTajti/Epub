@@ -74,31 +74,16 @@ class SearchFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 binding.searchView.clearFocus()
                 if (query != null) {
-                    viewLifecycleOwner.lifecycleScope.launch{
-                        val result = viewModel.searchCategory(query)
-                        categoryAdapter = CategoryAdapter { onCategoryClicked(it) }
-                        binding.searchCategoriesTitle.text = getString(R.string.categories)
-                        binding.searchStreamsTitle.text = getString(R.string.streams)
-                        binding.searchCategoryRecyclerView.adapter = categoryAdapter
-                        binding.searchCategoryRecyclerView.layoutManager = GridLayoutManager(context, 3)
-                        categoryAdapter.submitList(result.data)
-                    }
+                    searchCategories(query)
+                    searchChannels(query)
                 }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        val result = viewModel.searchCategory(newText)
-                        categoryAdapter = CategoryAdapter { onCategoryClicked(it) }
-                        binding.searchCategoriesTitle.text = getString(R.string.categories)
-                        binding.searchStreamsTitle.text = getString(R.string.streams)
-                        binding.searchCategoryRecyclerView.adapter = categoryAdapter
-                        binding.searchCategoryRecyclerView.layoutManager = GridLayoutManager(context, 3)
-                        categoryAdapter.submitList(result.data)
-                        categoryAdapter.notifyDataSetChanged()
-                    }
+                    searchCategories(newText)
+                    searchChannels(newText)
                 }
                 return false
             }
@@ -120,5 +105,24 @@ class SearchFragment : Fragment() {
     private fun showKeyBoard(view: View) {
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    private fun searchCategories(query: String) {
+        viewLifecycleOwner.lifecycleScope.launch{
+            val result = viewModel.searchCategory(query)
+            categoryAdapter = CategoryAdapter { onCategoryClicked(it) }
+            binding.searchCategoriesTitle.text = getString(R.string.categories)
+            binding.searchStreamsTitle.text = getString(R.string.streams)
+            binding.searchCategoryRecyclerView.adapter = categoryAdapter
+            binding.searchCategoryRecyclerView.layoutManager = GridLayoutManager(context, 3)
+            categoryAdapter.submitList(result.data)
+        }
+    }
+
+    private fun searchChannels(query: String) {
+        viewLifecycleOwner.lifecycleScope.launch{
+            val result = viewModel.searchChannels(query)
+            println("${result.data} Hello")
+        }
     }
 }

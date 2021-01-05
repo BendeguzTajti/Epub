@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.codecool.epub.model.CategoryResponse
+import com.codecool.epub.model.ChannelResponse
 import com.codecool.epub.model.StreamsResponse
 import com.codecool.epub.network.api.DataApi
 import kotlinx.coroutines.flow.Flow
@@ -28,5 +29,7 @@ class Repository(private val dataApi: DataApi) {
         ).flow
     }
 
-   suspend fun searchCategory(query: String): CategoryResponse = dataApi.searchCategories(query)
+    suspend fun searchCategory(query: String): CategoryResponse = dataApi.searchCategories(query)
+
+    suspend fun searchChannels(query: String): ChannelResponse = dataApi.searchChannels(query)
 }
