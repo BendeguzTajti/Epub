@@ -18,11 +18,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.codecool.epub.R
 import com.codecool.epub.view.adapter.CategoryStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
+import com.codecool.epub.di.GlideApp
 import com.codecool.epub.model.StreamsResponse
 import com.codecool.epub.view.adapter.CategoryStreamLoadStateAdapter
 import com.codecool.epub.viewmodel.DetailsViewModel
@@ -87,7 +87,7 @@ class DetailsFragment : Fragment() {
 
     private fun adapterInit() {
         val placeholderColor = ContextCompat.getColor(requireContext(), R.color.placeholder_color)
-        val requestManager = Glide.with(requireContext())
+        val requestManager = GlideApp.with(requireContext())
         val thumbnailWidth = getThumbnailWidth()
         val thumbnailHeight = getThumbnailHeight()
         val thumbnailLoader = requestManager.asDrawable()

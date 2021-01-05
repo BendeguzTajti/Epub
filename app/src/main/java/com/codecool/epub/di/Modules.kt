@@ -1,4 +1,4 @@
-package com.codecool.epub
+package com.codecool.epub.di
 
 import android.content.Context
 import android.content.SharedPreferences

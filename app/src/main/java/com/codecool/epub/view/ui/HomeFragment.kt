@@ -16,11 +16,11 @@ import androidx.navigation.fragment.findNavController
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.content.ContextCompat.getColor
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.codecool.epub.R
 import com.codecool.epub.view.adapter.RecommendedStreamAdapter
 import com.codecool.epub.databinding.FragmentHomeBinding
+import com.codecool.epub.di.GlideApp
 import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.model.RecommendationData
 import com.codecool.epub.model.StreamsResponse
@@ -92,7 +92,7 @@ class HomeFragment : Fragment() {
         val placeholderColor = getColor(requireContext(), R.color.placeholder_color)
         val thumbnailWidth = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_width)
         val thumbnailHeight = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_height)
-        val requestManager = Glide.with(requireContext())
+        val requestManager = GlideApp.with(requireContext())
         val thumbnailLoader = requestManager.asDrawable()
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
