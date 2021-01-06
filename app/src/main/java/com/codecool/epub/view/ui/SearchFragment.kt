@@ -81,10 +81,6 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null) {
-                    searchCategories(newText)
-                    searchChannels(newText)
-                }
                 return false
             }
         })
