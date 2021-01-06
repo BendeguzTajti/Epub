@@ -97,8 +97,8 @@ class SearchFragment : Fragment() {
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply {
             excludeTarget(R.id.home_app_bar, true)
         }
-        // TODO change action home to action search
-        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(category.id, category.name)
+
+        val action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(category.id, category.name)
         findNavController().navigate(action)
     }
 
