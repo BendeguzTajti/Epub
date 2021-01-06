@@ -1,7 +1,6 @@
 package com.codecool.epub.view.ui
 
 import android.content.Intent
-import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -18,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.content.ContextCompat.getColor
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.util.FixedPreloadSizeProvider
 import com.codecool.epub.R
 import com.codecool.epub.view.adapter.RecommendedStreamAdapter
@@ -38,19 +38,6 @@ class HomeFragment : Fragment() {
     companion object {
         private const val TAG = "HomeFragment"
         private const val MAX_ITEM_PRELOAD = 8
-
-        private fun getStreamThumbnailWidth(resources: Resources): Int {
-            return resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_width)
-        }
-        private fun getStreamThumbnailHeight(resources: Resources): Int {
-            return resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_height)
-        }
-        private fun getBoxArtThumbnailWidth(resources: Resources): Int {
-            return resources.getDimensionPixelSize(R.dimen.box_art_width)
-        }
-        private fun getBoxArtThumbnailHeight(resources: Resources): Int {
-            return resources.getDimensionPixelSize(R.dimen.box_art_height)
-        }
     }
 
     private val viewModel: HomeViewModel by viewModel()
@@ -84,7 +71,7 @@ class HomeFragment : Fragment() {
         binding.searchIcon.setOnClickListener { navigateToSearchFragment(it) }
         binding.homePageSwipeRefresh.isEnabled = false
         binding.homePageSwipeRefresh.setOnRefreshListener { viewModel.refreshData() }
-        recyclerViewsInit()
+        adaptersInit()
         viewModel.recommendationData().observe(viewLifecycleOwner, {
             binding.homePageLoading.visibility = View.GONE
             binding.homePageSwipeRefresh.isEnabled = true
@@ -104,15 +91,22 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun recyclerViewsInit() {
+    private fun adaptersInit() {
+        val thumbnailWidth = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_width)
+        val thumbnailHeight = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_height)
+        val boxArtWidth = resources.getDimensionPixelSize(R.dimen.box_art_width)
+        val boxArtHeight = resources.getDimensionPixelSize(R.dimen.box_art_height)
+
         val placeholderColor = getColor(requireContext(), R.color.placeholder_color)
         val requestManager = GlideApp.with(requireContext())
         val thumbnailLoader = requestManager.asDrawable()
-            .override(getStreamThumbnailWidth(resources), getStreamThumbnailHeight(resources))
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .override(thumbnailWidth, thumbnailHeight)
             .placeholder(ColorDrawable(placeholderColor))
 
         val categoryLoader = requestManager.asDrawable()
-            .override(getBoxArtThumbnailWidth(resources), getBoxArtThumbnailHeight(resources))
+            .override(boxArtWidth, boxArtHeight)
             .placeholder(ColorDrawable(placeholderColor))
 
         topStreamsAdapter = RecommendedStreamAdapter(thumbnailLoader) { onStreamClicked(it) }
@@ -122,36 +116,37 @@ class HomeFragment : Fragment() {
 
         binding.topStreamsRecyclerView.apply {
             adapter = topStreamsAdapter
+            clearOnScrollListeners()
             setRecyclerListener {
                 requestManager.clear(it.itemView.findViewById<ImageView>(R.id.recommended_stream_thumbnail))
             }
         }
         binding.categoryRecyclerView.apply {
             adapter = categoryAdapter
+            clearOnScrollListeners()
             setRecyclerListener {
                 requestManager.clear(it.itemView.findViewById<ImageView>(R.id.boxArt))
             }
         }
         binding.recommendedStreamsRecyclerView1.apply {
             adapter = recommendedStreamsAdapter1
+            clearOnScrollListeners()
             setRecyclerListener {
                 requestManager.clear(it.itemView.findViewById<ImageView>(R.id.recommended_stream_thumbnail))
             }
         }
         binding.recommendedStreamsRecyclerView2.apply {
             adapter = recommendedStreamsAdapter2
+            clearOnScrollListeners()
             setRecyclerListener {
                 requestManager.clear(it.itemView.findViewById<ImageView>(R.id.recommended_stream_thumbnail))
             }
         }
-        addThumbnailPreLoaders()
-        addBoxArtPreLoader()
+        addThumbnailPreLoaders(FixedPreloadSizeProvider(thumbnailWidth, thumbnailHeight))
+        addBoxArtPreLoader(FixedPreloadSizeProvider(boxArtWidth, boxArtHeight))
     }
 
-    private fun addThumbnailPreLoaders() {
-        val preLoadSizeProvider = FixedPreloadSizeProvider<StreamsResponse.Stream>(
-            getStreamThumbnailWidth(resources), getStreamThumbnailHeight(resources)
-        )
+    private fun addThumbnailPreLoaders(preLoadSizeProvider: FixedPreloadSizeProvider<StreamsResponse.Stream>) {
         val topStreamsPreLoader = RecyclerViewPreloader(
             GlideApp.with(requireContext()), topStreamsAdapter, preLoadSizeProvider, MAX_ITEM_PRELOAD
         )
@@ -166,10 +161,7 @@ class HomeFragment : Fragment() {
         binding.recommendedStreamsRecyclerView2.addOnScrollListener(recommendedStreams2PreLoader)
     }
 
-    private fun addBoxArtPreLoader() {
-        val preLoadSizeProvider = FixedPreloadSizeProvider<CategoryResponse.Category>(
-            getBoxArtThumbnailWidth(resources), getBoxArtThumbnailHeight(resources)
-        )
+    private fun addBoxArtPreLoader(preLoadSizeProvider: FixedPreloadSizeProvider<CategoryResponse.Category>) {
         val boxArtPreLoader = RecyclerViewPreloader(
             GlideApp.with(requireContext()), categoryAdapter, preLoadSizeProvider, MAX_ITEM_PRELOAD
         )
