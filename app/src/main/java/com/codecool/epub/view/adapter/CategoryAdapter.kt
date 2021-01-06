@@ -1,16 +1,21 @@
 package com.codecool.epub.view.adapter
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.bumptech.glide.ListPreloader
+import com.bumptech.glide.RequestBuilder
 import com.codecool.epub.R
 import com.codecool.epub.databinding.CategoryItemBinding
 import com.codecool.epub.model.CategoryResponse
 
-class CategoryAdapter(private val onCategoryClicked: (CategoryResponse.Category) -> Unit) :
-    ListAdapter<CategoryResponse.Category, CategoryAdapter.CategoryHolder>(CategoryComparator) {
+class CategoryAdapter(
+    private val categoryLoader: RequestBuilder<Drawable>,
+    private val onCategoryClicked: (CategoryResponse.Category) -> Unit
+) : ListAdapter<CategoryResponse.Category, CategoryAdapter.CategoryHolder>(CategoryComparator),
+    ListPreloader.PreloadModelProvider<CategoryResponse.Category> {
 
     inner class CategoryHolder(
         private val binding: CategoryItemBinding,
@@ -22,12 +27,7 @@ class CategoryAdapter(private val onCategoryClicked: (CategoryResponse.Category)
         }
 
         fun bind(category: CategoryResponse.Category) {
-            val resources = itemView.resources
-            val boxArtWidthPx = resources.getDimensionPixelSize(R.dimen.box_art_width)
-            val boxArtHeightPx = resources.getDimensionPixelSize(R.dimen.box_art_height)
-            Glide.with(itemView.context)
-                .load(category.getImageUrl(boxArtWidthPx, boxArtHeightPx))
-                .override(boxArtWidthPx, boxArtHeightPx)
+            categoryLoader.load(category.getImageUrl(categoryLoader.overrideWidth, categoryLoader.overrideHeight))
                 .into(binding.boxArt)
         }
     }
@@ -43,5 +43,11 @@ class CategoryAdapter(private val onCategoryClicked: (CategoryResponse.Category)
     override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
         val category = getItem(position)
         holder.bind(category)
+    }
+
+    override fun getPreloadItems(position: Int): MutableList<CategoryResponse.Category> = mutableListOf(getItem(position))
+
+    override fun getPreloadRequestBuilder(category: CategoryResponse.Category): RequestBuilder<Drawable> {
+        return categoryLoader.load(category.getImageUrl(categoryLoader.overrideWidth, categoryLoader.overrideHeight))
     }
 }

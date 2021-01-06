@@ -1,6 +1,7 @@
 package com.codecool.epub.view.ui
 
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -16,6 +17,8 @@ import androidx.navigation.fragment.findNavController
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.content.ContextCompat.getColor
+import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
+import com.bumptech.glide.util.FixedPreloadSizeProvider
 import com.codecool.epub.R
 import com.codecool.epub.view.adapter.RecommendedStreamAdapter
 import com.codecool.epub.databinding.FragmentHomeBinding
@@ -34,6 +37,20 @@ class HomeFragment : Fragment() {
 
     companion object {
         private const val TAG = "HomeFragment"
+        private const val MAX_ITEM_PRELOAD = 8
+
+        private fun getStreamThumbnailWidth(resources: Resources): Int {
+            return resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_width)
+        }
+        private fun getStreamThumbnailHeight(resources: Resources): Int {
+            return resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_height)
+        }
+        private fun getBoxArtThumbnailWidth(resources: Resources): Int {
+            return resources.getDimensionPixelSize(R.dimen.box_art_width)
+        }
+        private fun getBoxArtThumbnailHeight(resources: Resources): Int {
+            return resources.getDimensionPixelSize(R.dimen.box_art_height)
+        }
     }
 
     private val viewModel: HomeViewModel by viewModel()
@@ -89,15 +106,17 @@ class HomeFragment : Fragment() {
 
     private fun recyclerViewsInit() {
         val placeholderColor = getColor(requireContext(), R.color.placeholder_color)
-        val thumbnailWidth = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_width)
-        val thumbnailHeight = resources.getDimensionPixelSize(R.dimen.recommended_stream_thumbnail_height)
         val requestManager = GlideApp.with(requireContext())
         val thumbnailLoader = requestManager.asDrawable()
-            .override(thumbnailWidth, thumbnailHeight)
+            .override(getStreamThumbnailWidth(resources), getStreamThumbnailHeight(resources))
+            .placeholder(ColorDrawable(placeholderColor))
+
+        val categoryLoader = requestManager.asDrawable()
+            .override(getBoxArtThumbnailWidth(resources), getBoxArtThumbnailHeight(resources))
             .placeholder(ColorDrawable(placeholderColor))
 
         topStreamsAdapter = RecommendedStreamAdapter(thumbnailLoader) { onStreamClicked(it) }
-        categoryAdapter = CategoryAdapter { onCategoryClicked(it) }
+        categoryAdapter = CategoryAdapter(categoryLoader) { onCategoryClicked(it) }
         recommendedStreamsAdapter1 = RecommendedStreamAdapter(thumbnailLoader) { onStreamClicked(it) }
         recommendedStreamsAdapter2 = RecommendedStreamAdapter(thumbnailLoader) { onStreamClicked(it) }
 
@@ -107,7 +126,12 @@ class HomeFragment : Fragment() {
                 requestManager.clear(it.itemView.findViewById<ImageView>(R.id.recommended_stream_thumbnail))
             }
         }
-        binding.categoryRecyclerView.adapter = categoryAdapter
+        binding.categoryRecyclerView.apply {
+            adapter = categoryAdapter
+            setRecyclerListener {
+                requestManager.clear(it.itemView.findViewById<ImageView>(R.id.boxArt))
+            }
+        }
         binding.recommendedStreamsRecyclerView1.apply {
             adapter = recommendedStreamsAdapter1
             setRecyclerListener {
@@ -120,6 +144,36 @@ class HomeFragment : Fragment() {
                 requestManager.clear(it.itemView.findViewById<ImageView>(R.id.recommended_stream_thumbnail))
             }
         }
+        addThumbnailPreLoaders()
+        addBoxArtPreLoader()
+    }
+
+    private fun addThumbnailPreLoaders() {
+        val preLoadSizeProvider = FixedPreloadSizeProvider<StreamsResponse.Stream>(
+            getStreamThumbnailWidth(resources), getStreamThumbnailHeight(resources)
+        )
+        val topStreamsPreLoader = RecyclerViewPreloader(
+            GlideApp.with(requireContext()), topStreamsAdapter, preLoadSizeProvider, MAX_ITEM_PRELOAD
+        )
+        val recommendedStreams1PreLoader = RecyclerViewPreloader(
+            GlideApp.with(requireContext()), recommendedStreamsAdapter1, preLoadSizeProvider, MAX_ITEM_PRELOAD
+        )
+        val recommendedStreams2PreLoader = RecyclerViewPreloader(
+            GlideApp.with(requireContext()), recommendedStreamsAdapter2, preLoadSizeProvider, MAX_ITEM_PRELOAD
+        )
+        binding.topStreamsRecyclerView.addOnScrollListener(topStreamsPreLoader)
+        binding.recommendedStreamsRecyclerView1.addOnScrollListener(recommendedStreams1PreLoader)
+        binding.recommendedStreamsRecyclerView2.addOnScrollListener(recommendedStreams2PreLoader)
+    }
+
+    private fun addBoxArtPreLoader() {
+        val preLoadSizeProvider = FixedPreloadSizeProvider<CategoryResponse.Category>(
+            getBoxArtThumbnailWidth(resources), getBoxArtThumbnailHeight(resources)
+        )
+        val boxArtPreLoader = RecyclerViewPreloader(
+            GlideApp.with(requireContext()), categoryAdapter, preLoadSizeProvider, MAX_ITEM_PRELOAD
+        )
+        binding.recommendedStreamsRecyclerView2.addOnScrollListener(boxArtPreLoader)
     }
 
     private fun displayRecommendations(recommendation: RecommendationData.OnSuccess) {

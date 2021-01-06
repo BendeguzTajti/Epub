@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.codecool.epub.R
@@ -16,7 +17,8 @@ import com.codecool.epub.model.StreamsResponse
 class RecommendedStreamAdapter(
     private val thumbnailLoader: RequestBuilder<Drawable>,
     private val onStreamClicked: (StreamsResponse.Stream) -> Unit
-) : ListAdapter<StreamsResponse.Stream, RecommendedStreamAdapter.RecommendedStreamHolder>(SteamComparator) {
+) : ListAdapter<StreamsResponse.Stream, RecommendedStreamAdapter.RecommendedStreamHolder>(SteamComparator),
+    ListPreloader.PreloadModelProvider<StreamsResponse.Stream> {
 
     inner class RecommendedStreamHolder(
         private val binding: RecommendedStreamItemBinding,
@@ -64,5 +66,13 @@ class RecommendedStreamAdapter(
     override fun onBindViewHolder(holder: RecommendedStreamHolder, position: Int) {
         val stream = getItem(position)
         holder.bind(stream)
+    }
+
+    override fun getPreloadItems(position: Int): MutableList<StreamsResponse.Stream> = mutableListOf(getItem(position))
+
+    override fun getPreloadRequestBuilder(stream: StreamsResponse.Stream): RequestBuilder<Drawable> {
+        return thumbnailLoader.load(stream.getThumbnailUrl(thumbnailLoader.overrideWidth, thumbnailLoader.overrideHeight))
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
     }
 }
