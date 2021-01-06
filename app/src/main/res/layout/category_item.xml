@@ -22,7 +22,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription"
-            tools:scaleType="centerCrop"
             tools:src="@tools:sample/avatars" />
 
         <TextView
