@@ -43,62 +43,70 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:id="@+id/search_categories_title"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:paddingStart="@dimen/home_page_title_padding"
-        android:paddingEnd="@dimen/home_page_title_padding"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textSize="@dimen/home_page_title_size"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/search_appbar" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_category_recycler_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:nestedScrollingEnabled="false"
-        android:orientation="vertical"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/recycler_view_padding_side"
-        android:paddingEnd="@dimen/recycler_view_padding_side"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_categories_title"
-        tools:listitem="@layout/category_item" />
+        app:layout_constraintTop_toBottomOf="@+id/search_appbar">
 
-    <TextView
-        android:id="@+id/search_streams_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:paddingStart="@dimen/home_page_title_padding"
-        android:paddingEnd="@dimen/home_page_title_padding"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textSize="@dimen/home_page_title_size"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/search_category_recycler_view" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_streams_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:nestedScrollingEnabled="false"
-        android:orientation="vertical"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/recycler_view_padding_side"
-        android:paddingEnd="@dimen/recycler_view_padding_side"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_streams_title"
-        tools:listitem="@layout/recommended_stream_item" />
+            <TextView
+                android:id="@+id/search_streams_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginTop="48dp"
+                android:paddingStart="@dimen/home_page_title_padding"
+                android:paddingEnd="@dimen/home_page_title_padding"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textSize="@dimen/home_page_title_size"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_streams_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:paddingStart="@dimen/recycler_view_padding_side"
+                android:paddingEnd="@dimen/recycler_view_padding_side"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:listitem="@layout/recommended_stream_item" />
+
+            <TextView
+                android:id="@+id/search_categories_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingStart="@dimen/home_page_title_padding"
+                android:paddingEnd="@dimen/home_page_title_padding"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textSize="@dimen/home_page_title_size"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_category_recycler_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                android:paddingStart="@dimen/recycler_view_padding_side"
+                android:paddingEnd="@dimen/recycler_view_padding_side"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:listitem="@layout/category_item" >
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

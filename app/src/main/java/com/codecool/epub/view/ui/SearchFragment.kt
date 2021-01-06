@@ -19,6 +19,7 @@ import com.codecool.epub.databinding.FragmentSearchBinding
 import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.view.adapter.CategoryAdapter
 import com.codecool.epub.view.adapter.CategoryStreamAdapter
+import com.codecool.epub.view.adapter.ChannelAdapter
 import com.codecool.epub.viewmodel.SearchViewModel
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialSharedAxis
@@ -108,7 +109,6 @@ class SearchFragment : Fragment() {
             val result = viewModel.searchCategory(query)
             categoryAdapter = CategoryAdapter { onCategoryClicked(it) }
             binding.searchCategoriesTitle.text = getString(R.string.categories)
-            binding.searchStreamsTitle.text = getString(R.string.streams)
             binding.searchCategoryRecyclerView.adapter = categoryAdapter
             binding.searchCategoryRecyclerView.layoutManager = GridLayoutManager(context, 2)
             categoryAdapter.submitList(result.data)
@@ -118,7 +118,9 @@ class SearchFragment : Fragment() {
     private fun searchChannels(query: String) {
         viewLifecycleOwner.lifecycleScope.launch{
             val result = viewModel.searchChannels(query)
-            println("${result.data} Hello")
+            binding.searchStreamsTitle.text = getString(R.string.streams)
+            binding.searchStreamsRecyclerView.adapter = ChannelAdapter(result.data)
+            binding.searchStreamsRecyclerView.layoutManager = GridLayoutManager(context, 2)
         }
     }
 }
