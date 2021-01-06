@@ -18,7 +18,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.codecool.epub.R
 import com.codecool.epub.view.adapter.CategoryStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
@@ -91,8 +90,6 @@ class DetailsFragment : Fragment() {
         val thumbnailWidth = getThumbnailWidth()
         val thumbnailHeight = getThumbnailHeight()
         val thumbnailLoader = requestManager.asDrawable()
-            .skipMemoryCache(true)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .override(thumbnailWidth, thumbnailHeight)
             .placeholder(ColorDrawable(placeholderColor))
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.codecool.epub.R
 import com.codecool.epub.databinding.RecommendedStreamItemBinding
 import com.codecool.epub.model.StreamsResponse
@@ -29,6 +30,8 @@ class RecommendedStreamAdapter(
         fun bind(stream: StreamsResponse.Stream) {
             val resources = itemView.resources
             thumbnailLoader.load(stream.getThumbnailUrl(thumbnailLoader.overrideWidth, thumbnailLoader.overrideHeight))
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(binding.recommendedStreamThumbnail)
             binding.recommendedStreamTitle.text = stream.title
             binding.recommendedStreamerName.text = stream.userName
