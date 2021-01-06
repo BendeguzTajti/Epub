@@ -12,6 +12,6 @@
     <string name="thousand_short">K</string>
     <string name="viewers">viewers</string>
     <string name="retry">Retry</string>
-    <string name="streams">Streams:</string>
+    <string name="channels">Channels:</string>
     <string name="categories">Categories:</string>
 </resources>

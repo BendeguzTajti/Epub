@@ -29,7 +29,7 @@ class ChannelAdapter(private val channels: List<ChannelResponse.Channel>) : Recy
 
         fun bindItems(channel: ChannelResponse.Channel) {
             val textViewTitle = itemView.findViewById<TextView>(R.id.category_title)
-            textViewTitle.text = channel.title
+            textViewTitle.text = channel.displayName
             val thumbnailImage = itemView.findViewById<ImageView>(R.id.boxArt)
             Glide.with(itemView.context)
                     .load(channel.getImageUrl(130, 180))

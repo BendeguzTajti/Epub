@@ -11,7 +11,8 @@ class ChannelResponse(val data: List<Channel>) {
     data class Channel(val id: String,
                        @SerializedName("game_id")
                        val gameId: String,
-                       val title: String,
+                       @SerializedName("display_name")
+                       val displayName: String,
                        @SerializedName("thumbnail_url")
                        val thumbnailUrl: String ):Parcelable {
 

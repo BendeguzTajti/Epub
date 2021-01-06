@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="@dimen/search_channel_margin"
                 android:paddingStart="@dimen/home_page_title_padding"
                 android:paddingEnd="@dimen/home_page_title_padding"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"

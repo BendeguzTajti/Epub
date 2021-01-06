@@ -18,13 +18,11 @@ import com.codecool.epub.R
 import com.codecool.epub.databinding.FragmentSearchBinding
 import com.codecool.epub.model.CategoryResponse
 import com.codecool.epub.view.adapter.CategoryAdapter
-import com.codecool.epub.view.adapter.CategoryStreamAdapter
 import com.codecool.epub.view.adapter.ChannelAdapter
 import com.codecool.epub.viewmodel.SearchViewModel
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.launch
-import org.koin.android.scope.bindScope
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -118,7 +116,7 @@ class SearchFragment : Fragment() {
     private fun searchChannels(query: String) {
         viewLifecycleOwner.lifecycleScope.launch{
             val result = viewModel.searchChannels(query)
-            binding.searchStreamsTitle.text = getString(R.string.streams)
+            binding.searchStreamsTitle.text = getString(R.string.channels)
             binding.searchStreamsRecyclerView.adapter = ChannelAdapter(result.data)
             binding.searchStreamsRecyclerView.layoutManager = GridLayoutManager(context, 2)
         }
