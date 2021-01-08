@@ -10,11 +10,14 @@ class StreamPagingSource(
     private val categoryId: String
 ) : PagingSource<String, StreamsResponse.Stream>() {
 
+    companion object {
+        private const val LIMIT = 4
+    }
+
     override suspend fun load(params: LoadParams<String>): LoadResult<String, StreamsResponse.Stream> {
         val cursor = params.key
-        val limit = 4
         return try {
-            val response = service.getStreams(cursor, categoryId, limit)
+            val response = service.getStreams(cursor, categoryId, LIMIT)
             val streams = response.data
             LoadResult.Page(
                 data = streams,
