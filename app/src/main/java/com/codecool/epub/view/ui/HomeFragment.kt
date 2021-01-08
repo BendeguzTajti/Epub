@@ -109,41 +109,38 @@ class HomeFragment : Fragment() {
             .override(boxArtWidth, boxArtHeight)
             .placeholder(ColorDrawable(placeholderColor))
 
-        topStreamsAdapter = RecommendedStreamAdapter(thumbnailLoader) { onStreamClicked(it) }
+        topStreamsAdapter = RecommendedStreamAdapter(thumbnailLoader.clone()) { onStreamClicked(it) }
         categoryAdapter = CategoryAdapter(categoryLoader) { onCategoryClicked(it) }
-        recommendedStreamsAdapter1 = RecommendedStreamAdapter(thumbnailLoader) { onStreamClicked(it) }
-        recommendedStreamsAdapter2 = RecommendedStreamAdapter(thumbnailLoader) { onStreamClicked(it) }
+        recommendedStreamsAdapter1 = RecommendedStreamAdapter(thumbnailLoader.clone()) { onStreamClicked(it) }
+        recommendedStreamsAdapter2 = RecommendedStreamAdapter(thumbnailLoader.clone()) { onStreamClicked(it) }
+
+        addThumbnailPreLoaders(FixedPreloadSizeProvider(thumbnailWidth, thumbnailHeight))
+        addBoxArtPreLoader(FixedPreloadSizeProvider(boxArtWidth, boxArtHeight))
 
         binding.topStreamsRecyclerView.apply {
             adapter = topStreamsAdapter
-            clearOnScrollListeners()
             setRecyclerListener {
                 requestManager.clear(it.itemView.findViewById<ImageView>(R.id.recommended_stream_thumbnail))
             }
         }
         binding.categoryRecyclerView.apply {
             adapter = categoryAdapter
-            clearOnScrollListeners()
             setRecyclerListener {
                 requestManager.clear(it.itemView.findViewById<ImageView>(R.id.boxArt))
             }
         }
         binding.recommendedStreamsRecyclerView1.apply {
             adapter = recommendedStreamsAdapter1
-            clearOnScrollListeners()
             setRecyclerListener {
                 requestManager.clear(it.itemView.findViewById<ImageView>(R.id.recommended_stream_thumbnail))
             }
         }
         binding.recommendedStreamsRecyclerView2.apply {
             adapter = recommendedStreamsAdapter2
-            clearOnScrollListeners()
             setRecyclerListener {
                 requestManager.clear(it.itemView.findViewById<ImageView>(R.id.recommended_stream_thumbnail))
             }
         }
-        addThumbnailPreLoaders(FixedPreloadSizeProvider(thumbnailWidth, thumbnailHeight))
-        addBoxArtPreLoader(FixedPreloadSizeProvider(boxArtWidth, boxArtHeight))
     }
 
     private fun addThumbnailPreLoaders(preLoadSizeProvider: FixedPreloadSizeProvider<StreamsResponse.Stream>) {
@@ -156,9 +153,18 @@ class HomeFragment : Fragment() {
         val recommendedStreams2PreLoader = RecyclerViewPreloader(
             GlideApp.with(requireContext()), recommendedStreamsAdapter2, preLoadSizeProvider, MAX_ITEM_PRELOAD
         )
-        binding.topStreamsRecyclerView.addOnScrollListener(topStreamsPreLoader)
-        binding.recommendedStreamsRecyclerView1.addOnScrollListener(recommendedStreams1PreLoader)
-        binding.recommendedStreamsRecyclerView2.addOnScrollListener(recommendedStreams2PreLoader)
+        binding.topStreamsRecyclerView.apply {
+            addOnScrollListener(topStreamsPreLoader)
+            setItemViewCacheSize(0)
+        }
+        binding.recommendedStreamsRecyclerView1.apply {
+            addOnScrollListener(recommendedStreams1PreLoader)
+            setItemViewCacheSize(0)
+        }
+        binding.recommendedStreamsRecyclerView2.apply {
+            addOnScrollListener(recommendedStreams2PreLoader)
+            setItemViewCacheSize(0)
+        }
     }
 
     private fun addBoxArtPreLoader(preLoadSizeProvider: FixedPreloadSizeProvider<CategoryResponse.Category>) {

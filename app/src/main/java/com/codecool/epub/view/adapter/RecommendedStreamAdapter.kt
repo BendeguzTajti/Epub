@@ -68,6 +68,7 @@ class RecommendedStreamAdapter(
     override fun getPreloadItems(position: Int): MutableList<StreamsResponse.Stream> = mutableListOf(getItem(position))
 
     override fun getPreloadRequestBuilder(stream: StreamsResponse.Stream): RequestBuilder<Drawable> {
-        return thumbnailLoader.load(stream.getThumbnailUrl(thumbnailLoader.overrideWidth, thumbnailLoader.overrideHeight))
+        return thumbnailLoader.clone()
+            .load(stream.getThumbnailUrl(thumbnailLoader.overrideWidth, thumbnailLoader.overrideHeight))
     }
 }

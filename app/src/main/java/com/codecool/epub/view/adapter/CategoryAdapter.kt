@@ -48,6 +48,7 @@ class CategoryAdapter(
     override fun getPreloadItems(position: Int): MutableList<CategoryResponse.Category> = mutableListOf(getItem(position))
 
     override fun getPreloadRequestBuilder(category: CategoryResponse.Category): RequestBuilder<Drawable> {
-        return categoryLoader.load(category.getImageUrl(categoryLoader.overrideWidth, categoryLoader.overrideHeight))
+        return categoryLoader.clone()
+            .load(category.getImageUrl(categoryLoader.overrideWidth, categoryLoader.overrideHeight))
     }
 }
