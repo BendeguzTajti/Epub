@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.codecool.epub.R
 import com.codecool.epub.databinding.CategoryStreamItemBinding
 import com.codecool.epub.model.StreamsResponse
@@ -16,7 +16,8 @@ import com.codecool.epub.model.StreamsResponse
 class CategoryStreamAdapter(
     private val thumbnailLoader: RequestBuilder<Drawable>,
     private val onStreamClicked: (StreamsResponse.Stream?) -> Unit
-) : PagingDataAdapter<StreamsResponse.Stream, RecyclerView.ViewHolder>(SteamComparator) {
+) : PagingDataAdapter<StreamsResponse.Stream, RecyclerView.ViewHolder>(SteamComparator),
+    ListPreloader.PreloadModelProvider<StreamsResponse.Stream>{
 
     inner class CategoryStreamHolder(
         private val binding: CategoryStreamItemBinding,
@@ -30,8 +31,6 @@ class CategoryStreamAdapter(
         fun bind(stream: StreamsResponse.Stream) {
             val resources = itemView.resources
             thumbnailLoader.load(stream.getThumbnailUrl(thumbnailLoader.overrideWidth, thumbnailLoader.overrideHeight))
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(binding.categoryStreamThumbnail)
             binding.categoryStreamTitle.text = stream.title
             binding.categoryStreamerName.text = stream.userName
@@ -72,6 +71,15 @@ class CategoryStreamAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == itemCount) R.layout.category_stream_item else R.layout.category_load_state_footer_item
+        return if (position < itemCount) R.layout.category_stream_item else R.layout.category_load_state_footer_item
+    }
+
+    override fun getPreloadItems(position: Int): MutableList<StreamsResponse.Stream?> {
+        return if (getItemViewType(position) == R.layout.category_stream_item) mutableListOf(getItem(position)) else mutableListOf()
+    }
+
+    override fun getPreloadRequestBuilder(stream: StreamsResponse.Stream): RequestBuilder<Drawable> {
+        return thumbnailLoader.clone()
+            .load(stream.getThumbnailUrl(thumbnailLoader.overrideWidth, thumbnailLoader.overrideHeight))
     }
 }

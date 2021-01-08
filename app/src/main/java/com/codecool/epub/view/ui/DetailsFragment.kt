@@ -18,6 +18,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.util.FixedPreloadSizeProvider
 import com.codecool.epub.R
 import com.codecool.epub.view.adapter.CategoryStreamAdapter
 import com.codecool.epub.databinding.FragmentDetailsBinding
@@ -36,6 +39,7 @@ class DetailsFragment : Fragment() {
         private const val TAG = "DetailsFragment"
         private const val SPAN_COUNT_PORTRAIT = 1
         private const val SPAN_COUNT_LANDSCAPE = 2
+        private const val MAX_ITEM_PRELOAD = 8
     }
 
     private val args: DetailsFragmentArgs by navArgs()
@@ -91,17 +95,17 @@ class DetailsFragment : Fragment() {
         val thumbnailHeight = getThumbnailHeight()
         val thumbnailLoader = requestManager.asDrawable()
             .override(thumbnailWidth, thumbnailHeight)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .placeholder(ColorDrawable(placeholderColor))
 
         categoryStreamAdapter = CategoryStreamAdapter(thumbnailLoader) {
-            it?.let {
-                onStreamClicked(it)
-            }
+            it?.let { onStreamClicked(it) }
         }
+        addThumbnailPreLoader(FixedPreloadSizeProvider(thumbnailWidth, thumbnailHeight))
         binding.categoryStreamsRecyclerView.apply {
             layoutManager = getCategoryLayoutManager()
             adapter = categoryStreamAdapter.withLoadStateFooter(CategoryStreamLoadStateAdapter())
-            setHasFixedSize(true)
             setRecyclerListener { holder ->
                 val thumbnailImageView = holder.itemView.findViewById<ImageView>(R.id.category_stream_thumbnail)
                 thumbnailImageView?.let { requestManager.clear(it) }
@@ -120,12 +124,22 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    private fun addThumbnailPreLoader(preLoadSizeProvider: FixedPreloadSizeProvider<StreamsResponse.Stream>) {
+        val preLoader = RecyclerViewPreloader(
+            GlideApp.with(requireContext()), categoryStreamAdapter, preLoadSizeProvider, MAX_ITEM_PRELOAD
+        )
+        binding.categoryStreamsRecyclerView.apply {
+            addOnScrollListener(preLoader)
+            setItemViewCacheSize(0)
+        }
+    }
+
     private fun getCategoryLayoutManager(): GridLayoutManager {
         return if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             GridLayoutManager(requireContext(), SPAN_COUNT_LANDSCAPE).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return if (categoryStreamAdapter.getItemViewType(position) == R.layout.category_stream_item) 2 else 1
+                        return if (categoryStreamAdapter.getItemViewType(position) == R.layout.category_stream_item) 1 else 2
                     }
                 }
             }
