@@ -8,7 +8,7 @@ object SteamComparator : DiffUtil.ItemCallback<StreamsResponse.Stream>() {
         oldItem: StreamsResponse.Stream,
         newItem: StreamsResponse.Stream
     ): Boolean =
-        oldItem.userId == newItem.userId
+        oldItem.id == newItem.id
 
     override fun areContentsTheSame(
         oldItem: StreamsResponse.Stream,
