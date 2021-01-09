@@ -110,6 +110,7 @@ class DetailsFragment : Fragment() {
                 val thumbnailImageView = holder.itemView.findViewById<ImageView>(R.id.category_stream_thumbnail)
                 thumbnailImageView?.let { requestManager.clear(it) }
             }
+            setItemViewCacheSize(0)
         }
         categoryStreamAdapter.addLoadStateListener { loadState ->
             binding.categoryStreamsRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
@@ -128,10 +129,7 @@ class DetailsFragment : Fragment() {
         val preLoader = RecyclerViewPreloader(
             GlideApp.with(requireContext()), categoryStreamAdapter, preLoadSizeProvider, MAX_ITEM_PRELOAD
         )
-        binding.categoryStreamsRecyclerView.apply {
-            addOnScrollListener(preLoader)
-            setItemViewCacheSize(0)
-        }
+        binding.categoryStreamsRecyclerView.addOnScrollListener(preLoader)
     }
 
     private fun getCategoryLayoutManager(): GridLayoutManager {

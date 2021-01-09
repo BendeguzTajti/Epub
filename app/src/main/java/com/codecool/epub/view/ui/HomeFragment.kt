@@ -122,24 +122,28 @@ class HomeFragment : Fragment() {
             setRecyclerListener {
                 requestManager.clear(it.itemView.findViewById<ImageView>(R.id.recommended_stream_thumbnail))
             }
+            setItemViewCacheSize(0)
         }
         binding.categoryRecyclerView.apply {
             adapter = categoryAdapter
             setRecyclerListener {
                 requestManager.clear(it.itemView.findViewById<ImageView>(R.id.boxArt))
             }
+            setItemViewCacheSize(0)
         }
         binding.recommendedStreamsRecyclerView1.apply {
             adapter = recommendedStreamsAdapter1
             setRecyclerListener {
                 requestManager.clear(it.itemView.findViewById<ImageView>(R.id.recommended_stream_thumbnail))
             }
+            setItemViewCacheSize(0)
         }
         binding.recommendedStreamsRecyclerView2.apply {
             adapter = recommendedStreamsAdapter2
             setRecyclerListener {
                 requestManager.clear(it.itemView.findViewById<ImageView>(R.id.recommended_stream_thumbnail))
             }
+            setItemViewCacheSize(0)
         }
     }
 
@@ -153,18 +157,9 @@ class HomeFragment : Fragment() {
         val recommendedStreams2PreLoader = RecyclerViewPreloader(
             GlideApp.with(requireContext()), recommendedStreamsAdapter2, preLoadSizeProvider, MAX_ITEM_PRELOAD
         )
-        binding.topStreamsRecyclerView.apply {
-            addOnScrollListener(topStreamsPreLoader)
-            setItemViewCacheSize(0)
-        }
-        binding.recommendedStreamsRecyclerView1.apply {
-            addOnScrollListener(recommendedStreams1PreLoader)
-            setItemViewCacheSize(0)
-        }
-        binding.recommendedStreamsRecyclerView2.apply {
-            addOnScrollListener(recommendedStreams2PreLoader)
-            setItemViewCacheSize(0)
-        }
+        binding.topStreamsRecyclerView.addOnScrollListener(topStreamsPreLoader)
+        binding.recommendedStreamsRecyclerView1.addOnScrollListener(recommendedStreams1PreLoader)
+        binding.recommendedStreamsRecyclerView2.addOnScrollListener(recommendedStreams2PreLoader)
     }
 
     private fun addBoxArtPreLoader(preLoadSizeProvider: FixedPreloadSizeProvider<CategoryResponse.Category>) {
