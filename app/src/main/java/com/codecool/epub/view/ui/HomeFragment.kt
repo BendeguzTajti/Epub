@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
 
     companion object {
         private const val TAG = "HomeFragment"
-        private const val MAX_ITEM_PRELOAD = 8
+        private const val MAX_ITEM_PRELOAD = 4
     }
 
     private val viewModel: HomeViewModel by viewModel()
