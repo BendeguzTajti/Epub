@@ -75,7 +75,7 @@ class CategoryStreamAdapter(
     }
 
     override fun getPreloadItems(position: Int): MutableList<StreamsResponse.Stream?> {
-        return if (getItemViewType(position) == R.layout.category_stream_item) mutableListOf(getItem(position)) else mutableListOf()
+        return if (getItemViewType(position) == R.layout.category_stream_item) mutableListOf(peek(position)) else mutableListOf()
     }
 
     override fun getPreloadRequestBuilder(stream: StreamsResponse.Stream): RequestBuilder<Drawable> {
