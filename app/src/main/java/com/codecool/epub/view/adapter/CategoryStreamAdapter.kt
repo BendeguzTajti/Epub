@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.ListPreloader
+import com.bumptech.glide.Priority
 import com.bumptech.glide.RequestBuilder
 import com.codecool.epub.R
 import com.codecool.epub.databinding.CategoryStreamItemBinding
@@ -75,11 +76,13 @@ class CategoryStreamAdapter(
     }
 
     override fun getPreloadItems(position: Int): MutableList<StreamsResponse.Stream?> {
-        return if (getItemViewType(position) == R.layout.category_stream_item) mutableListOf(peek(position)) else mutableListOf()
+        val offset = if (position == 0) 0 else 1
+        return mutableListOf(peek(position - offset))
     }
 
     override fun getPreloadRequestBuilder(stream: StreamsResponse.Stream): RequestBuilder<Drawable> {
         return thumbnailLoader.clone()
+            .priority(Priority.HIGH)
             .load(stream.getThumbnailUrl(thumbnailLoader.overrideWidth, thumbnailLoader.overrideHeight))
     }
 }

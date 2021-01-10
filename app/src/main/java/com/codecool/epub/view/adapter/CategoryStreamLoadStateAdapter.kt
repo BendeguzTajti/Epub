@@ -19,8 +19,7 @@ class CategoryStreamLoadStateAdapter : LoadStateAdapter<CategoryStreamLoadStateA
             if (loadState is LoadState.Error) {
                 val errorMessage = loadState.error.localizedMessage
             }
-//            binding.categoryStreamsLoading.isVisible = loadState is LoadState.Loading
-            binding.categoryStreamsLoading.isVisible = true
+            binding.categoryStreamsLoading.isVisible = loadState is LoadState.Loading
         }
     }
 

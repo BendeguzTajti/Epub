@@ -39,7 +39,7 @@ class DetailsFragment : Fragment() {
         private const val TAG = "DetailsFragment"
         private const val SPAN_COUNT_PORTRAIT = 1
         private const val SPAN_COUNT_LANDSCAPE = 2
-        private const val MAX_ITEM_PRELOAD = 8
+        private const val MAX_ITEM_PRELOAD = 12
     }
 
     private val args: DetailsFragmentArgs by navArgs()
