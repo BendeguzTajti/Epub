@@ -16,7 +16,7 @@
         <item name="colorSurface">@color/white</item>
         <item name="colorAccent">@color/white</item>
         <item name="actionBarSize">@dimen/toolbar_size</item>
-        <item name="fontFamily">@font/montserrat</item>
+        <item name="fontFamily">@font/montserrat_bold</item>
         <item name="searchViewStyle">@style/SearchViewStyle</item>
     </style>
 
